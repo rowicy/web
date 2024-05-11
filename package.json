@@ -13,6 +13,7 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "check": "astro check",
     "format": "prettier --write .",
     "set-nodebrew": "nodebrew use $(cat .node-version)",
     "set-nvm": "nvm use $(cat .node-version)"
