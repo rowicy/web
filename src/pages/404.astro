@@ -2,8 +2,10 @@
 import '@/styles/globals.css';
 import Layout from '@/layouts/Layout.astro';
 import Hero from '@/components/Hero.astro';
+
+const title = '404 Not Found';
 ---
 
-<Layout>
-  <Hero title="Coming Soon" />
+<Layout title={title}>
+  <Hero title={title} />
 </Layout>
