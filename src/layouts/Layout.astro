@@ -1,23 +1,31 @@
 ---
+import Header from '@/components/Header';
 interface Props {
-  title: string;
+  title?: string;
+  description?: string;
 }
 
-const { title } = Astro.props;
+const { title, description } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Astro description" />
+    <meta
+      name="description"
+      content={description || 'RowicyのWebサイトです。'}
+    />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- <link rel="icon" type="image/svg+xml" href="/favicon.svg" /> -->
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
+    <title>{title ? `${title} | Rowicy` : 'Rowicy'}</title>
   </head>
   <body>
-    <slot />
+    <Header client:idle />
+    <main class="container">
+      <slot />
+    </main>
   </body>
 </html>
 <style is:global>
