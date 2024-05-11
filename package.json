@@ -13,6 +13,7 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "format": "prettier --write .",
     "set-nodebrew": "nodebrew use $(cat .node-version)",
     "set-nvm": "nvm use $(cat .node-version)"
   },
@@ -33,5 +34,9 @@
     "tailwindcss": "^3.4.3",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.4.5"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "prettier-plugin-astro": "^0.13.0"
   }
 }
