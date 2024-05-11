@@ -12,3 +12,5 @@
 ```sh
 pnpm dlx shadcn-ui@latest add button
 ```
+
+https://ui.shadcn.com/docs/components/
