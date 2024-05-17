@@ -6,6 +6,7 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
+const gtmId = import.meta.env.GTM_ID;
 ---
 
 <!doctype html>
@@ -18,7 +19,21 @@ const { title, description } = Astro.props;
     />
     <meta name="viewport" content="width=device-width" />
     <!-- <link rel="icon" type="image/svg+xml" href="/favicon.svg" /> -->
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <title>{title ? `${title} | Rowicy` : 'Rowicy'}</title>
+    <!-- Google Tag Manager -->
+    <script
+      type="text/partytown"
+      src=`https://www.googletagmanager.com/gtag/js?id=${gtmId}`></script>
+    <script type="text/partytown">
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', `${gtmId}`);
+    </script>
+    <!-- End Google Tag Manager -->
   </head>
   <body>
     <Header client:idle />
