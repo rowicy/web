@@ -1,6 +1,7 @@
 ---
 import Header from '@/components/Header';
 import Footer from '@/components/Footer.astro';
+import { ViewTransitions } from 'astro:transitions';
 interface Props {
   title?: string;
   description?: string;
@@ -22,6 +23,7 @@ const gtmId = import.meta.env.GTM_ID;
     <!-- <link rel="icon" type="image/svg+xml" href="/favicon.svg" /> -->
     <link rel="sitemap" href="/sitemap-index.xml" />
     <title>{title ? `${title} | Rowicy` : 'Rowicy'}</title>
+    <ViewTransitions />
     <!-- Google Tag Manager -->
     <script
       type="text/partytown"
