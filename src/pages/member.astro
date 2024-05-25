@@ -1,0 +1,16 @@
+---
+import '@/styles/globals.css';
+import Layout from '@/layouts/Layout.astro';
+import Hero from '@/components/Hero.astro';
+import Section from '@/components/Section.astro';
+import MemberCard from '@/components/MemberCard.astro';
+import member from '@/data/member';
+const title = 'Member';
+---
+
+<Layout title={title} description="Rowicyのメンバー紹介ページです。">
+  <Hero title={title} />
+  <Section>
+    <MemberCard items={member} />
+  </Section>
+</Layout>
