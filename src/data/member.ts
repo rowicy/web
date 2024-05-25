@@ -21,20 +21,17 @@ const member: Member[] = [
     ],
   },
   {
-    name: 'dummy member',
-    image: '/images/member/naoki.jpg',
-  },
-  {
-    name: 'dummy member',
-    image: '/images/member/naoki.jpg',
-  },
-  {
-    name: 'dummy member',
-    image: '/images/member/naoki.jpg',
-  },
-  {
-    name: 'dummy member',
-    image: '/images/member/naoki.jpg',
+    name: 'RiiiM',
+    image: '/images/member/riiim.jpg',
+    description: 'Backend Developer',
+    links: [
+      {
+        name: 'GitHub',
+        id: '@riiim400th',
+        href: 'https://github.com/riiim400th',
+      },
+      { name: 'X', id: '@riiim400th', href: 'https://twitter.com/riiim400th' },
+    ],
   },
 ];
 
