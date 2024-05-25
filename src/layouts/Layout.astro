@@ -1,5 +1,6 @@
 ---
 import Header from '@/components/Header';
+import Footer from '@/components/Footer.astro';
 interface Props {
   title?: string;
   description?: string;
@@ -40,6 +41,7 @@ const gtmId = import.meta.env.GTM_ID;
     <main class="container">
       <slot />
     </main>
+    <Footer />
   </body>
 </html>
 <style is:global>
