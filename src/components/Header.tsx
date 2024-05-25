@@ -1,10 +1,4 @@
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-} from '@/components/ui/navigation-menu';
-import headerLink from '@/data/headerLink';
+import NavigationPc from '@/components/NavigationPc';
 
 const Header = () => {
   return (
@@ -14,20 +8,7 @@ const Header = () => {
           Rowicy
         </a>
 
-        <NavigationMenu>
-          <NavigationMenuList>
-            {/* PC */}
-            {headerLink.map(link => {
-              return (
-                <NavigationMenuItem key={link.name}>
-                  <NavigationMenuLink className="text-white" href={link.href}>
-                    {link.name}
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-              );
-            })}
-          </NavigationMenuList>
-        </NavigationMenu>
+        <NavigationPc />
       </div>
     </header>
   );
