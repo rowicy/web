@@ -1,4 +1,5 @@
 ---
+const yearStart = 2024;
 const now = new Date();
 const year = now.getFullYear();
 ---
@@ -6,7 +7,7 @@ const year = now.getFullYear();
 <footer class="bg-primary text-white py-8 mt-32">
   <div class="container">
     <p class="text-center">
-      <small>&copy; 2024 - {year} Rowicy</small>
+      <small>&copy; {yearStart}{year > yearStart && ` - ${year}`} Rowicy</small>
     </p>
   </div>
 </footer>
