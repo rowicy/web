@@ -8,7 +8,7 @@ import partytown from '@astrojs/partytown';
 export default defineConfig({
   site: 'https://www.rowicy.com',
   prefetch: {
-    prefetchAll: true
+    prefetchAll: true,
   },
   integrations: [
     react(),
