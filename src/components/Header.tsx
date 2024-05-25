@@ -1,4 +1,5 @@
 import NavigationPc from '@/components/NavigationPc';
+import NavigationSp from '@/components/NavigationSp';
 
 const Header = () => {
   return (
@@ -9,6 +10,8 @@ const Header = () => {
         </a>
 
         <NavigationPc />
+
+        <NavigationSp />
       </div>
     </header>
   );

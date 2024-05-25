@@ -8,7 +8,7 @@ import {
 
 const NavigationPc = () => {
   return (
-    <NavigationMenu>
+    <NavigationMenu className="hidden md:block">
       <NavigationMenuList>
         {headerLink.map(link => {
           return (
