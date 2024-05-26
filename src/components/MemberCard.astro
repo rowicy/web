@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/card';
 import MemberAvatar from '@/components/MemberAvatar';
 import type { Member } from '@/types/Member';
+import Icon from './Icon.astro';
 interface Props {
   items: Member[];
 }
@@ -49,7 +50,13 @@ const { items } = Astro.props;
                     rel="noopener noreferrer"
                     class="flex"
                   >
-                    <span class="w-20 break-all">{link.name}:</span>
+                    <span class="w-10 break-all">
+                      {link.type === 'icon' ? (
+                        <Icon name={link.name} />
+                      ) : (
+                        `${link.name}:`
+                      )}
+                    </span>
                     <span class="flex-1 ml-2">{link.id || link.href}</span>
                   </a>
                 </li>
