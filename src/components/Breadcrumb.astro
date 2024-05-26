@@ -1,0 +1,64 @@
+---
+import {
+  Breadcrumb as UiBreadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
+
+interface Props {
+  items: {
+    name: string;
+    href?: string;
+  }[];
+}
+const { items } = Astro.props;
+---
+
+<UiBreadcrumb className="mt-16 mb-2">
+  <BreadcrumbList itemScope itemType="https://schema.org/BreadcrumbList">
+    <BreadcrumbItem
+      itemProp="itemListElement"
+      itemScope
+      itemType="https://schema.org/ListItem"
+    >
+      <BreadcrumbLink href="/" itemProp="item">
+        <span itemprop="name">Home</span></BreadcrumbLink
+      >
+      <meta itemprop="position" content="1" />
+    </BreadcrumbItem>
+    <BreadcrumbSeparator />
+    {
+      items.map((item, i) => {
+        return (
+          <Fragment key={item.name}>
+            <BreadcrumbItem
+              itemProp="itemListElement"
+              itemScope
+              itemType="https://schema.org/ListItem"
+            >
+              {item.href ? (
+                <BreadcrumbLink
+                  href={item.href}
+                  itemScope
+                  itemType="https://schema.org/WebPage"
+                  itemProp="item"
+                  itemID={item.href}
+                >
+                  <span itemprop="name">{item.name}</span>
+                </BreadcrumbLink>
+              ) : (
+                <BreadcrumbPage itemProp="name">{item.name}</BreadcrumbPage>
+              )}
+              <meta itemprop="position" content={`${i + 2}`} />
+            </BreadcrumbItem>
+
+            {item.href && <BreadcrumbSeparator />}
+          </Fragment>
+        );
+      })
+    }
+  </BreadcrumbList>
+</UiBreadcrumb>

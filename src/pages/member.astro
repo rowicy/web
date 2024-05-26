@@ -5,6 +5,7 @@ import PageTitle from '@/components/PageTitle.astro';
 import Section from '@/components/Section.astro';
 import MemberCard from '@/components/MemberCard.astro';
 import member from '@/data/member';
+import Breadcrumb from '@/components/Breadcrumb.astro';
 const title = 'Member';
 ---
 
@@ -13,4 +14,6 @@ const title = 'Member';
   <Section>
     <MemberCard items={member} />
   </Section>
+
+  <Breadcrumb items={[{ name: 'Member' }]} />
 </Layout>

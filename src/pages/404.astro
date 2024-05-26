@@ -2,6 +2,7 @@
 import '@/styles/globals.css';
 import Layout from '@/layouts/Layout.astro';
 import PageTitle from '@/components/PageTitle.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
 
 const title = '404 Not Found';
 const pageTitleType = 'hero';
@@ -9,4 +10,6 @@ const pageTitleType = 'hero';
 
 <Layout title={title}>
   <PageTitle title={title} type={pageTitleType} />
+
+  <Breadcrumb items={[{ name: title }]} />
 </Layout>
