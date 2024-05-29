@@ -2,7 +2,6 @@
 import '@fontsource-variable/inter';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer.astro';
-import { ViewTransitions } from 'astro:transitions';
 import siteInfo from '@/data/siteInfo';
 interface Props {
   title?: string;
@@ -24,7 +23,6 @@ const gtmId = import.meta.env.GTM_ID;
     <link rel="icon" href="/favicon.ico" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <title>{title ? `${title} | ${siteInfo.appName}` : siteInfo.appName}</title>
-    <ViewTransitions />
     <!-- Google Tag Manager -->
     <script
       type="text/partytown"
@@ -41,7 +39,7 @@ const gtmId = import.meta.env.GTM_ID;
     <!-- End Google Tag Manager -->
   </head>
   <body class="overflow-x-hidden">
-    <Header client:idle />
+    <Header client:load />
     <main class="container">
       <slot />
     </main>
