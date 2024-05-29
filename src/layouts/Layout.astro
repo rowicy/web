@@ -3,12 +3,14 @@ import '@fontsource-variable/inter';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer.astro';
 import { ViewTransitions } from 'astro:transitions';
+import siteInfo from '@/data/siteInfo';
 interface Props {
   title?: string;
   description?: string;
+  author?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, author } = Astro.props;
 const gtmId = import.meta.env.GTM_ID;
 ---
 
@@ -16,14 +18,12 @@ const gtmId = import.meta.env.GTM_ID;
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="description"
-      content={description || 'RowicyのWebサイトです。'}
-    />
+    <meta name="description" content={description || siteInfo.description} />
+    <meta name="author" content={author || siteInfo.appName} />
     <meta name="viewport" content="width=device-width" />
     <!-- <link rel="icon" type="image/svg+xml" href="/favicon.svg" /> -->
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <title>{title ? `${title} | Rowicy` : 'Rowicy'}</title>
+    <title>{title ? `${title} | ${siteInfo.appName}` : siteInfo.appName}</title>
     <ViewTransitions />
     <!-- Google Tag Manager -->
     <script
