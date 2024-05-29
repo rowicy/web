@@ -2,9 +2,21 @@
 import '@/styles/globals.css';
 import Layout from '@/layouts/Layout.astro';
 import PageTitle from '@/components/PageTitle.astro';
+import Section from '@/components/Section.astro';
+import Heading from '@/components/Heading.astro';
+import ButtonLink from '@/components/ButtonLink';
+import siteInfo from '@/data/siteInfo';
 const pageTitleType = 'hero';
 ---
 
 <Layout>
   <PageTitle title="Rowicy" type={pageTitleType} />
+
+  <Section isBg={true}>
+    <Heading>Member</Heading>
+
+    <p class="mt-6">{siteInfo.appName}のメンバーをご紹介します。</p>
+
+    <ButtonLink href="/member" text="Member" />
+  </Section>
 </Layout>
