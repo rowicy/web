@@ -1,0 +1,15 @@
+---
+interface Props {
+  title: string;
+  type?: 'hero';
+}
+const { title, type } = Astro.props;
+---
+
+<section
+  data-type={type}
+  class=`bg-primary p-10 flex justify-center items-center mx-[calc(((100vw-100%)/2)*-1)] px-[calc((100vw-100%)/2)]`
+  style={{ height: type === 'hero' ? '100vh' : '50vh' }}
+>
+  <h1 class="font-bold text-white text-3xl md:text-5xl">{title}</h1>
+</section>

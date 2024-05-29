@@ -1,11 +1,16 @@
 ---
+import '@fontsource-variable/inter';
 import Header from '@/components/Header';
+import Footer from '@/components/Footer.astro';
+import { ViewTransitions } from 'astro:transitions';
+import siteInfo from '@/data/siteInfo';
 interface Props {
   title?: string;
   description?: string;
+  author?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, author } = Astro.props;
 const gtmId = import.meta.env.GTM_ID;
 ---
 
@@ -13,19 +18,19 @@ const gtmId = import.meta.env.GTM_ID;
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="description"
-      content={description || 'RowicyのWebサイトです。'}
-    />
+    <meta name="description" content={description || siteInfo.description} />
+    <meta name="author" content={author || siteInfo.appName} />
     <meta name="viewport" content="width=device-width" />
-    <!-- <link rel="icon" type="image/svg+xml" href="/favicon.svg" /> -->
+    <link rel="icon" href="/favicon.ico" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <title>{title ? `${title} | Rowicy` : 'Rowicy'}</title>
+    <title>{title ? `${title} | ${siteInfo.appName}` : siteInfo.appName}</title>
+    <ViewTransitions />
     <!-- Google Tag Manager -->
     <script
       type="text/partytown"
-      src=`https://www.googletagmanager.com/gtag/js?id=${gtmId}`></script>
-    <script type="text/partytown">
+      src=`https://www.googletagmanager.com/gtag/js?id=${gtmId}`
+      is:inline></script>
+    <script type="text/partytown" is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
@@ -35,39 +40,11 @@ const gtmId = import.meta.env.GTM_ID;
     </script>
     <!-- End Google Tag Manager -->
   </head>
-  <body>
+  <body class="overflow-x-hidden">
     <Header client:idle />
     <main class="container">
       <slot />
     </main>
+    <Footer />
   </body>
 </html>
-<style is:global>
-  :root {
-    --accent: 136, 58, 234;
-    --accent-light: 224, 204, 250;
-    --accent-dark: 49, 10, 101;
-    --accent-gradient: linear-gradient(
-      45deg,
-      rgb(var(--accent)),
-      rgb(var(--accent-light)) 30%,
-      white 60%
-    );
-  }
-  html {
-    font-family: system-ui, sans-serif;
-    background: #13151a;
-    background-size: 224px;
-  }
-  code {
-    font-family:
-      Menlo,
-      Monaco,
-      Lucida Console,
-      Liberation Mono,
-      DejaVu Sans Mono,
-      Bitstream Vera Sans Mono,
-      Courier New,
-      monospace;
-  }
-</style>

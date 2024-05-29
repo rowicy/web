@@ -1,11 +1,15 @@
 ---
 import '@/styles/globals.css';
 import Layout from '@/layouts/Layout.astro';
-import Hero from '@/components/Hero.astro';
+import PageTitle from '@/components/PageTitle.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
 
 const title = '404 Not Found';
+const pageTitleType = 'hero';
 ---
 
 <Layout title={title}>
-  <Hero title={title} />
+  <PageTitle title={title} type={pageTitleType} />
+
+  <Breadcrumb items={[{ name: title }]} />
 </Layout>

@@ -10,7 +10,7 @@
 ## コンポーネント追加
 
 ```sh
-pnpm dlx shadcn-ui@latest add button
+pnpm dlx shadcn-ui@latest add
 ```
 
 https://ui.shadcn.com/docs/components/

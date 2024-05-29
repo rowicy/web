@@ -1,0 +1,19 @@
+---
+import icon from '@/data/icon';
+
+interface Props {
+  name?: string;
+}
+const { name } = Astro.props;
+const svg = icon.filter(
+  v => v.name === name || v.name === name?.toLowerCase()
+)[0];
+---
+
+{
+  svg && (
+    <span class="block w-6 h-6" data-icon-name={name}>
+      {svg.code && <Fragment set:html={svg.code} />}
+    </span>
+  )
+}
