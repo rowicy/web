@@ -7,6 +7,9 @@ import partytown from '@astrojs/partytown';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://www.rowicy.com',
+  prefetch: {
+    prefetchAll: true,
+  },
   integrations: [
     react(),
     tailwind({

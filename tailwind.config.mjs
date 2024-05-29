@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import defaultTheme from 'tailwindcss/defaultTheme';
+
 export default {
   darkMode: ['class'],
   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
@@ -12,6 +14,9 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['Inter Variable', ...defaultTheme.fontFamily.sans],
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',

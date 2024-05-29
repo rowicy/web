@@ -1,0 +1,73 @@
+---
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import MemberAvatar from '@/components/MemberAvatar';
+import type { Member } from '@/types/Member';
+import Icon from './Icon.astro';
+interface Props {
+  items: Member[];
+}
+const { items } = Astro.props;
+---
+
+<div class="flex flex-wrap gap-[1.2rem]">
+  {
+    items.map(member => (
+      <Card
+        className="w-full md:w-[calc(calc(100%/3)-0.8rem)]"
+        key={member.name}
+      >
+        <CardHeader>
+          <MemberAvatar
+            client:load
+            src={
+              member.image ||
+              `https://placehold.jp/020817/ffffff/300x300.png?text=${member.name}`
+            }
+            alt={member.name}
+            fallbackText={member.name}
+          />
+        </CardHeader>
+        <CardContent>
+          <CardTitle>{member.name}</CardTitle>
+          {member.description && (
+            <CardDescription className="mt-2">
+              <Fragment set:html={member.description} />
+            </CardDescription>
+          )}
+        </CardContent>
+        {member.links && (
+          <CardFooter>
+            <ul class="flex flex-col gap-1">
+              {member.links.map(link => (
+                <li>
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="flex"
+                  >
+                    <span class="w-10 break-all">
+                      {link.type === 'icon' ? (
+                        <Icon name={link.name} />
+                      ) : (
+                        `${link.name}:`
+                      )}
+                    </span>
+                    <span class="flex-1 ml-2">{link.id || link.href}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </CardFooter>
+        )}
+      </Card>
+    ))
+  }
+</div>

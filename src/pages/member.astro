@@ -1,0 +1,19 @@
+---
+import '@/styles/globals.css';
+import Layout from '@/layouts/Layout.astro';
+import PageTitle from '@/components/PageTitle.astro';
+import Section from '@/components/Section.astro';
+import MemberCard from '@/components/MemberCard.astro';
+import member from '@/data/member';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+const title = 'Member';
+---
+
+<Layout title={title} description="Rowicyのメンバー紹介ページです。">
+  <PageTitle title={title} />
+  <Section>
+    <MemberCard items={member} />
+  </Section>
+
+  <Breadcrumb items={[{ name: 'Member' }]} />
+</Layout>
