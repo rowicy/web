@@ -26,7 +26,10 @@ const { items } = Astro.props;
         <CardHeader>
           <MemberAvatar
             client:load
-            src={member.image}
+            src={
+              member.image ||
+              `https://placehold.jp/020817/ffffff/300x300.png?text=${member.name}`
+            }
             alt={member.name}
             fallbackText={member.name}
           />

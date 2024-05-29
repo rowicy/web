@@ -46,6 +46,10 @@ const member: Member[] = [
       },
     ],
   },
+  {
+    name: 'Millin',
+    description: 'Game Developer',
+  },
 ];
 
 export default member;

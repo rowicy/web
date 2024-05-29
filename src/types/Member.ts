@@ -1,6 +1,6 @@
 type Member = {
   name: string;
-  image: string;
+  image?: string;
   description?: string;
   links?: { name: string; id?: string; href: string; type?: 'icon' }[];
 };
