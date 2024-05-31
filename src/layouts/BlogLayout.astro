@@ -1,0 +1,87 @@
+---
+import '@fontsource-variable/inter';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer.astro';
+import siteInfo from '@/data/siteInfo';
+import PageTitle from '@/components/PageTitle.astro';
+import Section from '@/components/Section.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import { Badge } from '@/components/ui/badge';
+import '@/styles/globals.css';
+import type { Frontmatter } from '@/types/Frontmatter';
+import member from '@/data/member';
+import MemberCard from '@/components/MemberCard.astro';
+
+interface Props {
+  frontmatter: Frontmatter;
+}
+
+const { frontmatter } = Astro.props;
+const gtmId = import.meta.env.GTM_ID;
+const author = member.find(m => m.name === frontmatter.author);
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content={frontmatter.description || siteInfo.description}
+    />
+    <meta name="author" content={`${siteInfo.appName} ${frontmatter.author}`} />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <title>{`${frontmatter.title} | ${siteInfo.appName}`}</title>
+    <!-- Google Tag Manager -->
+    <script
+      type="text/partytown"
+      src=`https://www.googletagmanager.com/gtag/js?id=${gtmId}`
+      is:inline></script>
+    <script type="text/partytown" is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', `${gtmId}`);
+    </script>
+    <!-- End Google Tag Manager -->
+  </head>
+  <body class="overflow-x-hidden">
+    <Header client:load />
+    <main class="container">
+      <PageTitle title={frontmatter.title} />
+      <Section>
+        <div class="flex flex-col gap-4">
+          <time datetime={frontmatter.date}
+            >{frontmatter.date.toString().slice(0, 10)}</time
+          >
+          <div class="flex flex-wrap gap-1">
+            {
+              frontmatter.tags.map(tag => {
+                return <Badge variant="outline">#{tag}</Badge>;
+              })
+            }
+          </div>
+        </div>
+
+        <slot />
+      </Section>
+
+      {
+        author && (
+          <Section>
+            <MemberCard items={[author]} layout="author" />
+          </Section>
+        )
+      }
+
+      <Breadcrumb
+        items={[{ name: 'Blog', href: '/blog' }, { name: frontmatter.title }]}
+      />
+    </main>
+    <Footer />
+  </body>
+</html>
