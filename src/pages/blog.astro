@@ -1,0 +1,33 @@
+---
+import '@/styles/globals.css';
+import Layout from '@/layouts/Layout.astro';
+import PageTitle from '@/components/PageTitle.astro';
+import Section from '@/components/Section.astro';
+import BlogCard from '@/components/BlogCard';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import type { Frontmatter } from '@/types/Frontmatter';
+const title = 'Blog';
+const allPosts = await Astro.glob('./blog/*.md');
+---
+
+<Layout
+  title={title}
+  description="Rowicy Memberが執筆したBlogの一覧ページです。"
+>
+  <PageTitle title={title} />
+  <Section>
+    <div class="flex flex-col gap-3">
+      {
+        allPosts.map(post => (
+          <BlogCard
+            url={String(post.url)}
+            frontmatter={post.frontmatter as Frontmatter}
+            client:load
+          />
+        ))
+      }
+    </div>
+  </Section>
+
+  <Breadcrumb items={[{ name: 'Blog' }]} />
+</Layout>
