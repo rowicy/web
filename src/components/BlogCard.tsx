@@ -1,34 +1,32 @@
 import { Card, CardDescription, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-
-import type { Frontmatter } from '@/types/Frontmatter';
 import { Badge } from '@/components/ui/badge';
 import member from '@/data/member';
+import type { CollectionEntry } from 'astro:content';
 type Props = {
-  url: string;
-  frontmatter: Frontmatter;
+  blog: CollectionEntry<'blog'>;
   bg?: 'transparent';
 };
 
-const BlogCard = ({ url, frontmatter, bg }: Props) => {
-  const author = member.find(m => m.name === frontmatter.author);
+const BlogCard = ({ blog, bg }: Props) => {
+  const author = member.find(m => m.name === blog.data.author);
 
   return (
     <Card
       className={`transition hover:opacity-70 ${bg === 'transparent' && 'bg-transparent'}`}
     >
-      <a href={url} className="block p-6">
+      <a href={`/blog/${blog.slug}`} className="block p-6">
         <CardTitle className={`${bg === 'transparent' && 'text-white'}`}>
-          {frontmatter.title}
+          {blog.data.title}
         </CardTitle>
         <div className="flex flex-col mt-3 gap-3">
           <CardDescription>
-            <time dateTime={frontmatter.pubDate}>
-              {frontmatter.pubDate.toString().slice(0, 10)}
+            <time dateTime={blog.data.pubDate}>
+              {blog.data.pubDate.toString().slice(0, 10)}
             </time>
           </CardDescription>
           <div className="flex flex-wrap gap-1">
-            {frontmatter.tags.map(tag => {
+            {blog.data.tags.map(tag => {
               return (
                 <Badge
                   variant="outline"

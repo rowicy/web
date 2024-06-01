@@ -5,9 +5,9 @@ import PageTitle from '@/components/PageTitle.astro';
 import Section from '@/components/Section.astro';
 import BlogCard from '@/components/BlogCard';
 import Breadcrumb from '@/components/Breadcrumb.astro';
-import type { Frontmatter } from '@/types/Frontmatter';
+import { getCollection } from 'astro:content';
 const title = 'Blog';
-const allBlogs = await Astro.glob('./blog/*.md');
+const blogs = await getCollection('blog');
 ---
 
 <Layout
@@ -17,15 +17,7 @@ const allBlogs = await Astro.glob('./blog/*.md');
   <PageTitle title={title} />
   <Section>
     <div class="flex flex-col gap-3">
-      {
-        allBlogs.map(blog => (
-          <BlogCard
-            url={String(blog.url)}
-            frontmatter={blog.frontmatter as Frontmatter}
-            client:load
-          />
-        ))
-      }
+      {blogs.map(blog => <BlogCard blog={blog} client:load />)}
     </div>
   </Section>
 

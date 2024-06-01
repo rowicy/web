@@ -7,9 +7,9 @@ import Heading from '@/components/Heading.astro';
 import ButtonLink from '@/components/ButtonLink';
 import siteInfo from '@/data/siteInfo';
 import BlogCard from '@/components/BlogCard';
-import type { Frontmatter } from '@/types/Frontmatter';
+import { getCollection } from 'astro:content';
 const pageTitleType = 'hero';
-const blogs = await Astro.glob('./blog/*.md');
+const blogs = await getCollection('blog');
 ---
 
 <Layout>
@@ -30,14 +30,7 @@ const blogs = await Astro.glob('./blog/*.md');
       {
         blogs.map((blog, i) => {
           if (i >= 2) return;
-          return (
-            <BlogCard
-              url={String(blog.url)}
-              frontmatter={blog.frontmatter as Frontmatter}
-              bg="transparent"
-              client:load
-            />
-          );
+          return <BlogCard blog={blog} bg="transparent" client:load />;
         })
       }
     </div>
