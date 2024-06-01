@@ -1,0 +1,25 @@
+---
+import '@/styles/globals.css';
+import Layout from '@/layouts/Layout.astro';
+import PageTitle from '@/components/PageTitle.astro';
+import Section from '@/components/Section.astro';
+import BlogCard from '@/components/BlogCard';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import { getCollection } from 'astro:content';
+const title = 'Blog';
+const blogs = await getCollection('blog');
+---
+
+<Layout
+  title={title}
+  description="Rowicy Memberが執筆したBlogの一覧ページです。"
+>
+  <PageTitle title={title} />
+  <Section>
+    <div class="flex flex-col gap-3">
+      {blogs.map(blog => <BlogCard blog={blog} client:load />)}
+    </div>
+  </Section>
+
+  <Breadcrumb items={[{ name: 'Blog' }]} />
+</Layout>

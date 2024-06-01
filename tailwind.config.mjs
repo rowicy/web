@@ -15,7 +15,11 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter Variable', ...defaultTheme.fontFamily.sans],
+        sans: [
+          'Inter Variable',
+          'Noto Sans JP Variable',
+          ...defaultTheme.fontFamily.sans,
+        ],
       },
       colors: {
         border: 'hsl(var(--border))',
