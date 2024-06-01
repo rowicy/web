@@ -23,8 +23,8 @@ const BlogCard = ({ url, frontmatter, bg }: Props) => {
         </CardTitle>
         <div className="flex flex-col mt-3 gap-3">
           <CardDescription>
-            <time dateTime={frontmatter.date}>
-              {frontmatter.date.toString().slice(0, 10)}
+            <time dateTime={frontmatter.pubDate}>
+              {frontmatter.pubDate.toString().slice(0, 10)}
             </time>
           </CardDescription>
           <div className="flex flex-wrap gap-1">

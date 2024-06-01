@@ -1,7 +1,7 @@
 ---
 layout: '@/layouts/BlogLayout.astro'
 title: アルファ版Rowicy Webサイトリリース
-date: 2024-06-01
+pubDate: 2024-06-01
 description: アルファ版Rowicy Webサイトをリリースしました！
 author: Naoki
 tags: [Info]

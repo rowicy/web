@@ -55,8 +55,8 @@ const author = member.find(m => m.name === frontmatter.author);
       <PageTitle title={frontmatter.title} />
       <Section>
         <div class="flex flex-col gap-4">
-          <time datetime={frontmatter.date}
-            >{frontmatter.date.toString().slice(0, 10)}</time
+          <time datetime={frontmatter.pubDate}
+            >{frontmatter.pubDate.toString().slice(0, 10)}</time
           >
           <div class="flex flex-wrap gap-1">
             {

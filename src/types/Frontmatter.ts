@@ -1,7 +1,7 @@
 type Frontmatter = {
   layout: string;
   title: string;
-  date: string;
+  pubDate: string;
   description: string;
   author: string;
   tags: string[];
