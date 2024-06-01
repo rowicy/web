@@ -67,7 +67,9 @@ const author = member.find(m => m.name === frontmatter.author);
           </div>
         </div>
 
-        <slot />
+        <div class="blog-body">
+          <slot />
+        </div>
       </Section>
 
       {
@@ -85,3 +87,43 @@ const author = member.find(m => m.name === frontmatter.author);
     <Footer />
   </body>
 </html>
+
+<style lang="scss">
+  .blog-body {
+    margin-top: 2rem;
+  }
+</style>
+
+<style is:global lang="scss">
+  $space: 32px;
+
+  .blog-body {
+    .toc {
+      padding-top: $space;
+      padding-bottom: $space;
+      border: 2px solid #efefef;
+
+      ol {
+        list-style: none;
+        counter-reset: toc;
+        padding-left: $space;
+
+        li {
+          counter-increment: toc;
+
+          &::before {
+            content: counters(toc, '.') ' ';
+          }
+        }
+      }
+
+      li + li,
+      ol + ol,
+      li + ol,
+      ol + li,
+      ol ol li {
+        margin-top: $space / 5;
+      }
+    }
+  }
+</style>
