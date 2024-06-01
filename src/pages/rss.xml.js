@@ -3,8 +3,8 @@ import siteInfo from '@/data/siteInfo';
 
 export async function GET(context) {
   return rss({
-    title: `Blog | ${siteInfo.appName}`,
-    description: `${siteInfo.appName} Memberが執筆したBlog記事です。`,
+    title: siteInfo.appName,
+    description: siteInfo.description,
     site: context.site,
     items: await pagesGlobToRssItems(import.meta.glob('./blog/*.md')),
     customData: `<language>ja-jp</language>`,
