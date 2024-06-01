@@ -24,7 +24,6 @@ export default defineConfig({
         forward: ['dataLayer.push'],
       },
     }),
-    mdx(),
   ],
   markdown: {
     rehypePlugins: [rehypeSlug, [rehypeToc, { headings: ['h2', 'h3', 'h4'] }]],

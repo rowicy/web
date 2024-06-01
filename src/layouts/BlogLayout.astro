@@ -88,20 +88,18 @@ const author = member.find(m => m.name === frontmatter.author);
   </body>
 </html>
 
-<style lang="scss">
-  .blog-body {
-    margin-top: 2rem;
-  }
-</style>
-
 <style is:global lang="scss">
   $space: 32px;
 
   .blog-body {
+    margin-bottom: $space;
+
     .toc {
       padding-top: $space;
       padding-bottom: $space;
       border: 2px solid #efefef;
+      margin-top: $space;
+      margin-bottom: $space;
 
       ol {
         list-style: none;
@@ -114,6 +112,11 @@ const author = member.find(m => m.name === frontmatter.author);
           &::before {
             content: counters(toc, '.') ' ';
           }
+
+          a {
+            margin-left: $space / 5;
+            text-decoration: none;
+          }
         }
       }
 
@@ -124,6 +127,31 @@ const author = member.find(m => m.name === frontmatter.author);
       ol ol li {
         margin-top: $space / 5;
       }
+    }
+
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: 600;
+      margin-top: $space * 2;
+
+      & + * {
+        margin-top: $space / 2;
+      }
+    }
+
+    *:not(.toc):not(h2, h3, h4, h5, h6) + *:not(.toc):not(h2, h3, h4, h5, h6) {
+      margin-top: $space / 2;
+    }
+
+    a {
+      text-decoration: underline;
+    }
+
+    pre {
+      padding: $space / 2;
     }
   }
 </style>

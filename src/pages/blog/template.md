@@ -1,5 +1,5 @@
 ---
-layout: ../../layouts/BlogLayout.astro
+layout: '@/layouts/BlogLayout.astro'
 title: テンプレート
 date: 2024-06-01
 description: テンプレートです。
@@ -10,6 +10,8 @@ tags: [Tech, Test]
 ## セクション1
 
 テキスト
+
+[リンク](#セクション1-1)
 
 ### セクション1-1
 
