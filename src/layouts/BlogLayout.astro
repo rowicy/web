@@ -89,22 +89,36 @@ const author = member.find(m => m.name === frontmatter.author);
 </html>
 
 <style is:global lang="scss">
-  $space: 32px;
+  $space: 2rem;
+  $space-sp: 1.6rem;
+  $font-size: 2.25rem;
+  $font-size-sp: 1.7rem;
 
   .blog-body {
     margin-bottom: $space;
 
     .toc {
-      padding-top: $space;
-      padding-bottom: $space;
+      padding-top: $space-sp;
+      padding-bottom: $space-sp;
+      margin-top: $space-sp;
+      margin-bottom: $space-sp;
       border: 2px solid #efefef;
-      margin-top: $space;
-      margin-bottom: $space;
+
+      @media (min-width: 768px) {
+        padding-top: $space;
+        padding-bottom: $space;
+        margin-top: $space;
+        margin-bottom: $space;
+      }
 
       ol {
         list-style: none;
         counter-reset: toc;
-        padding-left: $space;
+        padding-left: $space-sp;
+
+        @media (min-width: 768px) {
+          padding-left: $space;
+        }
 
         li {
           counter-increment: toc;
@@ -114,7 +128,7 @@ const author = member.find(m => m.name === frontmatter.author);
           }
 
           a {
-            margin-left: $space / 5;
+            margin-left: calc($space / 5);
             text-decoration: none;
           }
         }
@@ -125,7 +139,47 @@ const author = member.find(m => m.name === frontmatter.author);
       li + ol,
       ol + li,
       ol ol li {
-        margin-top: $space / 5;
+        margin-top: calc($space / 5);
+      }
+    }
+
+    h2 {
+      font-size: $font-size-sp;
+
+      @media (min-width: 768px) {
+        font-size: $font-size;
+      }
+    }
+
+    h3 {
+      font-size: calc($font-size-sp * 0.9);
+
+      @media (min-width: 768px) {
+        font-size: calc($font-size * 0.9);
+      }
+    }
+
+    h4 {
+      font-size: calc($font-size-sp * 0.8);
+
+      @media (min-width: 768px) {
+        font-size: calc($font-size * 0.8);
+      }
+    }
+
+    h5 {
+      font-size: calc($font-size-sp * 0.7);
+
+      @media (min-width: 768px) {
+        font-size: calc($font-size * 0.7);
+      }
+    }
+
+    h6 {
+      font-size: calc($font-size-sp * 0.6);
+
+      @media (min-width: 768px) {
+        font-size: calc($font-size * 0.6);
       }
     }
 
@@ -135,15 +189,27 @@ const author = member.find(m => m.name === frontmatter.author);
     h5,
     h6 {
       font-weight: 600;
-      margin-top: $space * 2;
+      margin-top: calc($space-sp * 2);
+
+      @media (min-width: 768px) {
+        margin-top: calc($space * 2);
+      }
 
       & + * {
-        margin-top: $space / 2;
+        margin-top: calc($space-sp / 2);
+
+        @media (min-width: 768px) {
+          margin-top: calc($space / 2);
+        }
       }
     }
 
     *:not(.toc):not(h2, h3, h4, h5, h6) + *:not(.toc):not(h2, h3, h4, h5, h6) {
-      margin-top: $space / 2;
+      margin-top: calc($space-sp / 2);
+
+      @media (min-width: 768px) {
+        margin-top: calc($space / 2);
+      }
     }
 
     a {
@@ -151,7 +217,7 @@ const author = member.find(m => m.name === frontmatter.author);
     }
 
     pre {
-      padding: $space / 2;
+      padding: calc($space / 2);
     }
   }
 </style>
