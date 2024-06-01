@@ -12,18 +12,21 @@ import type { Member } from '@/types/Member';
 import Icon from './Icon.astro';
 interface Props {
   items: Member[];
+  layout?: 'author';
 }
-const { items } = Astro.props;
+const { items, layout } = Astro.props;
 ---
 
 <div class="flex flex-wrap gap-[1.2rem]">
   {
     items.map(member => (
       <Card
-        className="w-full md:w-[calc(calc(100%/3)-0.8rem)]"
+        className={`w-full ${layout !== 'author' && 'md:w-[calc(calc(100%/3)-0.8rem)]'} ${layout === 'author' && 'relative py-3 pl-[calc(20vw+1rem)]'}`}
         key={member.name}
       >
-        <CardHeader>
+        <CardHeader
+          className={`${layout === 'author' && 'absolute left-3 top-1/2 -translate-y-1/2 w-[20vw] h-[20vw] p-0 justify-center'}`}
+        >
           <MemberAvatar
             client:load
             src={
@@ -34,8 +37,11 @@ const { items } = Astro.props;
             fallbackText={member.name}
           />
         </CardHeader>
-        <CardContent>
-          <CardTitle>{member.name}</CardTitle>
+        <CardContent className={`${layout === 'author' && 'px-3 pb-3'}`}>
+          <CardTitle className={`${layout === 'author' && 'text-lg'}`}>
+            {layout === 'author' && 'Author: '}
+            {member.name}
+          </CardTitle>
           {member.description && (
             <CardDescription className="mt-2">
               <Fragment set:html={member.description} />
@@ -43,7 +49,7 @@ const { items } = Astro.props;
           )}
         </CardContent>
         {member.links && (
-          <CardFooter>
+          <CardFooter className={`${layout === 'author' && 'px-3 pb-0'}`}>
             <ul class="flex flex-col gap-1">
               {member.links.map(link => (
                 <li>

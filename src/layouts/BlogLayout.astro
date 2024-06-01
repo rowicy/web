@@ -1,0 +1,251 @@
+---
+import '@fontsource-variable/inter';
+import '@fontsource-variable/noto-sans-jp';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer.astro';
+import siteInfo from '@/data/siteInfo';
+import PageTitle from '@/components/PageTitle.astro';
+import Section from '@/components/Section.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import { Badge } from '@/components/ui/badge';
+import '@/styles/globals.css';
+import member from '@/data/member';
+import MemberCard from '@/components/MemberCard.astro';
+import { type CollectionEntry } from 'astro:content';
+import { SEO } from 'astro-seo';
+
+interface Props {
+  blog: CollectionEntry<'blog'>;
+}
+
+const { blog } = Astro.props;
+const gtmId = import.meta.env.GTM_ID;
+const author = member.find(m => m.name === blog.data.author);
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content={blog.data.description || siteInfo.description}
+    />
+    <meta name="author" content={`${siteInfo.appName} ${blog.data.author}`} />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <title>{`${blog.data.title} | ${siteInfo.appName}`}</title>
+    <SEO
+      charset="UTF-8"
+      openGraph={{
+        basic: {
+          title: blog.data.title,
+          type: 'article',
+          image: new URL(`/og/${blog.slug}.png`, Astro.url.origin).toString(),
+        },
+        image: {
+          alt: blog.data.title,
+        },
+      }}
+    />
+    <!-- Google Tag Manager -->
+    <script
+      type="text/partytown"
+      src=`https://www.googletagmanager.com/gtag/js?id=${gtmId}`
+      is:inline></script>
+    <script type="text/partytown" is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', `${gtmId}`);
+    </script>
+    <!-- End Google Tag Manager -->
+  </head>
+  <body class="overflow-x-hidden">
+    <Header client:load />
+    <main class="container">
+      <PageTitle title={blog.data.title} />
+      <Section>
+        <div class="flex flex-col gap-4">
+          <time datetime={String(blog.data.pubDate)}
+            >{blog.data.pubDate.toString().slice(0, 10)}</time
+          >
+          <div class="flex flex-wrap gap-1">
+            {
+              blog.data.tags.map(tag => {
+                return <Badge variant="outline">#{tag}</Badge>;
+              })
+            }
+          </div>
+        </div>
+
+        <div class="blog-body">
+          <slot />
+        </div>
+      </Section>
+
+      {
+        author && (
+          <Section>
+            <MemberCard items={[author]} layout="author" />
+          </Section>
+        )
+      }
+
+      <Breadcrumb
+        items={[{ name: 'Blog', href: '/blog' }, { name: blog.data.title }]}
+      />
+    </main>
+    <Footer />
+    <style is:global lang="scss">
+      $space: 2rem;
+      $space-sp: 1.6rem;
+      $font-size: 2.25rem;
+      $font-size-sp: 1.7rem;
+
+      .blog-body {
+        margin-bottom: $space;
+
+        .toc {
+          padding-top: $space-sp;
+          padding-bottom: $space-sp;
+          margin-top: $space-sp;
+          margin-bottom: $space-sp;
+          border: 2px solid #efefef;
+
+          @media (min-width: 768px) {
+            padding-top: $space;
+            padding-bottom: $space;
+            margin-top: $space;
+            margin-bottom: $space;
+          }
+
+          ol {
+            list-style: none;
+            counter-reset: toc;
+            padding-left: $space-sp;
+
+            @media (min-width: 768px) {
+              padding-left: $space;
+            }
+
+            li {
+              counter-increment: toc;
+
+              &::before {
+                content: counters(toc, '.') ' ';
+              }
+
+              a {
+                margin-left: calc($space / 5);
+                text-decoration: none;
+              }
+            }
+          }
+
+          li + li,
+          ol + ol,
+          li + ol,
+          ol + li,
+          ol ol li {
+            margin-top: calc($space / 5);
+          }
+        }
+
+        h2 {
+          font-size: $font-size-sp;
+
+          @media (min-width: 768px) {
+            font-size: $font-size;
+          }
+        }
+
+        h3 {
+          font-size: calc($font-size-sp * 0.9);
+
+          @media (min-width: 768px) {
+            font-size: calc($font-size * 0.9);
+          }
+        }
+
+        h4 {
+          font-size: calc($font-size-sp * 0.8);
+
+          @media (min-width: 768px) {
+            font-size: calc($font-size * 0.8);
+          }
+        }
+
+        h5 {
+          font-size: calc($font-size-sp * 0.7);
+
+          @media (min-width: 768px) {
+            font-size: calc($font-size * 0.7);
+          }
+        }
+
+        h6 {
+          font-size: calc($font-size-sp * 0.6);
+
+          @media (min-width: 768px) {
+            font-size: calc($font-size * 0.6);
+          }
+        }
+
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+          font-weight: 600;
+          margin-top: calc($space-sp * 2);
+
+          @media (min-width: 768px) {
+            margin-top: calc($space * 2);
+          }
+
+          & + * {
+            margin-top: calc($space-sp / 2);
+
+            @media (min-width: 768px) {
+              margin-top: calc($space / 2);
+            }
+          }
+        }
+
+        *:not(.toc, li):not(h2, h3, h4, h5, h6)
+          + *:not(.toc):not(h2, h3, h4, h5, h6) {
+          margin-top: calc($space-sp * 0.8);
+
+          @media (min-width: 768px) {
+            margin-top: calc($space * 0.8);
+          }
+        }
+
+        a {
+          text-decoration: underline;
+        }
+
+        pre {
+          padding: calc($space / 2);
+        }
+
+        > ul,
+        *:not(.toc) > ul {
+          padding-left: 1rem;
+          list-style: disc;
+          list-style-position: outside;
+
+          li {
+            + li {
+              margin-top: 0.5rem;
+            }
+          }
+        }
+      }
+    </style>
+  </body>
+</html>
