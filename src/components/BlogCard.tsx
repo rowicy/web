@@ -16,7 +16,9 @@ const BlogCard = ({ blog, bg }: Props) => {
       className={`transition hover:opacity-70 ${bg === 'transparent' && 'bg-transparent'}`}
     >
       <a href={`/blog/${blog.slug}`} className="block p-6">
-        <CardTitle className={`${bg === 'transparent' && 'text-white'}`}>
+        <CardTitle
+          className={`text-xl md:text-2xl ${bg === 'transparent' && 'text-white'}`}
+        >
           {blog.data.title}
         </CardTitle>
         <div className="flex flex-col mt-3 gap-3">
