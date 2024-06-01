@@ -204,11 +204,12 @@ const author = member.find(m => m.name === frontmatter.author);
       }
     }
 
-    *:not(.toc):not(h2, h3, h4, h5, h6) + *:not(.toc):not(h2, h3, h4, h5, h6) {
-      margin-top: calc($space-sp / 2);
+    *:not(.toc, li):not(h2, h3, h4, h5, h6)
+      + *:not(.toc):not(h2, h3, h4, h5, h6) {
+      margin-top: calc($space-sp * 0.8);
 
       @media (min-width: 768px) {
-        margin-top: calc($space / 2);
+        margin-top: calc($space * 0.8);
       }
     }
 
@@ -218,6 +219,19 @@ const author = member.find(m => m.name === frontmatter.author);
 
     pre {
       padding: calc($space / 2);
+    }
+
+    > ul,
+    *:not(.toc) > ul {
+      padding-left: 1rem;
+      list-style: disc;
+      list-style-position: outside;
+
+      li {
+        + li {
+          margin-top: 0.5rem;
+        }
+      }
     }
   }
 </style>

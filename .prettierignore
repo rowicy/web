@@ -1,2 +1,3 @@
 pnpm-lock.yaml
 src/styles/globals.css
+src/pages/blog/*.md
