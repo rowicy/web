@@ -8,17 +8,17 @@ import Section from '@/components/Section.astro';
 import Breadcrumb from '@/components/Breadcrumb.astro';
 import { Badge } from '@/components/ui/badge';
 import '@/styles/globals.css';
-import type { Frontmatter } from '@/types/Frontmatter';
 import member from '@/data/member';
 import MemberCard from '@/components/MemberCard.astro';
+import { type CollectionEntry } from 'astro:content';
 
 interface Props {
-  frontmatter: Frontmatter;
+  blog: CollectionEntry<'blog'>;
 }
 
-const { frontmatter } = Astro.props;
+const { blog } = Astro.props;
 const gtmId = import.meta.env.GTM_ID;
-const author = member.find(m => m.name === frontmatter.author);
+const author = member.find(m => m.name === blog.data.author);
 ---
 
 <!doctype html>
@@ -27,13 +27,13 @@ const author = member.find(m => m.name === frontmatter.author);
     <meta charset="UTF-8" />
     <meta
       name="description"
-      content={frontmatter.description || siteInfo.description}
+      content={blog.data.description || siteInfo.description}
     />
-    <meta name="author" content={`${siteInfo.appName} ${frontmatter.author}`} />
+    <meta name="author" content={`${siteInfo.appName} ${blog.data.author}`} />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <title>{`${frontmatter.title} | ${siteInfo.appName}`}</title>
+    <title>{`${blog.data.title} | ${siteInfo.appName}`}</title>
     <!-- Google Tag Manager -->
     <script
       type="text/partytown"
@@ -52,15 +52,15 @@ const author = member.find(m => m.name === frontmatter.author);
   <body class="overflow-x-hidden">
     <Header client:load />
     <main class="container">
-      <PageTitle title={frontmatter.title} />
+      <PageTitle title={blog.data.title} />
       <Section>
         <div class="flex flex-col gap-4">
-          <time datetime={frontmatter.pubDate}
-            >{frontmatter.pubDate.toString().slice(0, 10)}</time
+          <time datetime={String(blog.data.pubDate)}
+            >{blog.data.pubDate.toString().slice(0, 10)}</time
           >
           <div class="flex flex-wrap gap-1">
             {
-              frontmatter.tags.map(tag => {
+              blog.data.tags.map(tag => {
                 return <Badge variant="outline">#{tag}</Badge>;
               })
             }
@@ -81,7 +81,7 @@ const author = member.find(m => m.name === frontmatter.author);
       }
 
       <Breadcrumb
-        items={[{ name: 'Blog', href: '/blog' }, { name: frontmatter.title }]}
+        items={[{ name: 'Blog', href: '/blog' }, { name: blog.data.title }]}
       />
     </main>
     <Footer />
