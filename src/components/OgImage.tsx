@@ -14,8 +14,8 @@ export async function getOgImage({ title, author }: Props) {
       style={{
         height: '100%',
         width: '100%',
-        backgroundColor: 'hsl(222.2 47.4% 11.2%)',
-        color: 'hsl(222.2 47.4% 11.2%)',
+        backgroundColor: 'hsl(222.2 84% 4.9%)',
+        color: 'white',
         padding: '20px',
         display: 'flex',
         justifyContent: 'center',
@@ -29,7 +29,7 @@ export async function getOgImage({ title, author }: Props) {
           width: '100%',
           padding: '20px',
           borderRadius: '10px',
-          backgroundColor: 'white',
+          backgroundColor: 'hsl(222.2 47.4% 11.2%)',
           display: 'flex',
           justifyContent: 'center',
           flexFlow: 'column',
@@ -41,8 +41,8 @@ export async function getOgImage({ title, author }: Props) {
       </section>
     </main>,
     {
-      width: 800,
-      height: 400,
+      width: 1200,
+      height: 630,
       fonts: [
         {
           name: 'Noto Sans JP',
