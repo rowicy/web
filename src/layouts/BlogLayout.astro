@@ -21,32 +21,47 @@ interface Props {
 const { blog } = Astro.props;
 const gtmId = import.meta.env.GTM_ID;
 const author = member.find(m => m.name === blog.data.author);
+const title = `${blog.data.title} | ${siteInfo.appName}`;
+const description = blog.data.description || siteInfo.description;
+const image = new URL(`/og/${blog.slug}.png`, Astro.url.origin).toString();
+const authorX = author?.links?.find(l => l.name === 'X')?.id;
 ---
 
 <!doctype html>
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="description"
-      content={blog.data.description || siteInfo.description}
-    />
+    <meta name="description" content={description} />
     <meta name="author" content={`${siteInfo.appName} ${blog.data.author}`} />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <title>{`${blog.data.title} | ${siteInfo.appName}`}</title>
+    <title>{title}</title>
     <SEO
       charset="UTF-8"
       openGraph={{
         basic: {
-          title: blog.data.title,
+          title,
           type: 'article',
-          image: new URL(`/og/${blog.slug}.png`, Astro.url.origin).toString(),
+          image,
         },
         image: {
-          alt: blog.data.title,
+          alt: title,
         },
+        optional: {
+          siteName: siteInfo.appName,
+          description,
+          locale: 'ja_JP',
+        },
+      }}
+      twitter={{
+        card: 'summary_large_image',
+        site: siteInfo.x,
+        title,
+        description,
+        image,
+        imageAlt: title,
+        creator: authorX || siteInfo.x,
       }}
     />
     <!-- Google Tag Manager -->
