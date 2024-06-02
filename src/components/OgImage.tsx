@@ -35,9 +35,9 @@ export async function getOgImage({ title, author }: Props) {
           flexFlow: 'column',
         }}
       >
-        {title && <h1 style={{ fontSize: '30px' }}>{title}</h1>}
-        {author && <p style={{ fontSize: '16px' }}>Author: {author}</p>}
-        <p style={{ fontSize: '16px' }}>{siteInfo.appName}</p>
+        {title && <h1 style={{ fontSize: '50px' }}>{title}</h1>}
+        {author && <p style={{ fontSize: '40px' }}>Author: {author}</p>}
+        <p style={{ fontSize: '40px' }}>{siteInfo.appName}</p>
       </section>
     </main>,
     {
