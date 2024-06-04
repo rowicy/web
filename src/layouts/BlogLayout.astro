@@ -13,6 +13,7 @@ import member from '@/data/member';
 import MemberCard from '@/components/MemberCard.astro';
 import { type CollectionEntry } from 'astro:content';
 import { SEO } from 'astro-seo';
+import Share from '@/components/Share.astro';
 
 interface Props {
   blog: CollectionEntry<'blog'>;
@@ -109,6 +110,10 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
           </Section>
         )
       }
+
+      <Section>
+        <Share title={blog.data.title} url={`${Astro.url}`} />
+      </Section>
 
       <Breadcrumb
         items={[{ name: 'Blog', href: '/blog' }, { name: blog.data.title }]}
