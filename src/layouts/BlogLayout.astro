@@ -152,6 +152,10 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
               padding-left: $space;
             }
 
+            ol {
+              margin-top: 0;
+            }
+
             li {
               counter-increment: toc;
 
@@ -236,8 +240,7 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
           }
         }
 
-        *:not(.toc, li):not(h2, h3, h4, h5, h6)
-          + *:not(.toc):not(h2, h3, h4, h5, h6) {
+        :not(h2, h3, h4, h5, h6) + :not(h2, h3, h4, h5, h6) {
           margin-top: calc($space-sp * 0.8);
 
           @media (min-width: 768px) {
@@ -260,9 +263,35 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
           list-style-position: outside;
 
           li {
-            + li {
+            + li,
+            > ul {
               margin-top: 0.5rem;
             }
+          }
+        }
+
+        *:not(pre) > code {
+          padding: 0.1em 0.3em;
+          background-color: #e5e5e5;
+          border-radius: 0.2em;
+        }
+
+        table {
+          border-collapse: collapse;
+
+          th,
+          td {
+            border: 1px solid #efefef;
+            padding: $space / 3;
+
+            &:empty {
+              border: none;
+              display: none;
+            }
+          }
+
+          th {
+            background-color: #efefef;
           }
         }
       }
