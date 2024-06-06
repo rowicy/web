@@ -5,9 +5,9 @@ import PageTitle from '@/components/PageTitle.astro';
 import Section from '@/components/Section.astro';
 import BlogCard from '@/components/BlogCard';
 import Breadcrumb from '@/components/Breadcrumb.astro';
-import { getCollection } from 'astro:content';
+import getBlog from '@/lib/getBlog';
 const title = 'Blog';
-const blogs = await getCollection('blog');
+const blogs = await getBlog();
 ---
 
 <Layout
