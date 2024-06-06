@@ -7,9 +7,9 @@ import Heading from '@/components/Heading.astro';
 import ButtonLink from '@/components/ButtonLink';
 import siteInfo from '@/data/siteInfo';
 import BlogCard from '@/components/BlogCard';
-import { getCollection } from 'astro:content';
+import getBlog from '@/lib/getBlog';
 const pageTitleType = 'hero';
-const blogs = await getCollection('blog');
+const blogs = await getBlog();
 ---
 
 <Layout>
