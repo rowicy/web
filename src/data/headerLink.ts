@@ -6,6 +6,10 @@ const headerLink: HeaderLink[] = [
     href: '/member',
   },
   {
+    name: 'Product',
+    href: '/product',
+  },
+  {
     name: 'Blog',
     href: '/blog',
   },

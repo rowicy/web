@@ -3,22 +3,16 @@ import '@/styles/globals.css';
 import Layout from '@/layouts/Layout.astro';
 import PageTitle from '@/components/PageTitle.astro';
 import Section from '@/components/Section.astro';
-import BlogCard from '@/components/BlogCard';
+import ProductCard from '@/components/ProductCard.astro';
+import product from '@/data/product';
 import Breadcrumb from '@/components/Breadcrumb.astro';
-import getBlog from '@/lib/getBlog';
-const title = 'Blog';
-const blogs = await getBlog();
+const title = 'Product';
 ---
 
-<Layout
-  title={title}
-  description="Rowicy Memberが執筆したBlogの一覧ページです。"
->
+<Layout title={title} description="RowicyのProduct紹介ページです。">
   <PageTitle title={title} />
   <Section>
-    <div class="flex flex-col gap-3">
-      {blogs.map(blog => <BlogCard blog={blog} client:load />)}
-    </div>
+    <ProductCard items={product} />
   </Section>
 
   <Breadcrumb items={[{ name: title }]} />

@@ -1,0 +1,57 @@
+---
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
+import type { Product } from '@/types/Product';
+interface Props {
+  items: Product[];
+}
+const { items } = Astro.props;
+---
+
+<div class="flex flex-wrap gap-[1.2rem]">
+  {
+    items.map(product => (
+      <Card
+        className="w-full md:w-[calc(calc(100%/2)-0.6rem)] group transition hover:opacity-70"
+        key={product.name}
+      >
+        <a
+          id={product.name}
+          href={product.href ? product.href : `#${product.name}`}
+          class="block"
+        >
+          <CardHeader>
+            {product.image && (
+              <div class="overflow-hidden rounded-md">
+                <AspectRatio ratio={16 / 9}>
+                  <img
+                    src={product.image}
+                    class="w-full h-full object-cover transition group-hover:scale-110"
+                    alt=""
+                  />
+                </AspectRatio>
+              </div>
+            )}
+          </CardHeader>
+          <CardContent>
+            <CardTitle>{product.name}</CardTitle>
+          </CardContent>
+          {product.description && (
+            <CardFooter>
+              <CardDescription>
+                <Fragment set:html={product.description} />
+              </CardDescription>
+            </CardFooter>
+          )}
+        </a>
+      </Card>
+    ))
+  }
+</div>
