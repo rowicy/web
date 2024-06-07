@@ -2,6 +2,7 @@
 import footerLink from '@/data/footerLink';
 import Icon from '@/components/Icon.astro';
 import ButtonLink from '@/components/ButtonLink';
+import siteInfo from '@/data/siteInfo';
 
 const yearStart = 2024;
 const now = new Date();
@@ -30,7 +31,10 @@ const year = now.getFullYear();
       }
     </ul>
     <p class="text-center mt-8">
-      <small>&copy; {yearStart}{year > yearStart && ` - ${year}`} Rowicy</small>
+      <small
+        >&copy; {yearStart}{year > yearStart && ` - ${year}`}
+        {siteInfo.appName}</small
+      >
     </p>
   </div>
 </footer>

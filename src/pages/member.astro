@@ -6,14 +6,18 @@ import Section from '@/components/Section.astro';
 import MemberCard from '@/components/MemberCard.astro';
 import member from '@/data/member';
 import Breadcrumb from '@/components/Breadcrumb.astro';
+import siteInfo from '@/data/siteInfo';
 const title = 'Member';
 ---
 
-<Layout title={title} description="Rowicyのメンバー紹介ページです。">
+<Layout
+  title={title}
+  description=`${siteInfo.appName}のメンバー紹介ページです。`
+>
   <PageTitle title={title} />
   <Section>
     <MemberCard items={member} />
   </Section>
 
-  <Breadcrumb items={[{ name: 'Member' }]} />
+  <Breadcrumb items={[{ name: title }]} />
 </Layout>
