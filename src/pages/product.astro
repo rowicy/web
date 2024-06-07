@@ -1,0 +1,19 @@
+---
+import '@/styles/globals.css';
+import Layout from '@/layouts/Layout.astro';
+import PageTitle from '@/components/PageTitle.astro';
+import Section from '@/components/Section.astro';
+import ProductCard from '@/components/ProductCard.astro';
+import product from '@/data/product';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+const title = 'Product';
+---
+
+<Layout title={title} description="RowicyのProduct紹介ページです。">
+  <PageTitle title={title} />
+  <Section>
+    <ProductCard items={product} />
+  </Section>
+
+  <Breadcrumb items={[{ name: title }]} />
+</Layout>
