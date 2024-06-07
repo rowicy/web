@@ -16,7 +16,7 @@ export async function getOgImage({ title, author }: Props) {
         width: '100%',
         backgroundColor: 'hsl(222.2 84% 4.9%)',
         color: 'white',
-        padding: '20px',
+        padding: '40px',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -27,7 +27,7 @@ export async function getOgImage({ title, author }: Props) {
         style={{
           height: '100%',
           width: '100%',
-          padding: '20px',
+          padding: '40px',
           borderRadius: '10px',
           backgroundColor: 'hsl(222.2 47.4% 11.2%)',
           display: 'flex',

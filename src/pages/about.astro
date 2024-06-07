@@ -1,0 +1,57 @@
+---
+import '@/styles/globals.css';
+import Layout from '@/layouts/Layout.astro';
+import PageTitle from '@/components/PageTitle.astro';
+import Section from '@/components/Section.astro';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import siteInfo from '@/data/siteInfo';
+import ButtonLink from '@/components/ButtonLink';
+import Heading from '@/components/Heading.astro';
+const title = 'About';
+---
+
+<Layout
+  title={title}
+  description=`${siteInfo.appName}の組織概要と、主な活動内容についてご紹介します。`
+>
+  <PageTitle title={title} />
+  <Section>
+    <Heading>{siteInfo.appName}とは</Heading>
+
+    <p>
+      <span class="inline-block">
+        {
+          siteInfo.appName
+        }は、現役エンジニアで構成されたクリエイティブ団体です。</span
+      >
+      <span class="md:inline-block">
+        メンバー自身のエンジニアリングスキルを磨くための活動を行いながら、</span
+      ><span class="md:inline-block"
+        >自己研磨のためのアウトプットを対外的に行うことで、</span
+      ><span class="md:inline-block"
+        >社会への貢献や、エンジニアリングの楽しさを広めることも目指しています。</span
+      >
+    </p>
+
+    <ButtonLink href="/member">メンバー一覧はこちら</ButtonLink>
+  </Section>
+
+  <Section>
+    <Heading>主な活動</Heading>
+
+    <ul class="list-disc pl-4">
+      <li>
+        <a href="/product" class="transition hover:opacity-70">
+          サービスの開発</a
+        >
+      </li>
+      <li>
+        <a href="/blog" class="transition hover:opacity-70"> 技術関連の発信</a>
+      </li>
+    </ul>
+
+    <p class="mt-12">その他の活動も行う予定です。詳細は随時更新します。</p>
+  </Section>
+
+  <Breadcrumb items={[{ name: title }]} />
+</Layout>
