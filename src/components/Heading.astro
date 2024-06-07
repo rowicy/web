@@ -1,8 +1,21 @@
 ---
 import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
+interface Props {
+  color?: string;
+}
+const { color } = Astro.props;
+const classHeading = cn(
+  'text-2xl md:text-4xl mb-6',
+  color ? `text-${color}` : 'text-black'
+);
+const classSparator = cn(
+  'mt-1 md:mt-4 bg-opacity-20',
+  color ? `bg-${color}` : 'bg-black'
+);
 ---
 
-<h2 class="text-2xl md:text-4xl">
+<h2 class={classHeading}>
   <slot />
-  <Separator className="mt-1 md:mt-4 bg-white bg-opacity-20" />
+  <Separator className={classSparator} />
 </h2>

@@ -16,17 +16,17 @@ const blogs = await getBlog();
   <PageTitle title="Rowicy" type={pageTitleType} />
 
   <Section isBg={true}>
-    <Heading>Member</Heading>
+    <Heading color="white">Member</Heading>
 
-    <p class="mt-6">{siteInfo.appName}のメンバーをご紹介します。</p>
+    <p>{siteInfo.appName}のメンバーをご紹介します。</p>
 
     <ButtonLink href="/member"> View More </ButtonLink>
   </Section>
 
   <Section isBg={true}>
-    <Heading>Blog</Heading>
+    <Heading color="white">Blog</Heading>
 
-    <div class="flex flex-col gap-3 mt-6">
+    <div class="flex flex-col gap-3">
       {
         blogs.map((blog, i) => {
           if (i >= 2) return;
