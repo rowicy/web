@@ -6,13 +6,14 @@ import Section from '@/components/Section.astro';
 import BlogCard from '@/components/BlogCard';
 import Breadcrumb from '@/components/Breadcrumb.astro';
 import getBlog from '@/lib/getBlog';
+import siteInfo from '@/data/siteInfo';
 const title = 'Blog';
 const blogs = await getBlog();
 ---
 
 <Layout
   title={title}
-  description="Rowicy Memberが執筆したBlogの一覧ページです。"
+  description=`${siteInfo.appName} Memberが執筆したBlogの一覧ページです。`
 >
   <PageTitle title={title} />
   <Section>

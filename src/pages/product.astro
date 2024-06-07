@@ -6,10 +6,14 @@ import Section from '@/components/Section.astro';
 import ProductCard from '@/components/ProductCard.astro';
 import product from '@/data/product';
 import Breadcrumb from '@/components/Breadcrumb.astro';
+import siteInfo from '@/data/siteInfo';
 const title = 'Product';
 ---
 
-<Layout title={title} description="RowicyのProduct紹介ページです。">
+<Layout
+  title={title}
+  description=`${siteInfo.appName}のProduct紹介ページです。`
+>
   <PageTitle title={title} />
   <Section>
     <ProductCard items={product} />
