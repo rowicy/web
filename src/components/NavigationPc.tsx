@@ -13,7 +13,10 @@ const NavigationPc = () => {
         {headerLink.map(link => {
           return (
             <NavigationMenuItem key={link.name}>
-              <NavigationMenuLink className="text-white" href={link.href}>
+              <NavigationMenuLink
+                className="text-white transition hover:opacity-70"
+                href={link.href}
+              >
                 {link.name}
               </NavigationMenuLink>
             </NavigationMenuItem>
