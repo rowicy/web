@@ -1,19 +1,19 @@
 ---
 import '@/styles/globals.css';
 import Layout from '@/layouts/Layout.astro';
-import PageTitle from '@/components/PageTitle.astro';
 import Section from '@/components/Section.astro';
 import Heading from '@/components/Heading.astro';
 import ButtonLink from '@/components/ButtonLink';
 import siteInfo from '@/data/siteInfo';
 import BlogCard from '@/components/BlogCard';
 import getBlog from '@/lib/getBlog';
-const pageTitleType = 'hero';
+import Hero from '@/components/Hero/index.astro';
+
 const blogs = await getBlog();
 ---
 
 <Layout>
-  <PageTitle title={siteInfo.appName} type={pageTitleType} />
+  <Hero title={siteInfo.appName} client:load />
 
   <Section isBg={true}>
     <Heading color="white">Member</Heading>
