@@ -14,8 +14,10 @@ const NavigationSp = () => {
         <DropdownMenuContent>
           {headerLink.map(link => {
             return (
-              <DropdownMenuItem key={link.name}>
-                <a href={link.href}>{link.name}</a>
+              <DropdownMenuItem key={link.name} className="p-0">
+                <a href={link.href} className="w-full p-2">
+                  {link.name}
+                </a>
               </DropdownMenuItem>
             );
           })}
