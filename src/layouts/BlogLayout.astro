@@ -82,7 +82,7 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
   </head>
   <body class="overflow-x-hidden">
     <Header client:load />
-    <main class="container">
+    <main class="container overflow-x-hidden">
       <PageTitle title={blog.data.title} />
       <Section>
         <div class="flex flex-col gap-4">

@@ -5,6 +5,7 @@ const animation = () => {
   gsap.registerPlugin(ScrollTrigger);
 
   const sections = gsap.utils.toArray<HTMLElement>('.ts-index-section');
+  const mql = window.matchMedia('(min-width: 768px)');
 
   sections.forEach(section => {
     const height = section.offsetHeight;
@@ -17,7 +18,7 @@ const animation = () => {
     gsap
       .timeline({
         scrollTrigger: section,
-        start: 'top top',
+        start: `${mql.matches ? 'top top' : 'top bottom'}`,
       })
       .fromTo(
         mask,
@@ -71,7 +72,7 @@ const animation = () => {
       scrollTrigger: {
         trigger: section,
         scrub: 1,
-        start: 'top top',
+        start: `${mql.matches ? 'top top' : 'top bottom'}`,
         end: `+=${height}`,
       },
     });
