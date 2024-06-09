@@ -1,0 +1,17 @@
+<section
+  class="ts-index-section pt-8 mx-[calc(((100vw-100%)/2)*-1)] px-[calc((100vw-100%)/2)] relative w-[100vw] h-[100svh] text-white"
+>
+  <div class="ts-index-section-slot">
+    <slot />
+  </div>
+
+  <div
+    class="ts-index-section-mask bg-primary absolute top-0 left-0 w-full h-full -z-10"
+  >
+  </div>
+</section>
+
+<script>
+  import animation from './animation';
+  animation();
+</script>

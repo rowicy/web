@@ -1,40 +1,43 @@
 ---
 import '@/styles/globals.css';
 import Layout from '@/layouts/Layout.astro';
-import Section from '@/components/Section.astro';
-import Heading from '@/components/Heading.astro';
 import ButtonLink from '@/components/ButtonLink';
 import siteInfo from '@/data/siteInfo';
 import BlogCard from '@/components/BlogCard';
 import getBlog from '@/lib/getBlog';
 import IndexHero from '@/components/IndexHero/index.astro';
-
+import IndexHeading from '@/components/IndexHeading/index.astro';
+import IndexSection from '@/components/IndexSection/index.astro';
 const blogs = await getBlog();
 ---
 
 <Layout>
-  <IndexHero title={siteInfo.appName} client:load />
+  <IndexHero title={siteInfo.appName} />
 
-  <Section isBg={true}>
-    <Heading color="white">Member</Heading>
+  <IndexSection>
+    <>
+      <IndexHeading>Member</IndexHeading>
 
-    <p>{siteInfo.appName}のメンバーをご紹介します。</p>
+      <p>{siteInfo.appName}のメンバーをご紹介します。</p>
 
-    <ButtonLink href="/member"> View More </ButtonLink>
-  </Section>
+      <ButtonLink href="/member"> View More </ButtonLink>
+    </>
+  </IndexSection>
 
-  <Section isBg={true}>
-    <Heading color="white">Blog</Heading>
+  <IndexSection>
+    <>
+      <IndexHeading>Blog</IndexHeading>
 
-    <div class="flex flex-col gap-3">
-      {
-        blogs.map((blog, i) => {
-          if (i >= 2) return;
-          return <BlogCard blog={blog} bg="transparent" client:load />;
-        })
-      }
-    </div>
+      <div class="flex flex-col gap-3">
+        {
+          blogs.map((blog, i) => {
+            if (i >= 2) return;
+            return <BlogCard blog={blog} bg="transparent" client:load />;
+          })
+        }
+      </div>
 
-    <ButtonLink href="/blog"> View More </ButtonLink>
-  </Section>
+      <ButtonLink href="/blog"> View More </ButtonLink>
+    </>
+  </IndexSection>
 </Layout>
