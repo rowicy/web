@@ -7,6 +7,8 @@ import BlogCard from '@/components/BlogCard';
 import getBlog from '@/lib/getBlog';
 import IndexHero from '@/components/IndexHero/index.astro';
 import IndexSection from '@/components/IndexSection/index.astro';
+import IndexMember from '@/components/IndexMember/index.astro';
+import member from '@/data/member';
 const blogs = await getBlog();
 ---
 
@@ -23,7 +25,7 @@ const blogs = await getBlog();
   </IndexSection>
 
   <IndexSection title="Member">
-    <p>{siteInfo.appName}のメンバーをご紹介します。</p>
+    <IndexMember items={member} />
 
     <ButtonLink href="/member"> View More </ButtonLink>
   </IndexSection>
