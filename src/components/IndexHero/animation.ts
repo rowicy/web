@@ -24,17 +24,17 @@ const animation = () => {
         scale: 1,
         opacity: 1,
       },
-      { scale: 4, opacity: 0, ease: 'Power4.out' }
+      { scale: 12, opacity: 0, ease: 'Power4.out' }
     );
 
   gsap.timeline().fromTo(
     mask,
     {
-      opacity: 0,
+      autoAlpha: 0,
       height: 0,
     },
     {
-      opacity: 1,
+      autoAlpha: 1,
       height: '100%',
     }
   );
