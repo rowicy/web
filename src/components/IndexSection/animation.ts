@@ -17,7 +17,7 @@ const animation = () => {
     gsap
       .timeline({
         scrollTrigger: section,
-        start: 'top center',
+        start: 'top top',
       })
       .fromTo(
         mask,
