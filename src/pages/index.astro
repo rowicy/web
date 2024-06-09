@@ -7,13 +7,13 @@ import ButtonLink from '@/components/ButtonLink';
 import siteInfo from '@/data/siteInfo';
 import BlogCard from '@/components/BlogCard';
 import getBlog from '@/lib/getBlog';
-import Hero from '@/components/Hero/index.astro';
+import IndexHero from '@/components/IndexHero/index.astro';
 
 const blogs = await getBlog();
 ---
 
 <Layout>
-  <Hero title={siteInfo.appName} client:load />
+  <IndexHero title={siteInfo.appName} client:load />
 
   <Section isBg={true}>
     <Heading color="white">Member</Heading>
