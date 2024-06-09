@@ -7,10 +7,12 @@ const animation = () => {
   const sections = gsap.utils.toArray<HTMLElement>('.ts-index-section');
 
   sections.forEach(section => {
+    const height = section.offsetHeight;
     const slot = section.querySelector('.ts-index-section-slot');
     const mask = section.querySelector('.ts-index-section-mask');
     const title = section.querySelector('.ts-index-section-title');
     const separator = section.querySelector('.ts-index-section-separator');
+    const appName = section.querySelector('.ts-index-section-app-name');
 
     gsap
       .timeline({
@@ -56,6 +58,23 @@ const animation = () => {
           autoAlpha: 1,
         }
       );
+
+    gsap.to(appName, {
+      ease: 'none',
+      opacity: opacity => {
+        if (opacity >= 5) {
+          return 1;
+        } else {
+          return Math.ceil(opacity) + 1;
+        }
+      },
+      scrollTrigger: {
+        trigger: section,
+        scrub: 1,
+        start: 'top top',
+        end: `+=${height}`,
+      },
+    });
   });
 };
 

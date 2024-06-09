@@ -1,5 +1,6 @@
 ---
 import { Separator } from '@/components/ui/separator';
+import siteInfo from '@/data/siteInfo';
 
 interface Props {
   title: string;
@@ -9,7 +10,7 @@ const { title } = Astro.props;
 ---
 
 <section
-  class="ts-index-section pt-8 mx-[calc(((100vw-100%)/2)*-1)] px-[calc((100vw-100%)/2)] relative w-[100vw] h-[100svh] text-white"
+  class="ts-index-section py-8 mx-[calc(((100vw-100%)/2)*-1)] px-[calc((100vw-100%)/2)] relative w-[100vw] h-[100svh] text-white"
 >
   <h2 class="text-2xl md:text-4xl mb-6 text-white">
     <span class="ts-index-section-title">{title}</span>
@@ -26,6 +27,13 @@ const { title } = Astro.props;
     class="ts-index-section-mask bg-primary absolute top-0 left-0 w-full h-full -z-10"
   >
   </div>
+
+  <p
+    class="ts-index-section-app-name text-4xl md:text-8xl mt-8 text-right font-bold text-white opacity-5"
+    aria-hidden="true"
+  >
+    {siteInfo.appName}
+  </p>
 </section>
 
 <script>
