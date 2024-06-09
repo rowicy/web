@@ -9,6 +9,8 @@ const animation = () => {
   sections.forEach(section => {
     const slot = section.querySelector('.ts-index-section-slot');
     const mask = section.querySelector('.ts-index-section-mask');
+    const title = section.querySelector('.ts-index-section-title');
+    const separator = section.querySelector('.ts-index-section-separator');
 
     gsap
       .timeline({
@@ -25,6 +27,25 @@ const animation = () => {
           autoAlpha: 1,
           width: '100%',
         }
+      )
+      .fromTo(
+        title,
+        {
+          autoAlpha: 0,
+        },
+        {
+          autoAlpha: 1,
+        }
+      )
+      .fromTo(
+        separator,
+        {
+          width: 0,
+        },
+        {
+          width: '100%',
+        },
+        '<'
       )
       .fromTo(
         slot,

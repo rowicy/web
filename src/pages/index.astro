@@ -6,7 +6,6 @@ import siteInfo from '@/data/siteInfo';
 import BlogCard from '@/components/BlogCard';
 import getBlog from '@/lib/getBlog';
 import IndexHero from '@/components/IndexHero/index.astro';
-import IndexHeading from '@/components/IndexHeading/index.astro';
 import IndexSection from '@/components/IndexSection/index.astro';
 const blogs = await getBlog();
 ---
@@ -14,20 +13,16 @@ const blogs = await getBlog();
 <Layout>
   <IndexHero title={siteInfo.appName} />
 
-  <IndexSection>
+  <IndexSection title="Member">
     <>
-      <IndexHeading>Member</IndexHeading>
-
       <p>{siteInfo.appName}のメンバーをご紹介します。</p>
 
       <ButtonLink href="/member"> View More </ButtonLink>
     </>
   </IndexSection>
 
-  <IndexSection>
+  <IndexSection title="Blog">
     <>
-      <IndexHeading>Blog</IndexHeading>
-
       <div class="flex flex-col gap-3">
         {
           blogs.map((blog, i) => {
