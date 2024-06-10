@@ -43,7 +43,7 @@ const blogs = await getBlog();
       {
         blogs.map((blog, i) => {
           if (i >= 2) return;
-          return <BlogCard blog={blog} bg="transparent" client:load />;
+          return <BlogCard blog={blog} color="white" client:load />;
         })
       }
     </div>
