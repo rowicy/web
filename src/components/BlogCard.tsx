@@ -5,19 +5,17 @@ import member from '@/data/member';
 import type { CollectionEntry } from 'astro:content';
 type Props = {
   blog: CollectionEntry<'blog'>;
-  bg?: 'transparent';
+  color?: 'white';
 };
 
-const BlogCard = ({ blog, bg }: Props) => {
+const BlogCard = ({ blog, color }: Props) => {
   const author = member.find(m => m.name === blog.data.author);
 
   return (
-    <Card
-      className={`transition hover:opacity-70 ${bg === 'transparent' && 'bg-transparent'}`}
-    >
+    <Card className="transition hover:opacity-70 bg-transparent">
       <a href={`/blog/${blog.slug}`} className="block p-6">
         <CardTitle
-          className={`text-xl md:text-2xl ${bg === 'transparent' && 'text-white'}`}
+          className={`text-xl md:text-2xl ${color === 'white' && 'text-white'}`}
         >
           {blog.data.title}
         </CardTitle>
@@ -32,7 +30,7 @@ const BlogCard = ({ blog, bg }: Props) => {
               return (
                 <Badge
                   variant="outline"
-                  className={`${bg === 'transparent' && 'text-white'}`}
+                  className={`${color === 'white' && 'text-white'}`}
                   key={tag}
                 >
                   #{tag}

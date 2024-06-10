@@ -1,0 +1,31 @@
+---
+import Social from '@/components/Social.astro';
+
+interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+---
+
+<section
+  id="hero"
+  class="w-[100vw] py-24 flex flex-col justify-center items-center mx-[calc(((100vw-100%)/2)*-1)] px-[calc((100vw-100%)/2)] h-[100vh] relative"
+>
+  <div
+    id="hero-mask"
+    class="bg-primary absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full"
+  >
+  </div>
+  <h1 id="hero-title" class="font-bold text-white text-3xl md:text-5xl">
+    {title}
+  </h1>
+
+  <div id="hero-social" class="absolute bottom-6 left-1/2 -translate-x-1/2">
+    <Social />
+  </div>
+</section>
+
+<script>
+  import animation from './animation';
+  animation();
+</script>

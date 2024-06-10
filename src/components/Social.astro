@@ -1,0 +1,25 @@
+---
+import socialLink from '@/data/socialLink';
+import Icon from '@/components/Icon.astro';
+import ButtonLink from '@/components/ButtonLink';
+---
+
+<ul class="flex flex-wrap justify-center items-center gap-2 -mt-6">
+  {
+    socialLink.map(item => {
+      return (
+        <li class="text-white">
+          <ButtonLink
+            href={item.href}
+            icon={true}
+            blank={true}
+            rel="noopener noreferrer"
+            label={item.name}
+          >
+            <Icon name={item.name} />
+          </ButtonLink>
+        </li>
+      );
+    })
+  }
+</ul>

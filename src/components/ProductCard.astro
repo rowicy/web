@@ -11,21 +11,22 @@ import { AspectRatio } from '@/components/ui/aspect-ratio';
 import type { Product } from '@/types/Product';
 interface Props {
   items: Product[];
+  color?: 'white';
 }
-const { items } = Astro.props;
+const { items, color } = Astro.props;
 ---
 
 <div class="flex flex-wrap gap-[1.2rem]">
   {
     items.map(product => (
       <Card
-        className="w-full md:w-[calc(calc(100%/2)-0.6rem)] group transition hover:opacity-70"
+        className="w-full md:w-[calc(calc(100%/2)-0.6rem)] bg-transparent group transition hover:opacity-70"
         key={product.name}
       >
         <a
           id={product.name}
-          href={product.href ? product.href : `#${product.name}`}
-          class="block"
+          href={product.href ? product.href : `/product#${product.name}`}
+          class={`block ${color === 'white' && 'text-white'}`}
         >
           <CardHeader>
             {product.image && (

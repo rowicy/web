@@ -1,6 +1,6 @@
 import type { FooterLink } from '@/types/FooterLink';
 
-const headerLink: FooterLink[] = [
+const socialLink: FooterLink[] = [
   {
     name: 'GitHub',
     href: 'https://github.com/rowicy',
@@ -11,4 +11,4 @@ const headerLink: FooterLink[] = [
   },
 ];
 
-export default headerLink;
+export default socialLink;
