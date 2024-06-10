@@ -39,6 +39,7 @@ const animation = () => {
       {
         autoAlpha: 1,
         height: '100%',
+        duration: 0.3,
       }
     )
     .fromTo(
@@ -50,6 +51,7 @@ const animation = () => {
       {
         autoAlpha: 1,
         translateY: 0,
+        duration: 0.3,
       }
     );
 };
