@@ -9,6 +9,8 @@ import IndexHero from '@/components/IndexHero/index.astro';
 import IndexSection from '@/components/IndexSection/index.astro';
 import IndexMember from '@/components/IndexMember/index.astro';
 import member from '@/data/member';
+import ProductCard from '@/components/ProductCard.astro';
+import product from '@/data/product';
 const blogs = await getBlog();
 ---
 
@@ -28,6 +30,12 @@ const blogs = await getBlog();
     <IndexMember items={member} />
 
     <ButtonLink href="/member"> View More </ButtonLink>
+  </IndexSection>
+
+  <IndexSection title="Product">
+    <ProductCard items={product} color="white" />
+
+    <ButtonLink href="/product"> View More </ButtonLink>
   </IndexSection>
 
   <IndexSection title="Blog">
