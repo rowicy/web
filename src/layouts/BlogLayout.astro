@@ -14,6 +14,7 @@ import MemberCard from '@/components/MemberCard.astro';
 import { type CollectionEntry } from 'astro:content';
 import { SEO } from 'astro-seo';
 import Share from '@/components/Share.astro';
+import Social from '@/components/Social.astro';
 
 interface Props {
   blog: CollectionEntry<'blog'>;
@@ -81,7 +82,9 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
     <!-- End Google Tag Manager -->
   </head>
   <body class="overflow-x-hidden">
-    <Header client:load />
+    <Header client:load>
+      <Social />
+    </Header>
     <main class="container overflow-x-hidden">
       <PageTitle title={blog.data.title} />
       <Section>
