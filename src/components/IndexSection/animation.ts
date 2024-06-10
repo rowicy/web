@@ -30,23 +30,15 @@ const animation = () => {
         }
       )
       .fromTo(
-        title,
+        [title, separator],
         {
           autoAlpha: 0,
-        },
-        {
-          autoAlpha: 1,
-        }
-      )
-      .fromTo(
-        separator,
-        {
           width: 0,
         },
         {
+          autoAlpha: 1,
           width: '100%',
-        },
-        '<'
+        }
       )
       .fromTo(
         slot,
