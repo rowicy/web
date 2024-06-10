@@ -7,6 +7,7 @@ const animation = () => {
   const hero = document.getElementById('hero');
   const title = document.getElementById('hero-title');
   const mask = document.getElementById('hero-mask');
+  const social = document.getElementById('hero-social');
 
   gsap
     .timeline({
@@ -27,17 +28,30 @@ const animation = () => {
       { scale: 12, opacity: 0, ease: 'Power4.out' }
     );
 
-  gsap.timeline().fromTo(
-    mask,
-    {
-      autoAlpha: 0,
-      height: 0,
-    },
-    {
-      autoAlpha: 1,
-      height: '100%',
-    }
-  );
+  gsap
+    .timeline()
+    .fromTo(
+      mask,
+      {
+        autoAlpha: 0,
+        height: 0,
+      },
+      {
+        autoAlpha: 1,
+        height: '100%',
+      }
+    )
+    .fromTo(
+      [title, social],
+      {
+        autoAlpha: 0,
+        translateY: 10,
+      },
+      {
+        autoAlpha: 1,
+        translateY: 0,
+      }
+    );
 };
 
 export default animation;

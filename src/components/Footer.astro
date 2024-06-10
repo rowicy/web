@@ -1,7 +1,5 @@
 ---
-import footerLink from '@/data/footerLink';
-import Icon from '@/components/Icon.astro';
-import ButtonLink from '@/components/ButtonLink';
+import Social from '@/components/Social.astro';
 import siteInfo from '@/data/siteInfo';
 
 const yearStart = 2024;
@@ -11,25 +9,7 @@ const year = now.getFullYear();
 
 <footer class="bg-primary text-white py-12">
   <div class="container">
-    <ul class="flex flex-wrap justify-center items-center gap-2 -mt-6">
-      {
-        footerLink.map(item => {
-          return (
-            <li>
-              <ButtonLink
-                href={item.href}
-                icon={true}
-                blank={true}
-                rel="noopener noreferrer"
-                label={item.name}
-              >
-                <Icon name={item.name} />
-              </ButtonLink>
-            </li>
-          );
-        })
-      }
-    </ul>
+    <Social />
     <p class="text-center mt-8">
       <small
         >&copy; {yearStart}{year > yearStart && ` - ${year}`}
