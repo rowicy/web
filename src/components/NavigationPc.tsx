@@ -8,12 +8,15 @@ import {
 
 const NavigationPc = () => {
   return (
-    <NavigationMenu className="hidden md:block">
+    <NavigationMenu className="hidden md:block ml-auto">
       <NavigationMenuList className="space-x-6">
         {headerLink.map(link => {
           return (
             <NavigationMenuItem key={link.name}>
-              <NavigationMenuLink className="text-white" href={link.href}>
+              <NavigationMenuLink
+                className="text-white transition hover:opacity-70"
+                href={link.href}
+              >
                 {link.name}
               </NavigationMenuLink>
             </NavigationMenuItem>

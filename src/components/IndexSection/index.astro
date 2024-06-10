@@ -1,0 +1,60 @@
+---
+import { Separator } from '@/components/ui/separator';
+import siteInfo from '@/data/siteInfo';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<section
+  class="ts-index-section py-8 mx-[calc(((100vw-100%)/2)*-1)] px-[calc((100vw-100%)/2)] relative w-[100vw] min-h-[100vh] text-white flex flex-col justify-between"
+>
+  <h2 class="text-2xl md:text-4xl mb-6 text-white">
+    <span class="ts-index-section-title">{title}</span>
+    <Separator
+      className="ts-index-section-separator mt-1 md:mt-4 bg-opacity-20 bg-white"
+    />
+  </h2>
+
+  <div class="ts-index-section-slot">
+    <slot />
+  </div>
+
+  <div
+    class="ts-index-section-mask bg-primary absolute top-0 left-0 w-full h-full -z-10"
+  >
+  </div>
+
+  <p
+    class="app-name text-4xl md:text-8xl mt-8 text-right font-bold text-white"
+    aria-hidden="true"
+  >
+    {siteInfo.appName}
+  </p>
+</section>
+
+<style>
+  .app-name {
+    animation: opacityAnimation 4s infinite;
+  }
+
+  @keyframes opacityAnimation {
+    0% {
+      opacity: 0.1;
+    }
+    50% {
+      opacity: 0.2;
+    }
+    100% {
+      opacity: 0.1;
+    }
+  }
+</style>
+
+<script>
+  import animation from './animation';
+  animation();
+</script>

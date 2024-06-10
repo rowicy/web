@@ -1,0 +1,63 @@
+---
+import type { Member } from '@/types/Member';
+import Image from 'astro/components/Image.astro';
+
+interface Props {
+  items: Member[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="flex flex-col gap-6">
+  {
+    items.map(item => {
+      return (
+        <div class="ts-index-member-item flex flex-col md:flex-row gap-4 md:gap-12 w-full">
+          <picture class="aspect-square md:aspect-auto md:w-[60vh] md:h-[60vh] rounded-md overflow-hidden grayscale transition">
+            <Image
+              class="w-full h-full object-cover"
+              src={
+                item.image ||
+                `https://placehold.jp/020817/ffffff/300x300.png?text=${item.name}`
+              }
+              alt={item.name}
+              width={400}
+              height={400}
+            />
+
+            <img
+              class="w-full h-full object-cover"
+              src={
+                item.image ||
+                `https://placehold.jp/020817/ffffff/300x300.png?text=${item.name}`
+              }
+              alt={item.name}
+            />
+          </picture>
+          <div class="flex flex-col justify-center flex-1 gap-2 md:gap-4">
+            <p class="text-xl md:text-7xl font-semibold">{item.name}</p>
+            {item.description && (
+              <p class="text-md md:text-xl text-white text-opacity-70">
+                {item.description}
+              </p>
+            )}
+          </div>
+        </div>
+      );
+    })
+  }
+</div>
+
+<style lang="scss">
+  .is-active {
+    picture {
+      filter: grayscale(0%);
+    }
+  }
+</style>
+
+<script>
+  import animation from './animation';
+  animation();
+</script>

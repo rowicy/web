@@ -4,6 +4,8 @@ import '@fontsource-variable/noto-sans-jp';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer.astro';
 import siteInfo from '@/data/siteInfo';
+import Social from '@/components/Social.astro';
+import { SEO } from 'astro-seo';
 interface Props {
   title?: string;
   description?: string;
@@ -12,18 +14,50 @@ interface Props {
 
 const { title, description, author } = Astro.props;
 const gtmId = import.meta.env.GTM_ID;
+const meta = {
+  title: title ? `${title} | ${siteInfo.appName}` : siteInfo.appName,
+  description: description || siteInfo.description,
+  author: author || siteInfo.appName,
+  image: '/images/common/og.png',
+};
 ---
 
 <!doctype html>
 <html lang="ja">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="description" content={description || siteInfo.description} />
     <meta name="author" content={author || siteInfo.appName} />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <title>{title ? `${title} | ${siteInfo.appName}` : siteInfo.appName}</title>
+    <SEO
+      charset="UTF-8"
+      title={meta.title}
+      description={meta.description}
+      openGraph={{
+        basic: {
+          title: meta.title,
+          type: 'website',
+          image: meta.image,
+        },
+        image: {
+          alt: meta.title,
+        },
+        optional: {
+          siteName: siteInfo.appName,
+          description: meta.description,
+          locale: 'ja_JP',
+        },
+      }}
+      twitter={{
+        card: 'summary',
+        site: siteInfo.x,
+        title: meta.title,
+        description: meta.description,
+        image: meta.image,
+        imageAlt: meta.title,
+        creator: siteInfo.x,
+      }}
+    />
     <!-- Google Tag Manager -->
     <script
       type="text/partytown"
@@ -40,8 +74,10 @@ const gtmId = import.meta.env.GTM_ID;
     <!-- End Google Tag Manager -->
   </head>
   <body class="overflow-x-hidden">
-    <Header client:load />
-    <main class="container">
+    <Header client:load>
+      <Social />
+    </Header>
+    <main class="container overflow-x-hidden">
       <slot />
     </main>
     <Footer />
