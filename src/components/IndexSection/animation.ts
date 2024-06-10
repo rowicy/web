@@ -27,6 +27,7 @@ const animation = () => {
         {
           autoAlpha: 1,
           width: '100%',
+          duration: 0.3,
         }
       )
       .fromTo(
@@ -38,6 +39,7 @@ const animation = () => {
         {
           autoAlpha: 1,
           width: '100%',
+          duration: 0.3,
         }
       )
       .fromTo(
@@ -47,6 +49,7 @@ const animation = () => {
         },
         {
           autoAlpha: 1,
+          duration: 0.2,
         }
       );
   });
