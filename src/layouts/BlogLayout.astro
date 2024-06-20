@@ -34,7 +34,8 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
   <head>
     <meta name="author" content={`${siteInfo.appName} ${blog.data.author}`} />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="sitemap" href="/sitemap-index.xml" />
     <SEO
       charset="UTF-8"
@@ -84,7 +85,7 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
     <Header client:load>
       <Social />
     </Header>
-    <main class="container">
+    <main class="container overflow-x-hidden md:overflow-x-visible">
       <PageTitle title={blog.data.title} />
       <Section>
         <div class="flex flex-col gap-4">
