@@ -20,8 +20,8 @@ Burp Suiteとは、ウェブアプリケーションのセキュリティテス�
   - [拡張機能の開発環境](#%EF%B8%8F拡張機能の開発環境)
 - [開発の動機](#%EF%B8%8F開発の動機)
 - [使用方法](#使用方法)
-  - [インストール](#インストール)
   - [機能](#機能)
+  - [インストール](#インストール)
 - [開発してみて](#開発してみて)
   - [苦戦したところ](#苦戦したところ)
   - [うれしかったところ](#うれしかったところ)
@@ -81,9 +81,22 @@ Burp SuiteとExcelを行き来しながらコピペ繰り返すのが**大変だ
 
 ## 🛼使用方法
 
-まず動画を見るのが早いと思うので、簡単な紹介動画を作りました。これみればあと読まなくても大丈夫です
+### 機能
+
+動画を見るのが早いと思うので、簡単な紹介動画を作りました。詳細は[README](https://github.com/riiim400th/burpee/)にありますが、動画の内容と同じなので読まなくても大丈夫です
 
 [![image](https://github.com/user-attachments/assets/77d1bf6a-dbca-4dae-a955-72b9a85e641d)](https://youtu.be/no15BP_kVHA)
+
+機能は主に2つです。リクエスト情報(パラメータやヘッダ)を**クリップボードにコピー** もしくは **Excelに出力**できます。
+
+拡張機能専用のタブも用意して、出力内容の調整をできるようにしました。
+
+- どのヘッダーを除くか
+- URLデコードするか
+- Cookieも載せるか
+- ハイライトをExcelのセル色にも反映するか
+
+など...
 
 ### インストール
 
@@ -97,35 +110,6 @@ Burp SuiteとExcelを行き来しながらコピペ繰り返すのが**大変だ
 ほかのGitHub上のファイルも同じ手順でインストールできます。
 
 ただ、releasがない場合はcloneして自分でjarファイルをビルドする必要があります。ここではその方法やpythonのファイルのインストール方法は割愛します。
-
-### 機能
-
-機能は主に2つです。リクエスト情報(パラメータやヘッダ)を**クリップボードにコピー** もしくは **Excelに出力**できます。
-
-### 機能1. クリップボードにコピー
-
-   情報を取得したいHTTPリクエストのメニューからburpeeをクリック、これだけでクリップボードに内容がコピーされています。
-  
-   ![image](https://github.com/user-attachments/assets/047ec80c-9fc6-4114-a720-fd738af409d4)
-
-　　クリップボードではtsv形式で文字列が取得されているため、そのままExcelに貼り付けができます。
-
-   ![image](https://github.com/user-attachments/assets/ab6e9f0e-0033-4954-a9ce-0a591a7af003)
-
-### ファイル書き込み
-
- 拡張機能ロード時点でburpeeタブが作成されています。
-    ![image](https://github.com/user-attachments/assets/669295e3-0706-492d-be52-48dcbf1cd09b)
-
-Select Fileからエクセルファイルを新規作成して、Proxyタブやloggerタブから先ほど同様にburpeeに送信しましょう。複数選択もできます。
-
-   Requests Summary Sheet
-
-   ![image](https://github.com/user-attachments/assets/4cdec456-82e4-4797-ba10-cff76b472c1f)
-
-   Requests Detail Sheet
-
-   ![image](https://github.com/user-attachments/assets/c7f41d03-1355-4abe-ac90-1b31f1fef513)
 
 ## 👩‍🚀開発してみて
 
