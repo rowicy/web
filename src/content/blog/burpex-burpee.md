@@ -1,37 +1,24 @@
 ---
-title: テンプレート
-pubDate: '2024-07-27'
-description: burp拡張機能 burpeeを開発した話
+title: Burp Suite Extension を作ってみました
+pubDate: '2024-07-28'
+description: 今回は個人的に開発したBurp Suite拡張機能と、開発してみての体験談を紹介します。
 author: RiiiM
 tags: [Tech]
 ---
 
 ## 概要
 
-Burp Suiteとは、ウェブアプリケーションのセキュリティテストを行うための統合プラットフォームです。セキュリティ業界ではかなり有名なツールですね。
+[Burp Suite](https://portswigger.net/burp)とは、ウェブアプリケーションのセキュリティテストを行うための統合プラットフォームです。セキュリティ業界ではかなり有名なツールですね。
 
 今回は、そんなツールでHTTPリクエスト情報をExcelに書き出せる拡張機能「**burpee**」を作ったので、その紹介をさせていただきます🙃
 
+[![Burpee Repository](https://opengraph.githubassets.com/1/riiim400th/burpee)](https://github.com/riiim400th/burpee)
+
 ![head_image](https://github.com/user-attachments/assets/82dbe607-3847-4d04-b720-6867a33e10f8)
-
-## 目次
-
-- [はじめに](#はじめに)
-  - [拡張機能の開発環境](#%EF%B8%8F拡張機能の開発環境)
-- [開発の動機](#%EF%B8%8F開発の動機)
-- [使用方法](#使用方法)
-  - [機能](#機能)
-  - [インストール](#インストール)
-- [開発してみて](#開発してみて)
-  - [苦戦したところ](#苦戦したところ)
-  - [うれしかったところ](#うれしかったところ)
-  - [今後つけたい機能](#今後つけたい機能)
-- [まだまだ開発中です](#まだまだ開発中です)
-- [URLs](#urls)
 
 ## はじめに
 
-知っているかたは読み飛ばしてかまいませんが、簡単にBurp Suiteとその拡張機能の開発環境について紹介します。
+知っている方は読み飛ばしてかまいませんが、簡単にBurp Suiteとその拡張機能の開発環境について紹介します。
 
 ### 🛠️拡張機能の開発環境
 
@@ -55,7 +42,7 @@ Kotlinのランタイムライブラリが含まれるためです。
 
 #### Montoya API
 
-Burp Suiteの拡張機能を使うにはMontoya APIを使います。
+Burp Suiteの拡張機能を使うには[Montoya API](https://portswigger.github.io/burp-extensions-montoya-api/javadoc/burp/api/montoya/MontoyaApi.html)を使います。
 
 2023年7月に登場した、新しいAPIで、このAPIからBurpのコア機能を呼び出すことができます。
 
@@ -153,7 +140,7 @@ return@addActionListenerを使用することで、このラムダ式からの�
 
 - リファクタリング
 - JSONに出力
-- パスツリーの表示
+- パスツリーの出力
 
 引き継ぎパラメータを判別してマクロをより正確に作る機能も欲しいなと思いましたが、それは別の拡張機能に盛り込んだほうがいいかもしれません。
 
