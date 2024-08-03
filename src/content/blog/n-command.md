@@ -3,7 +3,7 @@ title: Node.jsバージョン管理 n コマンドについて
 pubDate: '2024-07-30'
 description: Node.jsを簡単に管理できるツールnコマンドを紹介します。
 author: RiiiM
-tags: [Tech, JS]
+tags: [Tech, Node.js]
 ---
 
 ## Node.js管理してますか？
