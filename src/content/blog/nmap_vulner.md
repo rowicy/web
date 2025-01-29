@@ -1,4 +1,12 @@
-# 🔍 Nmap Vulners.nse スクリプトによる脆弱性スキャン
+---
+title: Nmapで自動脆弱性スキャンを組んでみた
+pubDate: '2025-01-29'
+description: vulners.nseを利用した脆弱性スキャン、systemdでの自動実行手順を紹介します。
+author: RiiiM
+tags: [Tech, Nmap, Security]
+---
+
+# Nmapで自動脆弱性スキャンを組んでみた
 
 ## 🚀 はじめに
 
