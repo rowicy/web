@@ -43,7 +43,7 @@ https://docs.mitmproxy.org/stable/concepts/how-mitmproxy-works
 
 ---
 
-## [Complication 1: What’s the remote hostname?](https://docs.mitmproxy.org/stable/concepts/how-mitmproxy-works/###complication-1-whats-the-remote-hostname)
+## [Complication 1: What’s the remote hostname?](https://docs.mitmproxy.org/stable/concepts/how-mitmproxy-works/#complication-1-whats-the-remote-hostname)
 
 ### 引用
 
@@ -109,7 +109,7 @@ mitmproxyにはこれを解決するための仕組みがあります。
 
 ---
 
-## [Complication 2: Subject Alternative Name](https://docs.mitmproxy.org/stable/concepts/how-mitmproxy-works/###complication-2-subject-alternative-name)
+## [Complication 2: Subject Alternative Name](https://docs.mitmproxy.org/stable/concepts/how-mitmproxy-works/#complication-2-subject-alternative-name)
 
 ### 引用
 
@@ -263,7 +263,7 @@ RFC 6125（名前ベースの認証ガイドライン）では、次のように
 ---
 
 
-## [Complication 3: Server Name Indication](https://docs.mitmproxy.org/stable/concepts/how-mitmproxy-works/###complication-3-server-name-indication)
+## [Complication 3: Server Name Indication](https://docs.mitmproxy.org/stable/concepts/how-mitmproxy-works/#complication-3-server-name-indication)
 
 ### 引用
 
@@ -401,7 +401,7 @@ GET /index.html HTTP/1.1
 
 ---
 
-## [Transparent HTTPS](https://docs.mitmproxy.org/stable/concepts/how-mitmproxy-works/###transparent-https)
+## [Transparent HTTPS](https://docs.mitmproxy.org/stable/concepts/how-mitmproxy-works/#transparent-https)
 
 ### 引用
 
