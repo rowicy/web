@@ -1,7 +1,7 @@
 ---
-title: ドキュメントを追え! mitmproxy編 第一話 ~中間者になるには~
+title: 【ドキュメントを追え! mitmproxy編】 第1話 中間者になるには
 pubDate: '2025-05-20'
-description: mitmproxyのドキュメントを読む ep.1
+description: mitmproxyのドキュメントを読んで自分で調べた補足をまとめました
 author: RiiiM
 tags: [Tech, proxy, Document, mitmproxy]
 ---
