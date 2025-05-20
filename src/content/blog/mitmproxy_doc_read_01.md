@@ -6,6 +6,8 @@ author: RiiiM
 tags: [Tech, proxy, Document, mitmproxy]
 ---
 
+[thumbnail](https://www.rowicy.com/images/blog/e0e639e4-611f-d1cf-d448-9ca64d23c13c.png)
+
 ## 勝手にシリーズ始めます
 
 始まりました「 **ドキュメントを追え!** 」シリーズ
@@ -33,9 +35,7 @@ tags: [Tech, proxy, Document, mitmproxy]
 
 ## 本日のドキュメント
 
-### mitmproxyの仕組み
-
-![thumbnail](https://docs.mitmproxy.org/stable/schematics/how-mitmproxy-works-transparent-https.png)
+**mitmproxyの仕組み**
 
 https://docs.mitmproxy.org/stable/concepts/how-mitmproxy-works/###complication-1-whats-the-remote-hostname
 
