@@ -37,13 +37,15 @@ tags: [Tech, proxy, Document, mitmproxy]
 
 **mitmproxyの仕組み**
 
-https://docs.mitmproxy.org/stable/concepts/how-mitmproxy-works/###complication-1-whats-the-remote-hostname
+https://docs.mitmproxy.org/stable/concepts/how-mitmproxy-works
 
 🏃🏻 Let's go !
 
 ---
 
-## [問題 1: リモート ホスト名は何ですか?](https://docs.mitmproxy.org/stable/concepts/how-mitmproxy-works/###complication-1-whats-the-remote-hostname)
+## [Complication 1: What’s the remote hostname?](https://docs.mitmproxy.org/stable/concepts/how-mitmproxy-works/###complication-1-whats-the-remote-hostname)
+
+### 引用
 
 > ```
 > CONNECT 10.1.1.1:443 HTTP/1.1
@@ -107,7 +109,9 @@ mitmproxyにはこれを解決するための仕組みがあります。
 
 ---
 
-## [問題2: サブジェクト別名](https://docs.mitmproxy.org/stable/concepts/how-mitmproxy-works/###complication-2-subject-alternative-name)
+## [Complication 2: Subject Alternative Name](https://docs.mitmproxy.org/stable/concepts/how-mitmproxy-works/###complication-2-subject-alternative-name)
+
+### 引用
 
 > 問題はさらに複雑になります。証明書の共通名（CN）が、実際にはクライアントが接続しているホスト名と異なる場合があります。これは、証明書のオプションの「サブジェクト代替名（Subject Alternative Name）」フィールドで任意の数の代替ドメインを指定できるためです。想定されるドメインがこれらのいずれかに一致する場合、ドメインが証明書のCNと一致していなくても、クライアントは処理を続行します。答えは簡単です。アップストリーム証明書からCNを抽出する際に、SANも抽出し、生成されたダミー証明書に追加します。
 
@@ -259,7 +263,9 @@ RFC 6125（名前ベースの認証ガイドライン）では、次のように
 ---
 
 
-## [問題3: サーバー名の表示](https://docs.mitmproxy.org/stable/concepts/how-mitmproxy-works/###complication-3-server-name-indication)
+## [Complication 3: Server Name Indication](https://docs.mitmproxy.org/stable/concepts/how-mitmproxy-works/###complication-3-server-name-indication)
+
+### 引用
 
 > ...独立した証明書を持つ複数のドメインが同じIPアドレスを共有する仮想ホスティングは実現できません。IPv4アドレスプールが急速に縮小している現代では、これは大きな問題となります。そこで、 TLSプロトコルのServer Name Indication 拡張機能という形で解決策が提供されています。
 
@@ -335,7 +341,9 @@ SNIの内容は\*\*平文（暗号化されていない）\*\*なので、通信
 ---
 
 
-## [透過的なHTTP](https://docs.mitmproxy.org/stable/concepts/how-mitmproxy-works/#transparent-http)
+## [Transparent HTTP](https://docs.mitmproxy.org/stable/concepts/how-mitmproxy-works/#transparent-http)
+
+### 引用
 
 > 透過プロキシを使用すると、接続はネットワーク層のプロキシにリダイレクトされ、クライアント側の設定は一切必要ありません。そのため、透過プロキシは、クライアントの動作を変更できない状況（プロキシを意識する必要のないAndroidアプリケーションなど）に最適です。
 
@@ -393,7 +401,9 @@ GET /index.html HTTP/1.1
 
 ---
 
-## [透過的なHTTPS](https://docs.mitmproxy.org/stable/concepts/how-mitmproxy-works/###transparent-https)
+## [Transparent HTTPS](https://docs.mitmproxy.org/stable/concepts/how-mitmproxy-works/###transparent-https)
+
+### 引用
 
 > ここからのプロセスは、これまで説明したHTTPの透過プロキシとHTTPSの明示的プロキシの手法を統合したものです。ルーティングメカニズムを用いて上流サーバーのアドレスを確立し、その後は明示的HTTPS接続と同様にCNとSANを確立し、SNIに対処します。
 
@@ -598,9 +608,9 @@ mitmは `man in the middle` (中間者) という意味です。
 
 ## 次回
 
-https://docs.mitmproxy.org/stable/concepts/certificates/
-
 **証明書について**
+
+https://docs.mitmproxy.org/stable/concepts/certificates/
 
 これでも読みます。
 
