@@ -4,7 +4,7 @@ type Props = {
 
 const Logo = ({ color }: Props) => {
   return (
-    <span className="w-8 h-8">
+    <span className="h-8 w-8">
       <svg
         version="1.0"
         xmlns="http://www.w3.org/2000/svg"
@@ -12,7 +12,7 @@ const Logo = ({ color }: Props) => {
         height="590.000000pt"
         viewBox="0 0 590.000000 590.000000"
         preserveAspectRatio="xMidYMid meet"
-        className="w-full h-full"
+        className="h-full w-full"
       >
         <g
           transform="translate(0.000000,590.000000) scale(0.100000,-0.100000)"
