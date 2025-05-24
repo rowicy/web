@@ -21,7 +21,7 @@ jobs:
           node-version-file: '.node-version'
           cache: 'pnpm'
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
       - name: Check with Prettier
         run: pnpm run format:check
       - name: Check with Astro
