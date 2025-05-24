@@ -12,14 +12,14 @@ const BlogCard = ({ blog, color }: Props) => {
   const author = member.find(m => m.name === blog.data.author);
 
   return (
-    <Card className="transition hover:opacity-70 bg-transparent">
+    <Card className="bg-transparent transition hover:opacity-70">
       <a href={`/blog/${blog.slug}`} className="block p-6">
         <CardTitle
           className={`text-xl md:text-2xl ${color === 'white' && 'text-white'}`}
         >
           {blog.data.title}
         </CardTitle>
-        <div className="flex flex-col mt-3 gap-3">
+        <div className="mt-3 flex flex-col gap-3">
           <CardDescription>
             <time dateTime={blog.data.pubDate}>
               {blog.data.pubDate.toString().slice(0, 10)}

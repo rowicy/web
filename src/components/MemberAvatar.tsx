@@ -8,7 +8,7 @@ type Props = {
 
 const MemberAvatar = ({ src, alt, fallbackText }: Props) => {
   return (
-    <Avatar className="w-32 h-32 max-w-full max-h-full mx-auto">
+    <Avatar className="mx-auto h-32 max-h-full w-32 max-w-full">
       <AvatarImage src={src} alt={alt} className="object-cover" />
       <AvatarFallback>{fallbackText}</AvatarFallback>
     </Avatar>
