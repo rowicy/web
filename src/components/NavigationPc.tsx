@@ -8,7 +8,7 @@ import {
 
 const NavigationPc = () => {
   return (
-    <NavigationMenu className="hidden md:block ml-auto">
+    <NavigationMenu className="ml-auto hidden md:block">
       <NavigationMenuList className="space-x-6">
         {headerLink.map(link => {
           return (

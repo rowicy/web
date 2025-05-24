@@ -9,14 +9,14 @@ const { title } = Astro.props;
 
 <section
   id="hero"
-  class="w-[100vw] py-24 flex flex-col justify-center items-center mx-[calc(((100vw-100%)/2)*-1)] px-[calc((100vw-100%)/2)] h-[100vh] relative"
+  class="relative mx-[calc(((100vw-100%)/2)*-1)] flex h-[100vh] w-[100vw] flex-col items-center justify-center px-[calc((100vw-100%)/2)] py-24"
 >
   <div
     id="hero-mask"
-    class="bg-primary absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full"
+    class="absolute left-1/2 top-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 bg-primary"
   >
   </div>
-  <h1 id="hero-title" class="font-bold text-white text-3xl md:text-5xl">
+  <h1 id="hero-title" class="text-3xl font-bold text-white md:text-5xl">
     {title}
   </h1>
 

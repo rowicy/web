@@ -16,8 +16,8 @@
     "check": "astro check",
     "format": "prettier --write .",
     "format:check": "prettier . --check",
-    "set-nodebrew": "nodebrew use $(cat .node-version)",
-    "set-nvm": "nvm use $(cat .node-version)"
+    "set-nodebrew": "nodebrew use $(cat .nvmrc)",
+    "set-nvm": "nvm use $(cat .nvmrc)"
   },
   "dependencies": {
     "@astrojs/check": "^0.6.0",
@@ -56,6 +56,7 @@
     "@astrojs/partytown": "^2.1.0",
     "prettier": "^3.2.5",
     "prettier-plugin-astro": "^0.13.0",
+    "prettier-plugin-tailwindcss": "^0.6.11",
     "sass": "^1.77.4"
   }
 }
