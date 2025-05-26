@@ -1,6 +1,6 @@
 import { getOgImage } from '@/components/OgImage';
 import type { APIContext } from 'astro';
-import { getCollection, getEntryBySlug } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 
 export async function getStaticPaths() {
   const blogs = await getCollection('blog');
@@ -13,8 +13,8 @@ export async function getStaticPaths() {
 }
 
 export async function GET({ params }: APIContext) {
-  if (params.slug === undefined) return;
-  const blog = await getEntryBySlug('blog', params.slug);
+  if (!params.id) return;
+  const blog = await getEntry('blog', params.id);
   const body = await getOgImage({
     title: blog?.data.title,
     author: blog?.data.author,
