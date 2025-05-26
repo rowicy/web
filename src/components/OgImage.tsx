@@ -57,7 +57,7 @@ export async function getOgImage({ title, author }: Props) {
 }
 
 async function getFontData() {
-  const API = `https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700`;
+  const API = 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700';
 
   const css = await (
     await fetch(API, {
