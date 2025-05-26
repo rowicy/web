@@ -13,8 +13,8 @@ export async function getStaticPaths() {
 }
 
 export async function GET({ params }: APIContext) {
-  if (!params.id) return;
-  const blog = await getEntry('blog', params.id);
+  if (!params.slug) return;
+  const blog = await getEntry('blog', params.slug);
   const body = await getOgImage({
     title: blog?.data.title,
     author: blog?.data.author,
