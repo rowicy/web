@@ -1,6 +1,6 @@
 ---
 import type { Member } from '@/types/Member';
-import Image from 'astro/components/Image.astro';
+import { Image } from 'astro:assets';
 
 interface Props {
   items: Member[];
@@ -13,10 +13,10 @@ const { items } = Astro.props;
   {
     items.map(item => {
       return (
-        <div class="ts-index-member-item flex flex-col md:flex-row gap-4 md:gap-12 w-full">
-          <picture class="aspect-square md:aspect-auto md:w-[60vh] md:h-[60vh] rounded-md overflow-hidden grayscale transition">
+        <div class="ts-index-member-item flex w-full flex-col gap-4 md:flex-row md:gap-12">
+          <picture class="aspect-square overflow-hidden rounded-md grayscale transition md:aspect-auto md:h-[60vh] md:w-[60vh]">
             <Image
-              class="w-full h-full object-cover"
+              class="h-full w-full object-cover"
               src={
                 item.image ||
                 `https://placehold.jp/020817/ffffff/300x300.png?text=${item.name}`
@@ -27,7 +27,7 @@ const { items } = Astro.props;
             />
 
             <img
-              class="w-full h-full object-cover"
+              class="h-full w-full object-cover"
               src={
                 item.image ||
                 `https://placehold.jp/020817/ffffff/300x300.png?text=${item.name}`
@@ -35,10 +35,10 @@ const { items } = Astro.props;
               alt={item.name}
             />
           </picture>
-          <div class="flex flex-col justify-center flex-1 gap-2 md:gap-4">
-            <p class="text-xl md:text-7xl font-semibold">{item.name}</p>
+          <div class="flex flex-1 flex-col justify-center gap-2 md:gap-4">
+            <p class="text-xl font-semibold md:text-7xl">{item.name}</p>
             {item.description && (
-              <p class="text-md md:text-xl text-white text-opacity-70">
+              <p class="text-md text-white text-opacity-70 md:text-xl">
                 {item.description}
               </p>
             )}

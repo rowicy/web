@@ -11,7 +11,7 @@ type Props = {
 
 const ButtonLink = ({ href, icon, blank, rel, label, children }: Props) => {
   return (
-    <div className="flex justify-center mt-6">
+    <div className="mt-6 flex justify-center">
       <Button
         variant="outline"
         className="bg-transparent"

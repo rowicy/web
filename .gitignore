@@ -24,3 +24,6 @@ pnpm-debug.log*
 .idea/
 .devcontainer/devcontainer.json
 .github/dependabot.yml
+
+# exclude ignore
+!.vscode/extensions.json

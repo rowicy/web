@@ -9,11 +9,11 @@ type Props = {
 
 const Header = ({ children }: Props) => {
   return (
-    <header className="fixed w-full bg-primary z-50">
-      <div className="container flex justify-between items-center py-2 gap-6">
+    <header className="fixed z-50 w-full bg-primary">
+      <div className="container flex items-center justify-between gap-6 py-2">
         <a
           href="/"
-          className="text-white font-medium text-xl md:text-2xl transition hover:opacity-70 flex items-center gap-1"
+          className="flex items-center gap-1 text-xl font-medium text-white transition hover:opacity-70 md:text-2xl"
         >
           <Logo color="#fff" />
           {siteInfo.appName}

@@ -12,7 +12,7 @@ const svg = icon.filter(
 
 {
   svg && (
-    <span class="block w-6 h-6" data-icon-name={name}>
+    <span class="block h-6 w-6" data-icon-name={name}>
       {svg.code && <Fragment set:html={svg.code} />}
     </span>
   )
