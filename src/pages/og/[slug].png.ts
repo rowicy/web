@@ -20,5 +20,5 @@ export async function GET({ params }: APIContext) {
     author: blog?.data.author,
   });
 
-  return new Response(body);
+  return new Response(new Uint8Array(body));
 }
