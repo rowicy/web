@@ -18,7 +18,7 @@ export async function GET(context) {
   const filteredBlogs = blogs.filter(blog => blog.data.author === author);
 
   return rss({
-    title: `${siteInfo.appName}`,
+    title: `${siteInfo.appName} - ${author}`,
     description: `${author}の記事一覧`,
     site: context.site,
     items: filteredBlogs.map(blog => ({
