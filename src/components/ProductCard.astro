@@ -26,6 +26,7 @@ const { items, color } = Astro.props;
         <a
           id={product.name}
           href={product.href ? product.href : `/product#${product.name}`}
+          target={product.name}
           class={`block ${color === 'white' && 'text-white'}`}
         >
           <CardHeader>
