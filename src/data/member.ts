@@ -43,6 +43,13 @@ const member: Member[] = [
     name: 'Millin',
     description: 'Game Developer',
   },
+  {
+    name: 'TANIZAKI',
+    description: 'Security Consultant',
+  },
 ];
 
 export default member;
+
+// NOTE: メンバーの名前のみをエクスポートするユーティリティ
+export const members = member.map(m => m.name);

@@ -3,6 +3,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import member from '@/data/member';
 import type { CollectionEntry } from 'astro:content';
+import MemberIcon from '@/components/MemberIcon';
+
 type Props = {
   blog: CollectionEntry<'blog'>;
   color?: 'white';
@@ -43,17 +45,7 @@ const BlogCard = ({ blog, color }: Props) => {
               Author:&nbsp;
               <span className="inline-flex items-center gap-2">
                 {author.name}
-                <Avatar>
-                  <AvatarImage
-                    src={
-                      author.image ||
-                      `https://placehold.jp/020817/ffffff/300x300.png?text=${author.name}`
-                    }
-                    alt={author.name}
-                    className="object-cover"
-                  />
-                  <AvatarFallback>{author.name}</AvatarFallback>
-                </Avatar>
+                <MemberIcon memberName={author.name} />
               </span>
             </CardDescription>
           )}
