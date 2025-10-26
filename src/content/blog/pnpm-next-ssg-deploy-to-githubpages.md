@@ -19,7 +19,7 @@ https://github.com/naoki-00-ito/lecture-demo-app
 
 下記を参考にソースを用意します。
 
-https://naoki.site/articles/next-setup/
+https://www.rowicy.com/blog/next-setup/
 
 ### Next.jsのビルド形式をSSGに変更する
 
