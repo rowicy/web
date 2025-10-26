@@ -9,6 +9,10 @@ import {
 } from '@/components/ui/card';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import type { Product } from '@/types/Product';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import member from '@/data/member';
+import MemberIcon from '@/components/MemberIcon';
+
 interface Props {
   items: Product[];
   color?: 'white';
@@ -45,13 +49,25 @@ const { items, color } = Astro.props;
           <CardContent>
             <CardTitle>{product.name}</CardTitle>
           </CardContent>
-          {product.description && (
-            <CardFooter>
-              <CardDescription>
-                <Fragment set:html={product.description} />
-              </CardDescription>
-            </CardFooter>
-          )}
+
+          <CardFooter className="flex-col items-start">
+            <CardDescription>
+              <Fragment set:html={product.description} />
+            </CardDescription>
+            <div class="mt-6 flex flex-wrap gap-2">
+              {product.participants?.map(participant => (
+                <div class="flex flex-col items-center gap-1">
+                  <MemberIcon
+                    memberName={
+                      member.find(m => m.name === participant)?.name || ''
+                    }
+                    client:load
+                  />
+                  <p class="text-xs">{participant}</p>
+                </div>
+              ))}
+            </div>
+          </CardFooter>
         </a>
       </Card>
     ))
