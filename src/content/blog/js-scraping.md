@@ -43,10 +43,10 @@ const scrape = async () => {
   });
 
   const page = await browser.newPage();
-  const url = "https://naoki.site/articles/";
+  const url = "https://www.rowicy.com/blog/";
   await page.goto(url, { waitUntil: 'domcontentloaded' });
 
-  const target = ".v-main__wrap .v-card .v-card__title";
+  const target = "h3.font-semibold.tracking-tight.text-xl.md\\:text-2xl";
 
   const results = await page.$$eval(target, elements => elements.map(element => element.textContent));
   console.log(results);
@@ -72,10 +72,8 @@ node scraping.js
 
 ## 応用
 
-今回はタイトルのみを抽出しましたが、他のテキストやリンク先等、複数要素を取得したい場合は配列やループ処理を駆使することで実現できます。   
-また、結果をCSVに出力することも可能です。   
+今回はタイトルのみを抽出しましたが、他のテキストやリンク先等、複数要素を取得したい場合は配列やループ処理を駆使することで実現できます。  
+また、結果をCSVに出力することも可能です。  
 下記にデモを作成していますので、よろしければご覧ください。
 
 https://github.com/naoki-00-ito/js-scraping
-
-

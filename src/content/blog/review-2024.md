@@ -83,6 +83,5 @@ https://qiita.com/naoki-00-ito/items/214fb4f050ae809fe713
 もし一緒に何かやりたいなと思っていただけた方がいらっしゃいましたら、お気軽にフォロー・ご連絡いただけると嬉しいです！
 
 - X: [@naoki_dev](https://x.com/naoki_dev)
-- Bluesky: [@naoki.site](https://bsky.app/profile/naoki.site)
 
 それでは皆様、良いお年を！
