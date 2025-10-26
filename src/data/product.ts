@@ -17,6 +17,14 @@ const product: Product[] = [
     href: 'https://qiita.com/naoki-00-ito/items/214fb4f050ae809fe713',
     participants: ['Naoki', 'RiiiM', 'Millin', 'TANIZAKI'],
   },
+  {
+    name: 'TAIKI SATO Portfolio',
+    image: '/images/product/taiki-sato-portfolio.gif',
+    description:
+      'デザイナー・TAIKI SATOのポートフォリオサイトを開発しました。アニメーションを多用し、デザイン性の高いサイトとなっています。',
+    href: 'https://github.com/INxST/st-portfolio',
+    participants: ['Naoki'],
+  },
 ];
 
 export default product;
