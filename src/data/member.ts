@@ -18,13 +18,6 @@ const member: Member[] = [
         href: 'https://twitter.com/naoki_dev',
         type: 'icon',
       },
-      {
-        name: 'Bluesky',
-        id: '@naoki.site',
-        href: 'https://bsky.app/profile/naoki.site',
-        type: 'icon',
-      },
-      { name: 'Blog', href: 'https://naoki.site/' },
     ],
   },
   {
