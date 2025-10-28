@@ -10,6 +10,14 @@ const product: Product[] = [
     participants: ['Naoki', 'RiiiM', 'Millin', 'TANIZAKI'],
   },
   {
+    name: 'Meeats BoardGame & Kitchen',
+    image: '/images/product/meeats_hp.jpg',
+    description:
+      '盛岡市大通りにあるボードゲームカフェ「Meeats BoardGame & Kitchen」のホームページを開発しました。看板商品のキューバ式サンドイッチ、クバーノは絶品です。',
+    href: 'https://meeats-bgk.com/',
+    participants: ['RiiiM'],
+  },
+  {
     name: 'NANIMACHI',
     image: '/images/product/nanimachi.jpg',
     description:
