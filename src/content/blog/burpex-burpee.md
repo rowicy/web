@@ -12,7 +12,7 @@ tags: [Tech]
 
 今回は、そんなツールでHTTPリクエスト情報をExcelに書き出せる拡張機能「**burpee**」を作ったので、その紹介をさせていただきます🙃
 
-[![Burpee Repository](https://opengraph.githubassets.com/1/riiim400th/burpee)](https://github.com/riiim400th/burpee)
+[![Burpee Repository](https://opengraph.githubassets.com/1/riiimparm/burpee)](https://github.com/riiimparm/burpee)
 
 ![head_image](https://github.com/user-attachments/assets/82dbe607-3847-4d04-b720-6867a33e10f8)
 
@@ -70,7 +70,7 @@ Burp SuiteとExcelを行き来しながらコピペ繰り返すのが**大変だ
 
 ### 機能
 
-動画を見るのが早いと思うので、簡単な紹介動画を作りました。詳細は[README](https://github.com/riiim400th/burpee/)にありますが、動画の内容と同じなので読まなくても大丈夫です
+動画を見るのが早いと思うので、簡単な紹介動画を作りました。詳細は[README](https://github.com/riiimparm/burpee/)にありますが、動画の内容と同じなので読まなくても大丈夫です
 
 [![image](https://github.com/user-attachments/assets/77d1bf6a-dbca-4dae-a955-72b9a85e641d)](https://youtu.be/no15BP_kVHA)
 
@@ -89,7 +89,7 @@ Burp SuiteとExcelを行き来しながらコピペ繰り返すのが**大変だ
 
 次はGitHubから拡張機能(主にjarファイル)をインストールする方法です。
 
-1. [こちら](https://github.com/riiim400th/burpee/releases/)から最新版のリリースでzipファイルをインストール
+1. [こちら](https://github.com/riiimparm/burpee/releases/)から最新版のリリースでzipファイルをインストール
 2. zip展開
 3. Burp Suiteの Extensions > Add > Extension FIle(.jar)から 展開後のjarファイルを選択
 4. Outputにロード完了の内容が出力
@@ -126,7 +126,7 @@ fileButton.addActionListener {
     }
 ```
 
-[src/main/kotlin/TabTask.kt](https://github.com/riiim400th/burpee/blob/443e708f2acf9eaf624ca5a6fda02bdd65e50612/src/main/kotlin/TabTask.kt#L97-L101)
+[src/main/kotlin/TabTask.kt](https://github.com/riiimparm/burpee/blob/443e708f2acf9eaf624ca5a6fda02bdd65e50612/src/main/kotlin/TabTask.kt#L97-L101)
 
 return@addActionListenerを使用することで、このラムダ式からのみ抜け出し、他の外部関数やラムダ式への影響を避けています。
 
@@ -146,14 +146,14 @@ return@addActionListenerを使用することで、このラムダ式からの�
 
 ## 🎠まだまだ開発中です
 
-Githubの [Issue](https://github.com/riiim400th/burpee/issues) で欲しい機能を受け付けています! 気軽に書いていただけると嬉しいです。
+Githubの [Issue](https://github.com/riiimparm/burpee/issues) で欲しい機能を受け付けています! 気軽に書いていただけると嬉しいです。
 
 ## 🔗URLs
 
 ### ダウンロード
 
-[Jarファイルのダウンロード](https://github.com/riiim400th/burpee/releases/)
+[Jarファイルのダウンロード](https://github.com/riiimparm/burpee/releases/)
 
 ### Githubリポジトリ
 
-[GitHubリポジトリ](https://github.com/riiim400th/burpee)
+[GitHubリポジトリ](https://github.com/riiimparm/burpee)

@@ -27,14 +27,14 @@ const member: Member[] = [
     links: [
       {
         name: 'GitHub',
-        id: '@riiim400th',
-        href: 'https://github.com/riiim400th',
+        id: '@riiimparm',
+        href: 'https://github.com/riiimparm',
         type: 'icon',
       },
       {
         name: 'X',
-        id: '@riiim400th',
-        href: 'https://twitter.com/riiim400th',
+        id: '@riiimparm',
+        href: 'https://twitter.com/riiimparm',
         type: 'icon',
       },
     ],
