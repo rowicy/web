@@ -181,7 +181,7 @@ class BreakableBox : BoxBase
     }
 }
 ```
-Bullet内でのキャラクターとBreakableBoxの二つに依存し、多態性が全く実現できていない状態になります。
+Bullet内でCharacterとBreakableBoxの二つに依存し、多態性が全く実現できていない状態になります。
 
 #### インターフェースを使用しない場合2(ObjectにDamage処理を持たせる)
 ```cs
