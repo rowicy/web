@@ -13,14 +13,16 @@ tags: [Tech, C#]
 今回、例題のコードはC#で書きますが、たいていの言語で同様の活用ができるかと思います。
 
 ## インターフェイスとは
+
 特定の関数やプロパティを持つことを明示する型です。
 
 以下のように記述し、定義したInterface型の変数から関数やプロパティを呼び出すことができます。
+
 ```cs
 interface ITest
 {
     int Value { get;}
-   void Test();
+    void Test();
 }
 
 class Foo : ITest
@@ -49,6 +51,7 @@ class Program
 ```
 
 変数を持つことはできません。(C#ではコンパイルエラーになります。)
+
 ```cs
 interface ITest
 {
@@ -58,6 +61,7 @@ interface ITest
 ```
 
 interfaceに定義された関数やプロパティがinterfaceを適用したクラスにない場合もコンパイルエラーになります。
+
 ```cs
 interface ITest
 {
@@ -71,6 +75,7 @@ class Foo : ITest
 ```
 
 継承と違い複数のインターフェースをクラスに適用することができます。(C++などの多重継承できる言語は除く)
+
 ```cs
 interface ITest
 {
@@ -97,10 +102,12 @@ class Foo : ITest, ITest2
 ```
 
 ## ゲームでの活用例
+
 以下のような仕様を想定します。(この段階ではInterfaceは必要ありません)
 
 - すべてのクラスはObjectを継承する
 - キャラクター・弾があり、弾はキャラクターにダメージを与える。
+
 ```cs
 class Object
 {
@@ -125,11 +132,14 @@ class Bullet : Object
     }
 }
 ```
+
 シンプルですね。ここで以下の追加仕様があった場合のinterfaceを使用しない場合と使用した場合の違いを比較してみます。
+
 - 弾で壊せる箱(BreakableBox)・壊せない箱(Box)がある。
 - 箱は持ち運ぶことができる。
 
-#### インターフェースを使用しない場合1(Bullet内でキャストして分岐)
+### インターフェースを使用しない場合1(Bullet内でキャストして分岐)
+
 ```cs
 class Object
 {
@@ -181,9 +191,11 @@ class BreakableBox : BoxBase
     }
 }
 ```
+
 Bullet内でCharacterとBreakableBoxの二つに依存し、多態性が全く実現できていない状態になります。
 
-#### インターフェースを使用しない場合2(ObjectにDamage処理を持たせる)
+### インターフェースを使用しない場合2(ObjectにDamage処理を持たせる)
+
 ```cs
 class Object
 {
@@ -231,10 +243,11 @@ class BreakableBox : BoxBase
     }
 }
 ```
+
 特定のサブクラス（BreakableBox や Character）のための処理が基底に書かれるのは継承関係として正しくないです。
 
+### インターフェースを使用した場合
 
-#### インターフェースを使用した場合
 ```cs
 interface IDamageable
 {
@@ -284,4 +297,5 @@ class BreakableBox : BoxBase, IDamageable
     }
 }
 ```
+
 多態性や継承関係が適切に保たれます！
