@@ -79,7 +79,7 @@ class Foo : ITest
 ```cs
 interface ITest
 {
-   void Test();
+    void Test();
 }
 
 interface ITest2
