@@ -21,7 +21,7 @@ tags: [Tech, C#]
 ```cs
 interface ITest
 {
-    int Value { get;}
+    int Value { get; }
     void Test();
 }
 
