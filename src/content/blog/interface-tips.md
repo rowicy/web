@@ -65,7 +65,7 @@ interfaceに定義された関数やプロパティがinterfaceを適用した�
 ```cs
 interface ITest
 {
-   void Test();
+    void Test();
 }
 
 //interfaceで定義されているTest()がない
