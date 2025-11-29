@@ -32,7 +32,7 @@ const { items, layout } = Astro.props;
       >
         <CardHeader
           className={cn(
-            `${layout === 'author' && 'absolute left-3 top-1/2 h-[20vw] w-[20vw] -translate-y-1/2 justify-center p-0'}`
+            layout === 'author' && 'absolute left-3 top-1/2 h-[20vw] w-[20vw] -translate-y-1/2 justify-center p-0'
           )}
         >
           <MemberAvatar
