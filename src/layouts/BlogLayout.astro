@@ -15,6 +15,7 @@ import type { CollectionEntry } from 'astro:content';
 import { SEO } from 'astro-seo';
 import Share from '@/components/Share.astro';
 import Social from '@/components/Social.astro';
+import JsonLDBlog from '@/components/JsonLDBlog.astro';
 
 interface Props {
   blog: CollectionEntry<'blog'>;
@@ -79,6 +80,16 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
       gtag('config', 'GTM-5FTGXC87');
     </script>
     <!-- End Google Tag Manager -->
+    <JsonLDBlog
+      title={blog.data.title}
+      description={description}
+      url={`${Astro.url}`}
+      author={blog.data.author}
+      tags={blog.data.tags}
+      image={image}
+      inLanguage="ja"
+      datePublished={blog.data.pubDate}
+    />
   </head>
   <body class="overflow-x-hidden">
     <Header client:load>
