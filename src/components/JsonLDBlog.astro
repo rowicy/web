@@ -23,27 +23,39 @@ const {
   inLanguage,
   datePublished,
 } = Astro.props;
+
 const authorData = member.find(m => m.name === author);
+const datePublishedISO =
+  new Date(datePublished + 'T00:00:00').toISOString() ||
+  new Date().toISOString();
 
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
   headline: title,
   description: description,
+  abstract: description,
   url: url,
   inLanguage: inLanguage || 'ja',
-  image: image,
-  isPartOf: schemaSite,
-  datePublished: datePublished || new Date().toISOString(),
+  image: {
+    '@type': 'ImageObject',
+    url: image,
+    caption: title,
+    width: 1200,
+    height: 630,
+  },
   author: {
     '@type': 'Person',
     name: authorData?.name || author,
-    url: authorData?.links?.find(l => l.name === 'Website')?.href || '',
+    url: new URL('/member/', Astro.site).toString(),
     sameAs: authorData?.links?.map(l => l.href) || [],
   },
-  publisher: schemaSite.publisher,
-  mainEntityOfPage: Astro.url,
+  datePublished: datePublishedISO,
+  dateModified: datePublishedISO,
+  mainEntityOfPage: url,
   articleSection: tags.join(', '),
+  keywords: tags.join(', '),
+  publisher: schemaSite.publisher,
 };
 ---
 

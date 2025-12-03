@@ -13,12 +13,14 @@ const { title, description, url, image, inLanguage } = Astro.props;
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
+  '@id': url,
   name: title,
   description: description,
   url: url,
   inLanguage: inLanguage || 'ja',
   image: image,
-  isPartOf: schemaSite,
+  mainEntityOfPage: url,
+  publisher: schemaSite.publisher,
 };
 ---
 

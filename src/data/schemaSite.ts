@@ -31,6 +31,8 @@ const schemaSite = {
     logo: {
       '@type': 'ImageObject',
       url: 'https://www.rowicy.com/rowicy-icon-bk.png',
+      width: 320,
+      height: 320,
     },
     sameAs: ['https://x.com/rowicy_official'],
     foundingDate: '2024',

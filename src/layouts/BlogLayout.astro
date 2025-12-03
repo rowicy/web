@@ -82,7 +82,7 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
     <!-- End Google Tag Manager -->
     <JsonLDBlog
       title={blog.data.title}
-      description={description}
+      description={blog.data.description}
       url={`${Astro.url}`}
       author={blog.data.author}
       tags={blog.data.tags}
