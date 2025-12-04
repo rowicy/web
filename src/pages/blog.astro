@@ -12,10 +12,7 @@ const blogs = await getBlog();
 const description = `最新記事:${blogs.length > 3 ? `「${blogs[0].data.title}」,「${blogs[1].data.title}」,「${blogs[2].data.title}」` : `${siteInfo.appName} Memberが執筆したBlogの一覧ページです。`}`;
 ---
 
-<Layout
-  title={title}
-  description=`${description}`
->
+<Layout title={title} description=`${description}`>
   <PageTitle title={title} />
   <Section>
     <div class="flex flex-col gap-3">
