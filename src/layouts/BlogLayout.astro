@@ -83,7 +83,7 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
     <JsonLdBlog
       title={blog.data.title}
       description={blog.data.description}
-      url={`${Astro.url}`}
+      url={Astro.url.toString()}
       author={blog.data.author}
       tags={blog.data.tags}
       image={image}
