@@ -1,16 +1,21 @@
 ---
 import { Separator } from '@/components/ui/separator';
 import siteInfo from '@/data/siteInfo';
+import { cn } from '@/lib/utils';
 
 interface Props {
   title: string;
+  class?: string;
 }
 
-const { title } = Astro.props;
+const { title, class: className } = Astro.props;
 ---
 
 <section
-  class="ts-index-section relative mx-[calc(((100vw-100%)/2)*-1)] flex min-h-[100vh] w-[100vw] flex-col justify-between px-[calc((100vw-100%)/2)] py-8 text-white"
+  class={cn(
+    'ts-index-section relative mx-[calc(((100vw-100%)/2)*-1)] flex min-h-[100vh] w-[100vw] flex-col justify-between px-[calc((100vw-100%)/2)] py-8 text-white',
+    className
+  )}
 >
   <h2 class="mb-6 text-2xl text-white md:text-4xl">
     <span class="ts-index-section-title">{title}</span>
