@@ -6,6 +6,8 @@ import Footer from '@/components/Footer.astro';
 import siteInfo from '@/data/siteInfo';
 import Social from '@/components/Social.astro';
 import { SEO } from 'astro-seo';
+import JsonLd from '@/components/JsonLd.astro';
+
 interface Props {
   title?: string;
   description?: string;
@@ -72,6 +74,12 @@ const meta = {
       gtag('config', 'GTM-5FTGXC87');
     </script>
     <!-- End Google Tag Manager -->
+    <JsonLd
+      title={meta.title}
+      description={meta.description}
+      url={`${Astro.url}`}
+      image={meta.image}
+    />
   </head>
   <body class="overflow-x-hidden">
     <Header client:load>
