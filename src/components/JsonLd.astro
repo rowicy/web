@@ -17,7 +17,7 @@ const schema = {
   description,
   url,
   inLanguage: 'ja',
-  image: image,
+  ...(image && { image }),
   mainEntityOfPage: url,
   publisher: schemaSite.publisher,
 };
