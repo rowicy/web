@@ -9,20 +9,11 @@ interface Props {
   author: string;
   tags: string[];
   image: string;
-  inLanguage?: string;
   datePublished?: string;
 }
 
-const {
-  title,
-  description,
-  url,
-  author,
-  tags,
-  image,
-  inLanguage,
-  datePublished,
-} = Astro.props;
+const { title, description, url, author, tags, image, datePublished } =
+  Astro.props;
 
 const authorData = member.find(m => m.name === author);
 const datePublishedISO =
@@ -33,10 +24,10 @@ const schema = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
   headline: title,
-  description: description,
+  description,
   abstract: description,
-  url: url,
-  inLanguage: inLanguage || 'ja',
+  url,
+  inLanguage: 'ja',
   image: {
     '@type': 'ImageObject',
     url: image,

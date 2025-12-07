@@ -1,16 +1,24 @@
 import member from './member';
 
+interface Person {
+  '@type': 'Person';
+  name: string;
+  description: string;
+  image?: string;
+  sameAs?: string[];
+}
+
 const orgMembers = member.map(m => {
-  const person = {
+  const person: Person = {
     '@type': 'Person',
     name: m.name,
     description: m.description || '',
-    image: '',
-    sameAs: [] as string[],
   };
+
   if (m.image) {
     person.image = new URL(m.image, 'https://www.rowicy.com/').toString();
   }
+
   if (m.links && m.links.length > 0) {
     person.sameAs = m.links.map(l => l.href);
   }
@@ -30,7 +38,7 @@ const schemaSite = {
     url: 'https://www.rowicy.com',
     logo: {
       '@type': 'ImageObject',
-      url: 'https://www.rowicy.com/rowicy-icon-bk.png',
+      url: 'https://www.rowicy.com/rowicy-icon-bk.svg',
       width: 320,
       height: 320,
     },

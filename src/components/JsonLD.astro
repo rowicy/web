@@ -6,18 +6,17 @@ interface Props {
   description: string;
   url: string;
   image?: string;
-  inLanguage?: string;
 }
-const { title, description, url, image, inLanguage } = Astro.props;
+const { title, description, url, image } = Astro.props;
 
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
   '@id': url,
   name: title,
-  description: description,
-  url: url,
-  inLanguage: inLanguage || 'ja',
+  description,
+  url,
+  inLanguage: 'ja',
   image: image,
   mainEntityOfPage: url,
   publisher: schemaSite.publisher,
