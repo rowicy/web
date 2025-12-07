@@ -1,0 +1,57 @@
+---
+import schemaSite from '@/data/schemaSite';
+import member from '@/data/member';
+
+interface Props {
+  title: string;
+  description: string;
+  url: string;
+  author: string;
+  tags: string[];
+  image: string;
+  datePublished?: string;
+}
+
+const { title, description, url, author, tags, image, datePublished } =
+  Astro.props;
+
+const authorData = member.find(m => m.name === author);
+const datePublishedISO =
+  new Date(datePublished + 'T00:00:00').toISOString() ||
+  new Date().toISOString();
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  abstract: description,
+  url,
+  inLanguage: 'ja',
+  image: {
+    '@type': 'ImageObject',
+    url: image,
+    caption: title,
+    width: 1200,
+    height: 630,
+  },
+  author: {
+    '@type': 'Person',
+    name: authorData?.name || author,
+    url: new URL('/member/', Astro.site).toString(),
+    sameAs: authorData?.links?.map(l => l.href) || [],
+  },
+  datePublished: datePublishedISO,
+  dateModified: datePublishedISO,
+  mainEntityOfPage: url,
+  articleSection: tags.join(', '),
+  keywords: tags.join(', '),
+  publisher: schemaSite.publisher,
+};
+---
+
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify(schema)}
+  is:inline
+/>
