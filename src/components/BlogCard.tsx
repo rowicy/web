@@ -1,5 +1,4 @@
 import { Card, CardDescription, CardTitle } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import member from '@/data/member';
 import type { CollectionEntry } from 'astro:content';
