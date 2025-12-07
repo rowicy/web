@@ -7,8 +7,7 @@ import BlogCard from '@/components/BlogCard';
 import getBlog from '@/lib/getBlog';
 import IndexHero from '@/components/IndexHero/index.astro';
 import IndexSection from '@/components/IndexSection/index.astro';
-import IndexMember from '@/components/IndexMember/index.astro';
-import member from '@/data/member';
+import IndexMember from '@/components/IndexMember';
 import ProductCard from '@/components/ProductCard.astro';
 import product from '@/data/product';
 const blogs = await getBlog();
@@ -30,8 +29,8 @@ const latestProducts = product
     <ButtonLink href="/about"> View Details </ButtonLink>
   </IndexSection>
 
-  <IndexSection title="Member">
-    <IndexMember items={member} />
+  <IndexSection title="Member" className="justify-start">
+    <IndexMember client:load />
 
     <ButtonLink href="/member"> View More </ButtonLink>
   </IndexSection>
@@ -42,7 +41,7 @@ const latestProducts = product
     <ButtonLink href="/product"> View More </ButtonLink>
   </IndexSection>
 
-  <IndexSection title="Blog" class="justify-start">
+  <IndexSection title="Blog" className="justify-start">
     <div class="flex flex-col gap-3">
       {
         blogs.map((blog, i) => {
