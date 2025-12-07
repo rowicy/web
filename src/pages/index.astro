@@ -12,6 +12,10 @@ import member from '@/data/member';
 import ProductCard from '@/components/ProductCard.astro';
 import product from '@/data/product';
 const blogs = await getBlog();
+// NOTE: 参加メンバーの多い順にソートして、最新の2件を取得
+const latestProducts = product
+  .sort((a, b) => (b.participants?.length || 0) - (a.participants?.length || 0))
+  .slice(0, 2);
 ---
 
 <Layout>
@@ -33,7 +37,7 @@ const blogs = await getBlog();
   </IndexSection>
 
   <IndexSection title="Product">
-    <ProductCard items={product} color="white" />
+    <ProductCard items={latestProducts} color="white" />
 
     <ButtonLink href="/product"> View More </ButtonLink>
   </IndexSection>
