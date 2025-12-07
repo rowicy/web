@@ -28,6 +28,7 @@ const { items, layout } = Astro.props;
             ? 'relative min-h-36 py-3 pl-[calc(20vw+1rem)]'
             : 'md:w-[calc(calc(100%/3)-0.8rem)]'
         )}
+        id={member.name}
         key={member.name}
       >
         <CardHeader
