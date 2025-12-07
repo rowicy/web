@@ -16,9 +16,9 @@ const { title, description, url, author, tags, image, datePublished } =
   Astro.props;
 
 const authorData = member.find(m => m.name === author);
-const datePublishedISO =
-  new Date(datePublished + 'T00:00:00').toISOString() ||
-  new Date().toISOString();
+const datePublishedISO = datePublished
+  ? new Date(`${datePublished}T00:00:00`).toISOString()
+  : new Date().toISOString();
 
 const schema = {
   '@context': 'https://schema.org',
