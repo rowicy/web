@@ -4,7 +4,7 @@ pubDate: '2024-12-01'
 description: これは外部サイトで執筆した記事へのリンクのサンプルです。
 author: Naoki
 tags: [Tech, Sample]
-externalUrl: https://zenn.dev/
+externalUrl: https://zenn.dev/username/articles/example-article-slug
 ---
 
 この記事は外部リンクのサンプルです。実際にはZennなど外部サイトで執筆した記事のURLを設定します。
