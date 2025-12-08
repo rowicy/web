@@ -48,7 +48,7 @@ const BlogList = ({ blogs }: Props) => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center gap-4">
+    <div className="flex w-full flex-col items-center gap-4">
       {totalPages > 1 && (
         <BlogPagination
           currentPage={currentPage}
@@ -57,7 +57,7 @@ const BlogList = ({ blogs }: Props) => {
         />
       )}
 
-      <div className="flex flex-col gap-3">
+      <div className="flex w-full flex-col gap-3">
         {currentBlogs.map(blog => (
           <BlogCard key={blog.slug} blog={blog} />
         ))}
