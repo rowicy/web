@@ -3,21 +3,22 @@ import '@/styles/globals.css';
 import Layout from '@/layouts/Layout.astro';
 import PageTitle from '@/components/PageTitle.astro';
 import Section from '@/components/Section.astro';
-import BlogCard from '@/components/BlogCard';
+import BlogList from '@/components/BlogList';
 import Breadcrumb from '@/components/Breadcrumb.astro';
 import getBlog from '@/lib/getBlog';
 import siteInfo from '@/data/siteInfo';
+import BlogFilter from '@/components/BlogFilter.astro';
 const title = 'Blog';
-const blogs = await getBlog();
-const description = `${siteInfo.appName} Memberが執筆したBlogの一覧ページです。直近では「${blogs[0].data.title}」、「${blogs[1].data.title}」、「${blogs[2].data.title}」を投稿しています。`;
+const allBlogs = await getBlog();
+
+const description = `${siteInfo.appName} Memberが執筆したBlogの一覧ページです。直近では「${allBlogs[0].data.title}」、「${allBlogs[1].data.title}」、「${allBlogs[2].data.title}」を投稿しています。`;
 ---
 
 <Layout title={title} description={description}>
   <PageTitle title={title} />
   <Section>
-    <div class="flex flex-col gap-3">
-      {blogs.map(blog => <BlogCard blog={blog} client:load />)}
-    </div>
+    <BlogFilter />
+    <BlogList blogs={allBlogs} client:load />
   </Section>
 
   <Breadcrumb items={[{ name: title }]} />

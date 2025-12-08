@@ -3,6 +3,8 @@ import { Badge } from '@/components/ui/badge';
 import member from '@/data/member';
 import type { CollectionEntry } from 'astro:content';
 import MemberIcon from '@/components/MemberIcon';
+import { ExternalLink } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 type Props = {
   blog: CollectionEntry<'blog'>;
@@ -11,14 +13,36 @@ type Props = {
 
 const BlogCard = ({ blog, color }: Props) => {
   const author = member.find(m => m.name === blog.data.author);
+  const isExternal = !!blog.data.externalUrl;
+  const href = isExternal ? blog.data.externalUrl : `/blog/${blog.slug}`;
+  const linkProps = isExternal
+    ? { target: '_blank', rel: 'noopener noreferrer' }
+    : {};
 
   return (
-    <Card className="bg-transparent transition hover:opacity-70">
-      <a href={`/blog/${blog.slug}`} className="block p-6">
+    <Card className="relative bg-transparent transition hover:opacity-70">
+      <a
+        href={href}
+        className="absolute block size-full"
+        aria-label={`${blog.data.title} を読む`}
+        {...linkProps}
+      >
+        &nbsp;
+      </a>
+      <div className="p-6">
         <CardTitle
-          className={`text-xl md:text-2xl ${color === 'white' && 'text-white'}`}
+          className={cn(
+            'flex items-center gap-2 text-xl md:text-2xl',
+            color === 'white' && 'text-white'
+          )}
         >
           {blog.data.title}
+          {isExternal && (
+            <ExternalLink
+              className="h-5 w-5 flex-shrink-0"
+              aria-label="外部記事"
+            />
+          )}
         </CardTitle>
         <div className="mt-3 flex flex-col gap-3">
           <CardDescription>
@@ -27,29 +51,48 @@ const BlogCard = ({ blog, color }: Props) => {
             </time>
           </CardDescription>
           <div className="flex flex-wrap gap-1">
+            {isExternal && (
+              <Badge
+                variant="default"
+                className={`${color === 'white' && 'text-white'}`}
+              >
+                外部記事
+              </Badge>
+            )}
             {blog.data.tags.map(tag => {
               return (
-                <Badge
-                  variant="outline"
-                  className={`${color === 'white' && 'text-white'}`}
+                <a
+                  href={`/blog/tag/${encodeURIComponent(tag)}`}
                   key={tag}
+                  className="relative z-10"
                 >
-                  #{tag}
-                </Badge>
+                  <Badge
+                    variant="outline"
+                    className={cn(
+                      'transition hover:bg-gray-100',
+                      color === 'white' && 'text-white'
+                    )}
+                  >
+                    #{tag}
+                  </Badge>
+                </a>
               );
             })}
           </div>
           {author && (
             <CardDescription className="flex items-center">
               Author:&nbsp;
-              <span className="inline-flex items-center gap-2">
+              <a
+                href={`/blog/author/${author.name}`}
+                className="relative z-10 inline-flex items-center gap-2 transition hover:underline"
+              >
                 {author.name}
                 <MemberIcon memberName={author.name} />
-              </span>
+              </a>
             </CardDescription>
           )}
         </div>
-      </a>
+      </div>
     </Card>
   );
 };

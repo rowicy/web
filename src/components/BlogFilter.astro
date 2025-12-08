@@ -1,0 +1,30 @@
+---
+import getBlog from '@/lib/getBlog';
+import { Badge } from '@/components/ui/badge';
+const blogs = await getBlog();
+---
+
+<div class="flex items-baseline gap-2">
+  <span class="font-medium">Author:</span>
+  <div class="flex flex-wrap gap-2">
+    {
+      Array.from(new Set(blogs.map(blog => blog.data.author))).map(author => (
+        <a href={`/blog/author/${author}`}>
+          <Badge>{author}</Badge>
+        </a>
+      ))
+    }
+  </div>
+</div>
+<div class="my-4 flex items-baseline gap-2">
+  <span class="self-center font-medium">Tag:</span>
+  <div class="flex flex-wrap gap-2">
+    {
+      Array.from(new Set(blogs.map(blog => blog.data.tags).flat())).map(tag => (
+        <a href={`/blog/tag/${encodeURIComponent(tag)}`}>
+          <Badge>#{tag}</Badge>
+        </a>
+      ))
+    }
+  </div>
+</div>
