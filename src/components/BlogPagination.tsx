@@ -127,7 +127,7 @@ const BlogPagination = ({ currentPage, totalPages, onPageChange }: Props) => {
                 ? handlePageClick(currentPage - 1)
                 : e => e.preventDefault()
             }
-            aria-disabled={currentPage === 1}
+            aria-disabled={currentPage === 1 ? 'true' : 'false'}
             className={
               currentPage === 1 ? 'pointer-events-none opacity-50' : ''
             }
@@ -144,7 +144,7 @@ const BlogPagination = ({ currentPage, totalPages, onPageChange }: Props) => {
                 ? handlePageClick(currentPage + 1)
                 : e => e.preventDefault()
             }
-            aria-disabled={currentPage === totalPages}
+            aria-disabled={currentPage === totalPages ? 'true' : 'false'}
             className={
               currentPage === totalPages ? 'pointer-events-none opacity-50' : ''
             }
