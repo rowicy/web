@@ -8,6 +8,7 @@ const blogCollection = defineCollection({
     description: z.string(),
     author: z.string(),
     tags: z.array(z.string()),
+    externalUrl: z.string().url().optional(),
   }),
 });
 
