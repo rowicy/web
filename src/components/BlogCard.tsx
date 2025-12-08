@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import member from '@/data/member';
 import type { CollectionEntry } from 'astro:content';
 import MemberIcon from '@/components/MemberIcon';
+import { cn } from '@/lib/utils';
 
 type Props = {
   blog: CollectionEntry<'blog'>;
@@ -13,10 +14,20 @@ const BlogCard = ({ blog, color }: Props) => {
   const author = member.find(m => m.name === blog.data.author);
 
   return (
-    <Card className="bg-transparent transition hover:opacity-70">
-      <a href={`/blog/${blog.slug}`} className="block p-6">
+    <Card className="relative bg-transparent transition hover:opacity-70">
+      <a
+        href={`/blog/${blog.slug}`}
+        className="absolute block size-full"
+        aria-label={`${blog.data.title} を読む`}
+      >
+        &nbsp;
+      </a>
+      <div className="relative z-10 p-6">
         <CardTitle
-          className={`text-xl md:text-2xl ${color === 'white' && 'text-white'}`}
+          className={cn(
+            'text-xl md:text-2xl',
+            color === 'white' && 'text-white'
+          )}
         >
           {blog.data.title}
         </CardTitle>
@@ -29,27 +40,34 @@ const BlogCard = ({ blog, color }: Props) => {
           <div className="flex flex-wrap gap-1">
             {blog.data.tags.map(tag => {
               return (
-                <Badge
-                  variant="outline"
-                  className={`${color === 'white' && 'text-white'}`}
-                  key={tag}
-                >
-                  #{tag}
-                </Badge>
+                <a href={`/blog/tag/${encodeURIComponent(tag)}`} key={tag}>
+                  <Badge
+                    variant="outline"
+                    className={cn(
+                      'transition hover:bg-gray-100',
+                      color === 'white' && 'text-white'
+                    )}
+                  >
+                    #{tag}
+                  </Badge>
+                </a>
               );
             })}
           </div>
           {author && (
             <CardDescription className="flex items-center">
               Author:&nbsp;
-              <span className="inline-flex items-center gap-2">
+              <a
+                href={`/blog/author/${author.name}`}
+                className="inline-flex items-center gap-2 transition hover:underline"
+              >
                 {author.name}
                 <MemberIcon memberName={author.name} />
-              </span>
+              </a>
             </CardDescription>
           )}
         </div>
-      </a>
+      </div>
     </Card>
   );
 };
