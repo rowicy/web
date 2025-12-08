@@ -48,7 +48,15 @@ const BlogList = ({ blogs }: Props) => {
   }, []);
 
   return (
-    <>
+    <div className="flex flex-col items-center gap-4">
+      {totalPages > 1 && (
+        <BlogPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
+
       <div className="flex flex-col gap-3">
         {currentBlogs.map(blog => (
           <BlogCard key={blog.slug} blog={blog} />
@@ -56,15 +64,13 @@ const BlogList = ({ blogs }: Props) => {
       </div>
 
       {totalPages > 1 && (
-        <div className="mt-8">
-          <BlogPagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
-        </div>
+        <BlogPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       )}
-    </>
+    </div>
   );
 };
 
