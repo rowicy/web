@@ -14,12 +14,14 @@ const BlogCard = ({ blog, color }: Props) => {
 
   return (
     <Card className="bg-transparent transition hover:opacity-70">
-      <a href={`/blog/${blog.slug}`} className="block p-6">
-        <CardTitle
-          className={`text-xl md:text-2xl ${color === 'white' && 'text-white'}`}
-        >
-          {blog.data.title}
-        </CardTitle>
+      <div className="p-6">
+        <a href={`/blog/${blog.slug}`} className="block">
+          <CardTitle
+            className={`text-xl md:text-2xl ${color === 'white' && 'text-white'}`}
+          >
+            {blog.data.title}
+          </CardTitle>
+        </a>
         <div className="mt-3 flex flex-col gap-3">
           <CardDescription>
             <time dateTime={blog.data.pubDate}>
@@ -29,27 +31,31 @@ const BlogCard = ({ blog, color }: Props) => {
           <div className="flex flex-wrap gap-1">
             {blog.data.tags.map(tag => {
               return (
-                <Badge
-                  variant="outline"
-                  className={`${color === 'white' && 'text-white'}`}
-                  key={tag}
-                >
-                  #{tag}
-                </Badge>
+                <a href={`/tag/${tag}`} key={tag}>
+                  <Badge
+                    variant="outline"
+                    className={`transition hover:bg-gray-100 ${color === 'white' && 'text-white'}`}
+                  >
+                    #{tag}
+                  </Badge>
+                </a>
               );
             })}
           </div>
           {author && (
             <CardDescription className="flex items-center">
               Author:&nbsp;
-              <span className="inline-flex items-center gap-2">
+              <a
+                href={`/author/${author.name}`}
+                className="inline-flex items-center gap-2 transition hover:underline"
+              >
                 {author.name}
                 <MemberIcon memberName={author.name} />
-              </span>
+              </a>
             </CardDescription>
           )}
         </div>
-      </a>
+      </div>
     </Card>
   );
 };

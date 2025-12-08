@@ -1,0 +1,50 @@
+---
+import '@/styles/globals.css';
+import Layout from '@/layouts/Layout.astro';
+import PageTitle from '@/components/PageTitle.astro';
+import Section from '@/components/Section.astro';
+import BlogCard from '@/components/BlogCard';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import { getCollection } from 'astro:content';
+import member from '@/data/member';
+
+export async function getStaticPaths() {
+  const authors = member.map(m => m.name);
+
+  return authors.map(author => ({
+    params: { name: author },
+  }));
+}
+
+const { name } = Astro.params;
+const blogs = await getCollection('blog');
+const filteredBlogs = blogs
+  .filter(blog => blog.data.author === name)
+  .sort((a, b) => {
+    const dateA = new Date(a.data.pubDate).getTime();
+    const dateB = new Date(b.data.pubDate).getTime();
+    return dateB - dateA;
+  });
+
+const title = `Blog - ${name}`;
+const description = `${name}が執筆したBlogの一覧ページです。`;
+---
+
+<Layout title={title} description={description}>
+  <PageTitle title={title} />
+  <Section>
+    {
+      filteredBlogs.length > 0 ? (
+        <div class="flex flex-col gap-3">
+          {filteredBlogs.map(blog => (
+            <BlogCard blog={blog} client:load />
+          ))}
+        </div>
+      ) : (
+        <p class="text-center text-gray-500">記事がありません。</p>
+      )
+    }
+  </Section>
+
+  <Breadcrumb items={[{ name: 'Blog', href: '/blog' }, { name: name }]} />
+</Layout>
