@@ -22,7 +22,7 @@ const BlogCard = ({ blog, color }: Props) => {
   return (
     <Card className="relative bg-transparent transition hover:opacity-70">
       <a
-        href={`/blog/${blog.slug}`}
+        href={href}
         className="absolute block size-full"
         aria-label={`${blog.data.title} を読む`}
         {...linkProps}
@@ -32,7 +32,7 @@ const BlogCard = ({ blog, color }: Props) => {
       <div className="p-6">
         <CardTitle
           className={cn(
-            'text-xl md:text-2xl',
+            'flex items-center gap-2 text-xl md:text-2xl',
             color === 'white' && 'text-white'
           )}
         >
