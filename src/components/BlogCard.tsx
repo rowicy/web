@@ -22,7 +22,7 @@ const BlogCard = ({ blog, color }: Props) => {
       >
         &nbsp;
       </a>
-      <div className="relative z-10 p-6">
+      <div className="p-6">
         <CardTitle
           className={cn(
             'text-xl md:text-2xl',
@@ -40,7 +40,11 @@ const BlogCard = ({ blog, color }: Props) => {
           <div className="flex flex-wrap gap-1">
             {blog.data.tags.map(tag => {
               return (
-                <a href={`/blog/tag/${encodeURIComponent(tag)}`} key={tag}>
+                <a
+                  href={`/blog/tag/${encodeURIComponent(tag)}`}
+                  key={tag}
+                  className="relative z-10"
+                >
                   <Badge
                     variant="outline"
                     className={cn(
@@ -59,7 +63,7 @@ const BlogCard = ({ blog, color }: Props) => {
               Author:&nbsp;
               <a
                 href={`/blog/author/${author.name}`}
-                className="inline-flex items-center gap-2 transition hover:underline"
+                className="relative z-10 inline-flex items-center gap-2 transition hover:underline"
               >
                 {author.name}
                 <MemberIcon memberName={author.name} />
