@@ -7,6 +7,7 @@ import BlogCard from '@/components/BlogCard';
 import Breadcrumb from '@/components/Breadcrumb.astro';
 import getBlog from '@/lib/getBlog';
 import siteInfo from '@/data/siteInfo';
+import BlogFilter from '@/components/BlogFilter.astro';
 const title = 'Blog';
 const blogs = await getBlog();
 const description = `${siteInfo.appName} Memberが執筆したBlogの一覧ページです。直近では「${blogs[0].data.title}」、「${blogs[1].data.title}」、「${blogs[2].data.title}」を投稿しています。`;
@@ -15,6 +16,7 @@ const description = `${siteInfo.appName} Memberが執筆したBlogの一覧ペ�
 <Layout title={title} description={description}>
   <PageTitle title={title} />
   <Section>
+    <BlogFilter />
     <div class="flex flex-col gap-3">
       {blogs.map(blog => <BlogCard blog={blog} client:load />)}
     </div>

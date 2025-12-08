@@ -5,6 +5,7 @@ import PageTitle from '@/components/PageTitle.astro';
 import Section from '@/components/Section.astro';
 import BlogCard from '@/components/BlogCard';
 import Breadcrumb from '@/components/Breadcrumb.astro';
+import BlogFilter from '@/components/BlogFilter.astro';
 import { getCollection } from 'astro:content';
 import member from '@/data/member';
 
@@ -33,6 +34,7 @@ const description = `${name}が執筆したBlogの一覧ページです。`;
 <Layout title={title} description={description}>
   <PageTitle title={title} />
   <Section>
+    <BlogFilter />
     {
       filteredBlogs.length > 0 ? (
         <div class="flex flex-col gap-3">
