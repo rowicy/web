@@ -1,0 +1,30 @@
+---
+import schemaSite from '@/data/schemaSite';
+
+interface Props {
+  title: string;
+  description: string;
+  url: string;
+  image?: string;
+}
+const { title, description, url, image } = Astro.props;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': url,
+  name: title,
+  description,
+  url,
+  inLanguage: 'ja',
+  ...(image && { image }),
+  mainEntityOfPage: url,
+  publisher: schemaSite.publisher,
+};
+---
+
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify(schema)}
+  is:inline
+/>

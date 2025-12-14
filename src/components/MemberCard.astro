@@ -10,6 +10,7 @@ import {
 import MemberAvatar from '@/components/MemberAvatar';
 import type { Member } from '@/types/Member';
 import Icon from './Icon.astro';
+import { cn } from '@/lib/utils';
 interface Props {
   items: Member[];
   layout?: 'author';
@@ -21,11 +22,20 @@ const { items, layout } = Astro.props;
   {
     items.map(member => (
       <Card
-        className={`w-full ${layout !== 'author' && 'md:w-[calc(calc(100%/3)-0.8rem)]'} ${layout === 'author' && 'relative py-3 pl-[calc(20vw+1rem)]'}`}
+        className={cn(
+          'w-full',
+          layout === 'author'
+            ? 'relative min-h-36 py-3 pl-[calc(20vw+1rem)]'
+            : 'md:w-[calc(calc(100%/3)-0.8rem)]'
+        )}
+        id={member.name}
         key={member.name}
       >
         <CardHeader
-          className={`${layout === 'author' && 'absolute left-3 top-1/2 h-[20vw] w-[20vw] -translate-y-1/2 justify-center p-0'}`}
+          className={cn(
+            layout === 'author' &&
+              'absolute left-3 top-1/2 h-[20vw] w-[20vw] -translate-y-1/2 justify-center p-0'
+          )}
         >
           <MemberAvatar
             client:load
@@ -37,8 +47,8 @@ const { items, layout } = Astro.props;
             fallbackText={member.name}
           />
         </CardHeader>
-        <CardContent className={`${layout === 'author' && 'px-3 pb-3'}`}>
-          <CardTitle className={`${layout === 'author' && 'text-lg'}`}>
+        <CardContent className={cn(layout === 'author' && 'px-3 pb-3')}>
+          <CardTitle className={cn(layout === 'author' && 'text-lg')}>
             {layout === 'author' && 'Author: '}
             {member.name}
           </CardTitle>
@@ -49,7 +59,7 @@ const { items, layout } = Astro.props;
           )}
         </CardContent>
         {member.links && (
-          <CardFooter className={`${layout === 'author' && 'px-3 pb-0'}`}>
+          <CardFooter className={cn(layout === 'author' && 'px-3 pb-0')}>
             <ul class="flex flex-col gap-1">
               {member.links.map(link => (
                 <li>

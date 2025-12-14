@@ -1,5 +1,6 @@
 pnpm-lock.yaml
-src/styles/globals.css
+src/components/ui
 src/content/
+src/styles/globals.css
 public/
 *.md

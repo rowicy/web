@@ -7,11 +7,14 @@ import BlogCard from '@/components/BlogCard';
 import getBlog from '@/lib/getBlog';
 import IndexHero from '@/components/IndexHero/index.astro';
 import IndexSection from '@/components/IndexSection/index.astro';
-import IndexMember from '@/components/IndexMember/index.astro';
-import member from '@/data/member';
+import IndexMember from '@/components/IndexMember';
 import ProductCard from '@/components/ProductCard.astro';
 import product from '@/data/product';
 const blogs = await getBlog();
+// NOTE: 参加メンバーの多い順にソートして、最新の2件を取得
+const latestProducts = product
+  .sort((a, b) => (b.participants?.length || 0) - (a.participants?.length || 0))
+  .slice(0, 2);
 ---
 
 <Layout>
@@ -26,19 +29,19 @@ const blogs = await getBlog();
     <ButtonLink href="/about"> View Details </ButtonLink>
   </IndexSection>
 
-  <IndexSection title="Member">
-    <IndexMember items={member} />
+  <IndexSection title="Member" className="justify-start">
+    <IndexMember client:load />
 
     <ButtonLink href="/member"> View More </ButtonLink>
   </IndexSection>
 
   <IndexSection title="Product">
-    <ProductCard items={product} color="white" />
+    <ProductCard items={latestProducts} color="white" />
 
     <ButtonLink href="/product"> View More </ButtonLink>
   </IndexSection>
 
-  <IndexSection title="Blog">
+  <IndexSection title="Blog" className="justify-start">
     <div class="flex flex-col gap-3">
       {
         blogs.map((blog, i) => {

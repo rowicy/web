@@ -28,6 +28,6 @@ export async function GET(context) {
       customData: blog.data.customData,
       link: `/blog/${blog.slug}/`,
     })),
-    customData: `<language>ja-jp</language>`,
+    customData: '<language>ja-jp</language>',
   });
 }

@@ -1,0 +1,59 @@
+---
+import '@/styles/globals.css';
+import Layout from '@/layouts/Layout.astro';
+import PageTitle from '@/components/PageTitle.astro';
+import Section from '@/components/Section.astro';
+import BlogCard from '@/components/BlogCard';
+import Breadcrumb from '@/components/Breadcrumb.astro';
+import BlogFilter from '@/components/BlogFilter.astro';
+import { getCollection } from 'astro:content';
+import getTags from '@/lib/getTags';
+
+export async function getStaticPaths() {
+  const tags = await getTags();
+
+  return tags.map(tag => ({
+    // NOTE: tagに特殊文字が含まれる場合に備えてエンコード
+    params: { tag },
+  }));
+}
+
+const { tag } = Astro.params;
+const blogs = await getCollection('blog');
+const filteredBlogs = blogs
+  .filter(blog =>
+    blog.data.tags.map(tag => encodeURIComponent(tag)).includes(tag)
+  )
+  .sort((a, b) => {
+    const dateA = new Date(a.data.pubDate).getTime();
+    const dateB = new Date(b.data.pubDate).getTime();
+    return dateB - dateA;
+  });
+
+// NOTE: tagをデコードして表示用に戻す
+const decodedTag = decodeURIComponent(tag);
+const title = `Blog - #${decodedTag}`;
+const description = `#${decodedTag}タグが付けられたBlogの一覧ページです。`;
+---
+
+<Layout title={title} description={description}>
+  <PageTitle title={title} />
+  <Section>
+    <BlogFilter />
+    {
+      filteredBlogs.length > 0 ? (
+        <div class="flex flex-col gap-3">
+          {filteredBlogs.map(blog => (
+            <BlogCard blog={blog} client:load />
+          ))}
+        </div>
+      ) : (
+        <p class="text-center text-gray-500">記事がありません。</p>
+      )
+    }
+  </Section>
+
+  <Breadcrumb
+    items={[{ name: 'Blog', href: '/blog' }, { name: `#${decodedTag}` }]}
+  />
+</Layout>
