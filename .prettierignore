@@ -2,6 +2,5 @@ pnpm-lock.yaml
 src/components/ui
 src/content/
 src/styles/globals.css
-src/styles/remark-link-card.css
 public/
 *.md
