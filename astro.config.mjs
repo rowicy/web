@@ -5,6 +5,7 @@ import sitemap from '@astrojs/sitemap';
 import partytown from '@astrojs/partytown';
 import rehypeToc from 'rehype-toc';
 import rehypeSlug from 'rehype-slug';
+import remarkLinkCard from 'remark-link-card-plus';
 
 // https://astro.build/config
 export default defineConfig({
@@ -26,5 +27,10 @@ export default defineConfig({
   ],
   markdown: {
     rehypePlugins: [rehypeSlug, [rehypeToc, { headings: ['h2', 'h3', 'h4'] }]],
+    remarkPlugins: [[remarkLinkCard, {
+      cache: false,
+      shortenUrl: true,
+      thumbnailPosition: "left",
+    }]],
   },
 });
