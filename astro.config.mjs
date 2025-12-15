@@ -27,10 +27,15 @@ export default defineConfig({
   ],
   markdown: {
     rehypePlugins: [rehypeSlug, [rehypeToc, { headings: ['h2', 'h3', 'h4'] }]],
-    remarkPlugins: [[remarkLinkCard, {
-      cache: false,
-      shortenUrl: true,
-      thumbnailPosition: "left",
-    }]],
+    remarkPlugins: [
+      [
+        remarkLinkCard,
+        {
+          cache: false,
+          shortenUrl: true,
+          thumbnailPosition: 'left',
+        },
+      ],
+    ],
   },
 });

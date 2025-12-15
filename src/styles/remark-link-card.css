@@ -3,27 +3,27 @@
 }
 
 .remark-link-card-plus__card {
-  @apply h-32 flex bg-white overflow-hidden rounded-xl border border-slate-300 hover:bg-slate-100 hover:border-slate-500 transition-colors !no-underline;
+  @apply flex h-32 overflow-hidden rounded-xl border border-slate-300 bg-white !no-underline transition-colors hover:border-slate-500 hover:bg-slate-100;
 }
 
 .remark-link-card-plus__main {
-  @apply flex flex-col flex-1 pl-4;
+  @apply flex flex-1 flex-col pl-4;
 }
 
 .remark-link-card-plus__content {
 }
 
 .remark-link-card-plus__title {
-  @apply text-base line-clamp-2 font-semibold leading-6 text-gray-900 hover:!text-gray-900;
-  @apply md:text-lg md:line-clamp-1;
+  @apply line-clamp-2 text-base font-semibold leading-6 text-gray-900 hover:!text-gray-900;
+  @apply md:line-clamp-1 md:text-lg;
 }
 
 .remark-link-card-plus__description {
-  @apply text-sm text-gray-500 line-clamp-1;
+  @apply line-clamp-1 text-sm text-gray-500;
 }
 
 .remark-link-card-plus__meta {
-  @apply flex items-center hidden;
+  @apply flex hidden items-center;
 }
 
 .remark-link-card-plus__favicon {
@@ -39,5 +39,5 @@
 }
 
 .remark-link-card-plus__image {
-  @apply h-full w-full !my-0 object-cover;
+  @apply !my-0 h-full w-full object-cover;
 }
