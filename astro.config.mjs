@@ -30,11 +30,7 @@ export default defineConfig({
     remarkPlugins: [
       [
         remarkLinkCard,
-        {
-          cache: false,
-          shortenUrl: true,
-          thumbnailPosition: 'left',
-        },
+        { cache: false, shortenUrl: true, thumbnailPosition: 'left' },
       ],
     ],
   },
