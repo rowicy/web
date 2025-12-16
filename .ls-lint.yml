@@ -1,0 +1,26 @@
+ls:
+  dir: kebab-case
+  .md: SCREAMING_SNAKE_CASE
+  .ts: camelCase
+  .tsx: PascalCase
+  .astro: PascalCase
+  .github:
+    workflows:
+      .yml: kebab-case
+    ISSUE_TEMPLATE:
+      .md: snake_case
+  src:
+    content:
+      .md: kebab-case
+    pages:
+      .astro: kebab-case
+    types:
+      .ts: PascalCase
+
+ignore:
+  - .git
+  - .vscode
+  - node_modules
+  - src/pages/**/*/\[slug\].astro
+  - src/pages/**/*/\[name\].astro
+  - src/pages/**/*/\[tag\].astro
