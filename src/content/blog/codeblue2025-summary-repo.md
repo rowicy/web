@@ -235,7 +235,7 @@ LinuxとAndroidのブートに不正証明書を注入することでSecureBoot�
 
 ちなみに来年のCODE BLUE 2026も同じ会場で
 
-<img src="/images/blog/codeblue2025_summary_repo/next_code_blue.jpg" alt="next_code_blue" style="height: 30vh; width: auto;">
+<img src="/images/blog/codeblue2025_summary_repo/next-code-blue.jpg" alt="next-code-blue" style="height: 30vh; width: auto;">
 
 
 2026/11/17, 18 に開催するみたい

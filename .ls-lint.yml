@@ -4,6 +4,12 @@ ls:
   .ts: camelCase
   .tsx: PascalCase
   .astro: PascalCase
+  .png: kebab-case
+  .jpg: kebab-case
+  .jpeg: kebab-case
+  .svg: kebab-case
+  .ico: kebab-case
+  .txt: kebab-case
   .github:
     workflows:
       .yml: kebab-case
