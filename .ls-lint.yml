@@ -1,5 +1,5 @@
 ls:
-  dir: kebab-case
+  .dir: kebab-case
   .md: SCREAMING_SNAKE_CASE
   .ts: camelCase
   .tsx: PascalCase
@@ -24,6 +24,7 @@ ls:
       .ts: PascalCase
 
 ignore:
+  - .astro
   - .git
   - .vscode
   - node_modules

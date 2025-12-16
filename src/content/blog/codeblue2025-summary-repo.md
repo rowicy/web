@@ -173,7 +173,7 @@ bluetooth接続要求が繰り返し送られ、接続してしまうと侵入�
 
 こんな感じで左側でAIに聞きながら右で検索とメモをするように。Geminiとのチャットを講演ごとに分けて行い、かなり理解が進んだ。
 
-<img src="/images/blog/codeblue2025_summary_repo/captcha.png" alt="captcha" style="height: 30vh; width: auto;">
+<img src="/images/blog/codeblue2025-summary-repo/captcha.png" alt="captcha" style="height: 30vh; width: auto;">
 
 
 ## 2日目
@@ -235,7 +235,7 @@ LinuxとAndroidのブートに不正証明書を注入することでSecureBoot�
 
 ちなみに来年のCODE BLUE 2026も同じ会場で
 
-<img src="/images/blog/codeblue2025_summary_repo/next-code-blue.jpg" alt="next-code-blue" style="height: 30vh; width: auto;">
+<img src="/images/blog/codeblue2025-summary-repo/next-code-blue.jpg" alt="next-code-blue" style="height: 30vh; width: auto;">
 
 
 2026/11/17, 18 に開催するみたい
