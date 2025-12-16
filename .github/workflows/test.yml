@@ -11,12 +11,12 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.1
-      - uses: pnpm/action-setup@v3
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v4
         with:
           version: 8
       - name: Use Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: '.nvmrc'
           cache: 'pnpm'
@@ -26,3 +26,7 @@ jobs:
         run: pnpm run format:check
       - name: Check with Astro
         run: pnpm run check
+      - name: Check with ls-lint
+        uses: ls-lint/action@v2
+        with:
+          debug: true
