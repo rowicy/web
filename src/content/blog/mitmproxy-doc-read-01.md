@@ -6,7 +6,7 @@ author: RiiiM
 tags: [Tech, proxy, Document, mitmproxy]
 ---
 
-![thumbnail](/images/blog/mitmproxy_doc_read_01/e0e639e4-611f-d1cf-d448-9ca64d23c13c.png)
+![thumbnail](/images/blog/mitmproxy-doc-read-01/e0e639e4-611f-d1cf-d448-9ca64d23c13c.png)
 
 ## 勝手にシリーズ始めます
 
@@ -50,7 +50,7 @@ https://docs.mitmproxy.org/stable/concepts/how-mitmproxy-works
 
 ####  通常のプロキシ（Explicit Proxy）
 
-![通常のプロキシ（Explicit Proxy）](/images/blog/mitmproxy_doc_read_01/1053ad91-e0d1-d151-e65a-f04aadebdbb1.png)
+![通常のプロキシ（Explicit Proxy）](/images/blog/mitmproxy-doc-read-01/1053ad91-e0d1-d151-e65a-f04aadebdbb1.png)
 
 **概要:**
 ユーザーやアプリケーションが明示的にプロキシの存在を認識し、プロキシサーバーを通すように設定して使うプロキシです。
@@ -74,7 +74,7 @@ https://docs.mitmproxy.org/stable/concepts/how-mitmproxy-works
 
 #### 透過プロキシ（Transparent Proxy）
 
-![透過プロキシ（Transparent Proxy）](/images/blog/mitmproxy_doc_read_01/b872c7d4-2860-a6bb-6faf-2dd65d7973e2.png)
+![透過プロキシ（Transparent Proxy）](/images/blog/mitmproxy-doc-read-01/b872c7d4-2860-a6bb-6faf-2dd65d7973e2.png)
 
 **概要:**
 クライアントはプロキシの存在を意識せず、通常どおり通信を行っているつもりでも、途中で通信がプロキシにリダイレクトされる仕組みです。
