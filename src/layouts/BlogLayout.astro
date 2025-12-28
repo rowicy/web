@@ -132,6 +132,33 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
       />
     </main>
     <Footer />
+    <div id="copy-toast" class="copy-toast">Link is copied.</div>
+    <script is:inline>
+      document.addEventListener('DOMContentLoaded', () => {
+        document
+          .querySelectorAll(
+            '.blog-body h2[id], .blog-body h3[id], .blog-body h4[id]'
+          )
+          .forEach(h2 => {
+            h2.style.cursor = 'pointer';
+            h2.addEventListener('click', () => {
+              const url = `${location.origin}${location.pathname}#${h2.id}`;
+              navigator.clipboard.writeText(url);
+              const toast = document.getElementById('copy-toast');
+              if (toast) {
+                toast.style.display = 'block';
+                toast.style.opacity = '1';
+                setTimeout(() => {
+                  toast.style.opacity = '0';
+                  setTimeout(() => {
+                    toast.style.display = 'none';
+                  }, 300);
+                }, 1000);
+              }
+            });
+          });
+      });
+    </script>
     <style is:global lang="scss">
       $space: 2rem;
       $space-sp: 1.6rem;
@@ -352,30 +379,22 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
       .remark-link-card-plus__image {
         @apply my-0 h-full w-full object-cover;
       }
-    </style>
-    <div id="copy-toast" style="display:none;position:fixed;right:1.5rem;bottom:1.5rem;z-index:9999;min-width:120px;padding:0.5em 1em;background:rgba(30,41,59,0.95);color:#fff;border-radius:0.5em;font-size:0.95em;box-shadow:0 2px 8px rgba(0,0,0,0.08);text-align:center;pointer-events:none;">Link is copied.</div>
-    <script is:inline>
-      document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('.blog-body h2[id]').forEach(h2 => {
-          h2.style.cursor = 'pointer';
-          h2.addEventListener('click', () => {
-            const url = `${location.origin}${location.pathname}#${h2.id}`;
-            navigator.clipboard.writeText(url);
-            const toast = document.getElementById('copy-toast');
-            if (toast) {
-              toast.style.display = 'block';
-              toast.style.opacity = '1';
-              setTimeout(() => {
-                toast.style.opacity = '0';
-                setTimeout(() => { toast.style.display = 'none'; }, 300);
-              }, 1000);
-            }
-          });
-        });
-      });
-    </script>
-    <style is:global>
-      #copy-toast {
+      .copy-toast {
+        display: none;
+        position: fixed;
+        right: 50%;
+        bottom: 2rem;
+        transform: translateX(50%);
+        z-index: 99999;
+        min-width: 120px;
+        padding: 0.75rem 1.25rem;
+        background: rgba(30, 41, 59, 0.95);
+        color: #fff;
+        border-radius: 0.5rem;
+        font-size: 0.95rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        text-align: center;
+        pointer-events: none;
         transition: opacity 0.3s;
       }
     </style>
