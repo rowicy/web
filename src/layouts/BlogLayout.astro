@@ -307,6 +307,27 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
             background-color: #efefef;
           }
         }
+
+        blockquote {
+          margin-left: 0;
+          margin-right: 0;
+          padding: calc($space-sp * 0.8) calc($space-sp);
+          border-left: 4px solid #efefef;
+          background-color: #fafafa;
+          color: #555;
+
+          @media (min-width: 768px) {
+            padding: calc($space * 0.8) calc($space);
+          }
+
+          > :first-child {
+            margin-top: 0;
+          }
+
+          > :last-child {
+            margin-bottom: 0;
+          }
+        }
       }
 
       .remark-link-card-plus__container {
