@@ -34,7 +34,7 @@ export function remarkMermaidInjector() {
       if (!window.mermaid) {
         const script = document.createElement("script");
         script.src =
-          "https://cdn.jsdelivr.net/npm/mermaid@11.12.2/dist/mermaid.min.js";
+          "https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js";
         await new Promise((resolve, reject) => {
           script.onload = resolve;
           script.onerror = reject;
