@@ -6,7 +6,7 @@ import partytown from '@astrojs/partytown';
 import rehypeToc from 'rehype-toc';
 import rehypeSlug from 'rehype-slug';
 import remarkLinkCard from 'remark-link-card-plus';
-import remarkBreaks from "remark-breaks";
+import remarkBreaks from 'remark-breaks';
 
 // https://astro.build/config
 export default defineConfig({
