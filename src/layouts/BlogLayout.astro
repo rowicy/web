@@ -104,7 +104,11 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
           <div class="flex flex-wrap gap-1">
             {
               blog.data.tags.map(tag => {
-                return <Badge variant="outline">#{tag}</Badge>;
+                return (
+                  <a href={`/blog/tag/${tag}`}>
+                    <Badge variant="outline">#{tag}</Badge>
+                  </a>
+                );
               })
             }
           </div>
