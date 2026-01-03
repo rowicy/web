@@ -67,8 +67,7 @@ async function getFeed(
   maxItems?: number,
   filter?: { tag?: string; author?: string }
 ) {
-  const allBlogs = await getCollection('blog');
-  let blogs = allBlogs;
+  let blogs = await getCollection('blog');
   if (filter) {
     if (filter.author) {
       blogs = blogs.filter(blog => blog.data.author === filter.author);
@@ -83,8 +82,15 @@ async function getFeed(
         new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
     )
     .slice(0, maxItems || 50);
+  let title = siteInfo.appName;
+    if (filter?.author) {
+        title += ` - Author: ${filter.author}`;
+    }
+    if (filter?.tag) {
+        title += ` - Tag: ${filter.tag}`;
+    }
   const rssOptions: RSSOptions = {
-    title: siteInfo.appName,
+    title: title,
     description: siteInfo.description,
     site: siteUrl,
     items: blogs.map(blog => ({
