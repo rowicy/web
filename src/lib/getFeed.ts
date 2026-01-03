@@ -106,7 +106,6 @@ async function getFeed(
         type: 'image/png',
         length: 0,
       },
-      author: blog.data.author || '',
     })),
     customData: `<language>ja-jp</language>`,
   };
