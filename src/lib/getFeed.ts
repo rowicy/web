@@ -83,12 +83,12 @@ async function getFeed(
     )
     .slice(0, maxItems || 50);
   let title = siteInfo.appName;
-    if (filter?.author) {
-        title += ` - Author: ${filter.author}`;
-    }
-    if (filter?.tag) {
-        title += ` - Tag: ${filter.tag}`;
-    }
+  if (filter?.author) {
+    title += ` - Author: ${filter.author}`;
+  }
+  if (filter?.tag) {
+    title += ` - Tag: ${filter.tag}`;
+  }
   const rssOptions: RSSOptions = {
     title: title,
     description: siteInfo.description,
