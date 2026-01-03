@@ -40,8 +40,14 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
     <link
       rel="alternate"
       type="application/rss+xml"
-      title="RSS Feed"
+      title="Blogs"
       href="/rss.xml"
+    />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`Blogs by ${blog.data.author}`}
+      href={`/${blog.data.author}/rss.xml`}
     />
     <SEO
       charset="UTF-8"
