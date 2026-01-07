@@ -1,6 +1,5 @@
 import rss from '@astrojs/rss';
-import { getCollection } from 'astro:content';
-import siteInfo from '@/data/siteInfo';
+import { getFeed } from '@/lib/getFeed';
 import member from '@/data/member';
 
 export async function getStaticPaths() {
@@ -13,21 +12,7 @@ export async function getStaticPaths() {
 
 export async function GET(context) {
   const { author } = context.params;
-  const blogs = await getCollection('blog');
+  const feedOption = await getFeed(context.site, 50, { author });
 
-  const filteredBlogs = blogs.filter(blog => blog.data.author === author);
-
-  return rss({
-    title: `${siteInfo.appName} - ${author}`,
-    description: `${author}の記事一覧`,
-    site: context.site,
-    items: filteredBlogs.map(blog => ({
-      title: blog.data.title,
-      pubDate: blog.data.pubDate,
-      description: blog.data.description,
-      customData: blog.data.customData,
-      link: `/blog/${blog.slug}/`,
-    })),
-    customData: '<language>ja-jp</language>',
-  });
+  return rss(feedOption);
 }
