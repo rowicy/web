@@ -135,27 +135,48 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
     <div id="copy-toast" class="copy-toast">Link is copied.</div>
     <script is:inline>
       document.addEventListener('DOMContentLoaded', () => {
+        const toast = document.getElementById('copy-toast');
+
+        function showToast() {
+          if (!toast) return;
+          toast.style.display = 'block';
+          toast.style.opacity = '1';
+          setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => {
+              toast.style.display = 'none';
+            }, 300);
+          }, 1000);
+        }
+
+        function copyAnchor(el) {
+          const url = `${location.origin}${location.pathname}#${el.id}`;
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url);
+          } else {
+            return;
+          }
+          showToast();
+        }
+
+        function attachCopyEvent(el) {
+          const handler = () => {
+            copyAnchor(el);
+          };
+          if (typeof window.ontouchstart === 'undefined') {
+            el.addEventListener('click', handler);
+          } else {
+            el.addEventListener('touchend', handler);
+          }
+        }
+
         document
           .querySelectorAll(
             '.blog-body h2[id], .blog-body h3[id], .blog-body h4[id]'
           )
-          .forEach(h2 => {
-            h2.style.cursor = 'pointer';
-            h2.addEventListener('click', () => {
-              const url = `${location.origin}${location.pathname}#${h2.id}`;
-              navigator.clipboard.writeText(url);
-              const toast = document.getElementById('copy-toast');
-              if (toast) {
-                toast.style.display = 'block';
-                toast.style.opacity = '1';
-                setTimeout(() => {
-                  toast.style.opacity = '0';
-                  setTimeout(() => {
-                    toast.style.display = 'none';
-                  }, 300);
-                }, 1000);
-              }
-            });
+          .forEach(h => {
+            h.style.cursor = 'pointer';
+            attachCopyEvent(h);
           });
       });
     </script>
