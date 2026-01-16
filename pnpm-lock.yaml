@@ -120,6 +120,9 @@ importers:
       '@astrojs/partytown':
         specifier: ^2.1.4
         version: 2.1.4
+      dotenv:
+        specifier: ^17.2.3
+        version: 17.2.3
       gray-matter:
         specifier: ^4.0.3
         version: 4.0.3
@@ -138,12 +141,12 @@ importers:
       tsx:
         specifier: ^4.21.0
         version: 4.21.0
-      yaml:
-        specifier: ^2.8.2
-        version: 2.8.2
       unist-util-visit:
         specifier: ^5.0.0
         version: 5.0.0
+      yaml:
+        specifier: ^2.8.2
+        version: 2.8.2
 
 packages:
 
@@ -2022,6 +2025,10 @@ packages:
 
   dotenv@16.5.0:
     resolution: {integrity: sha512-m/C+AwOAr9/W1UOIZUo232ejMNnJAJtYQjUbHoNTBNTJSvqzzDh7vnrei3o3r3m9blf6ZoDkvcw0VmozNRFJxg==}
+    engines: {node: '>=12'}
+
+  dotenv@17.2.3:
+    resolution: {integrity: sha512-JVUnt+DUIzu87TABbhPmNfVdBDt18BLOWjMUFJMSi/Qqg7NTYtabbvSNJGOJ7afbRuv9D/lngizHtP7QyLQ+9w==}
     engines: {node: '>=12'}
 
   dset@3.1.4:
@@ -5624,6 +5631,8 @@ snapshots:
       domhandler: 5.0.3
 
   dotenv@16.5.0: {}
+
+  dotenv@17.2.3: {}
 
   dset@3.1.4: {}
 

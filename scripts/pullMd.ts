@@ -4,6 +4,7 @@ import { readdir, writeFile, mkdir, copyFile, stat } from 'fs/promises';
 import { dirname, join, basename, extname } from 'path';
 import { existsSync } from 'fs';
 import * as readline from 'readline';
+import 'dotenv/config';
 
 interface RepoFile {
   name: string;
@@ -14,6 +15,7 @@ interface RepoFile {
 
 const GITHUB_API = 'https://api.github.com';
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
+const GITHUB_REPO = process.env.GITHUB_REPO;
 
 // ANSIカラーコード
 const colors = {
@@ -276,17 +278,6 @@ async function copyAssetsDirectory(repo: string, mdFileName: string): Promise<vo
 }
 
 async function main() {
-  const args = process.argv.slice(2);
-  
-  if (args.length === 0 || !args[0]) {
-    console.error('Usage: pnpm fetch <owner/repo>');
-    console.error('\nFor private repositories, set GITHUB_TOKEN environment variable:');
-    console.error('  export GITHUB_TOKEN=ghp_your_token_here');
-    console.error('  pnpm fetch owner/repo');
-    process.exit(1);
-  }
-
-  const repo = args[0];
 
   // トークンの確認
   if (GITHUB_TOKEN) {
@@ -294,6 +285,13 @@ async function main() {
   } else {
     console.log(`${colors.yellow}⚠️  No GitHub token found. Only public repositories will be accessible.${colors.reset}`);
   }
+
+  if (!GITHUB_REPO) {
+    console.error(`${colors.red}Error: GITHUB_REPO environment variable is not set.${colors.reset}`);
+    process.exit(1);
+  }
+
+  const repo = GITHUB_REPO;
 
   try {
     // リポジトリのファイル一覧を取得
@@ -328,7 +326,7 @@ async function main() {
     // 選択されたファイルをダウンロード
     for (const file of selectedFiles) {
       const content = await downloadFile(file.download_url);
-      const destPath = join('src', 'content', 'blog', file.name);
+      const destPath = join('src', 'content', 'blog', file.name.replaceAll('_', '-').toLowerCase());
       await writeFile(destPath, content, 'utf-8');
       console.log(`✓ Created: ${file.name}`);
 

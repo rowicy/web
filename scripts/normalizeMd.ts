@@ -8,7 +8,6 @@ type TransformResult = {
   content: string;
 };
 
-
 const BLOG_DIR = path.join(process.cwd(), 'src/content/blog');
 
 function escapeHtml(str: string): string {
@@ -23,12 +22,12 @@ function escapeHtml(str: string): string {
 async function getMarkdownFiles(dir: string): Promise<string[]> {
   const entries = await fs.readdir(dir, { withFileTypes: true });
   const files = await Promise.all(
-    entries.map((entry) => {
+    entries.map(entry => {
       const res = path.resolve(dir, entry.name);
       return entry.isDirectory() ? getMarkdownFiles(res) : res;
     })
   );
-  return files.flat().filter((file) => file.endsWith('.md'));
+  return files.flat().filter(file => file.endsWith('.md'));
 }
 
 function transformFrontmatter(content: string): TransformResult {
@@ -62,7 +61,10 @@ function transformFrontmatter(content: string): TransformResult {
        */
       if (key === 'pubDate' && isScalar(item.value)) {
         const val = String(item.value.value);
-        if (/^\d{4}-\d{2}-\d{2}$/.test(val) && item.value.type !== 'QUOTE_SINGLE') {
+        if (
+          /^\d{4}-\d{2}-\d{2}$/.test(val) &&
+          item.value.type !== 'QUOTE_SINGLE'
+        ) {
           item.value.type = 'QUOTE_SINGLE';
           hasChanges = true;
         }
@@ -71,7 +73,11 @@ function transformFrontmatter(content: string): TransformResult {
       /**
        * 3. title: null → "{{タイトルを入力}}"
        */
-      if (key === 'title' && isScalar(item.value) && item.value.value === null) {
+      if (
+        key === 'title' &&
+        isScalar(item.value) &&
+        item.value.value === null
+      ) {
         item.value.value = '{{タイトルを入力}}';
         item.value.type = 'PLAIN';
         hasChanges = true;
@@ -80,21 +86,25 @@ function transformFrontmatter(content: string): TransformResult {
       /**
        * 4. description: null → 本文から自動生成
        */
-if (key === 'description' && isScalar(item.value) && item.value.value === null) {
-  const escaped = escapeHtml(parsed.content);
+      if (
+        key === 'description' &&
+        isScalar(item.value) &&
+        item.value.value === null
+      ) {
+        const escaped = escapeHtml(parsed.content);
 
-  // 改行を除去して1行にする
-  const singleLine = escaped
-    .replace(/\r\n|\r|\n/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
+        // 改行を除去して1行にする
+        const singleLine = escaped
+          .replace(/\r\n|\r|\n/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
 
-  const sliced = singleLine.slice(0, 255);
+        const sliced = singleLine.slice(0, 255);
 
-  item.value.value = sliced;
-  item.value.type = 'PLAIN';
-  hasChanges = true;
-}
+        item.value.value = sliced;
+        item.value.type = 'PLAIN';
+        hasChanges = true;
+      }
     });
   }
 
@@ -108,15 +118,13 @@ if (key === 'description' && isScalar(item.value) && item.value.value === null) 
   });
 
   const newContent =
-    `---\n${newYaml.trimEnd()}\n---\n\n` +
-    parsed.content.trimStart();
+    `---\n${newYaml.trimEnd()}\n---\n\n` + parsed.content.trimStart();
 
   return {
     changed: true,
     content: newContent,
   };
 }
-
 
 function transformWikiLink(content: string): TransformResult {
   const replaced = content.replace(
@@ -141,13 +149,10 @@ function transformWikiLink(content: string): TransformResult {
 export function transformAssetsPath(content: string): TransformResult {
   let changed = false;
 
-  const replaced = content.replace(
-    /\((assets\/[^)]+)\)/g,
-    (_match, path) => {
-      changed = true;
-      return `(/images/${path.slice('assets/'.length)})`;
-    }
-  );
+  const replaced = content.replace(/\((assets\/[^)]+)\)/g, (_match, path) => {
+    changed = true;
+    return `(/images/${path.slice('assets/'.length)})`;
+  });
 
   if (!changed) {
     return { changed: false, content };
@@ -185,7 +190,6 @@ async function run() {
     await fs.writeFile(filePath, content, 'utf-8');
     console.log(`✅ Fixed: ${path.relative(process.cwd(), filePath)}`);
   }
-
 }
 
 run().catch(console.error);
