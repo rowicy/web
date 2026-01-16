@@ -37,6 +37,18 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
     <link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Blogs"
+      href="/rss.xml"
+    />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`Blogs by ${blog.data.author}`}
+      href={`/${blog.data.author}/rss.xml`}
+    />
     <SEO
       charset="UTF-8"
       title={title}
@@ -104,7 +116,11 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
           <div class="flex flex-wrap gap-1">
             {
               blog.data.tags.map(tag => {
-                return <Badge variant="outline">#{tag}</Badge>;
+                return (
+                  <a href={`/blog/tag/${encodeURIComponent(tag)}`}>
+                    <Badge variant="outline">#{tag}</Badge>
+                  </a>
+                );
               })
             }
           </div>
@@ -132,6 +148,54 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
       />
     </main>
     <Footer />
+    <div id="copy-toast" class="copy-toast">Link is copied.</div>
+    <script is:inline>
+      document.addEventListener('DOMContentLoaded', () => {
+        const toast = document.getElementById('copy-toast');
+
+        function showToast() {
+          if (!toast) return;
+          toast.style.display = 'block';
+          toast.style.opacity = '1';
+          setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => {
+              toast.style.display = 'none';
+            }, 300);
+          }, 1000);
+        }
+
+        function copyAnchor(el) {
+          const url = `${location.origin}${location.pathname}#${el.id}`;
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url);
+          } else {
+            return;
+          }
+          showToast();
+        }
+
+        function attachCopyEvent(el) {
+          const handler = () => {
+            copyAnchor(el);
+          };
+          if (typeof window.ontouchstart === 'undefined') {
+            el.addEventListener('click', handler);
+          } else {
+            el.addEventListener('touchend', handler);
+          }
+        }
+
+        document
+          .querySelectorAll(
+            '.blog-body h2[id], .blog-body h3[id], .blog-body h4[id]'
+          )
+          .forEach(h => {
+            h.style.cursor = 'pointer';
+            attachCopyEvent(h);
+          });
+      });
+    </script>
     <style is:global lang="scss">
       $space: 2rem;
       $space-sp: 1.6rem;
@@ -307,6 +371,27 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
             background-color: #efefef;
           }
         }
+
+        blockquote {
+          margin-left: 0;
+          margin-right: 0;
+          padding: calc($space-sp * 0.8) calc($space-sp);
+          border-left: 4px solid #efefef;
+          background-color: #fafafa;
+          color: #555;
+
+          @media (min-width: 768px) {
+            padding: calc($space * 0.8) calc($space);
+          }
+
+          > :first-child {
+            margin-top: 0;
+          }
+
+          > :last-child {
+            margin-bottom: 0;
+          }
+        }
       }
 
       .remark-link-card-plus__container {
@@ -351,6 +436,24 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
 
       .remark-link-card-plus__image {
         @apply my-0 h-full w-full object-cover;
+      }
+      .copy-toast {
+        display: none;
+        position: fixed;
+        right: 50%;
+        bottom: 2rem;
+        transform: translateX(50%);
+        z-index: 99999;
+        min-width: 120px;
+        padding: 0.75rem 1.25rem;
+        background: rgba(30, 41, 59, 0.95);
+        color: #fff;
+        border-radius: 0.5rem;
+        font-size: 0.95rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        text-align: center;
+        pointer-events: none;
+        transition: opacity 0.3s;
       }
     </style>
   </body>

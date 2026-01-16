@@ -1,0 +1,33 @@
+ls:
+  .dir: kebab-case
+  .md: SCREAMING_SNAKE_CASE
+  .ts: camelCase
+  .tsx: PascalCase
+  .astro: PascalCase
+  .png: kebab-case
+  .jpg: kebab-case
+  .jpeg: kebab-case
+  .svg: kebab-case
+  .ico: kebab-case
+  .txt: kebab-case
+  .github:
+    workflows:
+      .yml: kebab-case
+    ISSUE_TEMPLATE:
+      .md: snake_case
+  src:
+    content:
+      .md: kebab-case
+    pages:
+      .astro: kebab-case
+    types:
+      .ts: PascalCase
+
+ignore:
+  - .astro
+  - .git
+  - .vscode
+  - node_modules
+  - src/pages/**/*/\[slug\].astro
+  - src/pages/**/*/\[name\].astro
+  - src/pages/**/*/\[tag\].astro
