@@ -278,6 +278,9 @@ async function copyAssetsDirectory(repo: string, mdFileName: string): Promise<vo
 }
 
 async function main() {
+  // コマンドライン引数をチェック
+  const args = process.argv.slice(2);
+  const pullAll = args.includes('--pull-all');
 
   // トークンの確認
   if (GITHUB_TOKEN) {
@@ -306,12 +309,20 @@ async function main() {
     const localFiles = await getLocalFiles();
 
     const selectableFiles = filterSelectableFiles(
-  files,
-  localFiles
-);
+      files,
+      localFiles
+    );
 
-    // インタラクティブ選択
-    const selectedFiles = await interactiveSelect(selectableFiles, localFiles);
+    let selectedFiles: RepoFile[];
+
+    if (pullAll) {
+      // --pull-all オプションが指定された場合は全ファイルを選択
+      selectedFiles = selectableFiles;
+      console.log(`\n${colors.cyan}📥 Pulling all ${selectedFiles.length} file(s) automatically...${colors.reset}\n`);
+    } else {
+      // インタラクティブ選択
+      selectedFiles = await interactiveSelect(selectableFiles, localFiles);
+    }
 
     if (selectedFiles.length === 0) {
       console.log('\nNo files selected.');
