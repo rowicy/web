@@ -3,7 +3,22 @@ import path from 'path';
 import matter from 'gray-matter';
 import { parseDocument, isSeq, isScalar } from 'yaml';
 
+type TransformResult = {
+  changed: boolean;
+  content: string;
+};
+
+
 const BLOG_DIR = path.join(process.cwd(), 'src/content/blog');
+
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
 
 async function getMarkdownFiles(dir: string): Promise<string[]> {
   const entries = await fs.readdir(dir, { withFileTypes: true });
@@ -16,71 +31,161 @@ async function getMarkdownFiles(dir: string): Promise<string[]> {
   return files.flat().filter((file) => file.endsWith('.md'));
 }
 
-async function formatFrontmatter() {
-  try {
-    const files = await getMarkdownFiles(BLOG_DIR);
+function transformFrontmatter(content: string): TransformResult {
+  const parsed = matter(content);
 
-    for (const filePath of files) {
-      const fileContent = await fs.readFile(filePath, 'utf-8');
-      const parsed = matter(fileContent);
-
-      if (!parsed.matter || parsed.matter.trim() === '') continue;
-
-      const doc = parseDocument(parsed.matter);
-      if (doc.errors.length > 0) {
-        console.warn(`⚠️ Syntax Error (Skipped): ${path.relative(process.cwd(), filePath)}`);
-        continue;
-      }
-
-      let hasChanges = false;
-
-      if (doc.contents && 'items' in doc.contents) {
-        doc.contents.items.forEach((item: any) => {
-          const key = item.key?.value;
-
-          // 1. 配列の処理 (Block -> Flow [A, B])
-          if (isSeq(item.value)) {
-            if (!item.value.flow) {
-              item.value.flow = true;
-              hasChanges = true;
-            }
-          }
-
-          // 2. pubDate の処理 ('YYYY-MM-DD' 形式に強制)
-          if (key === 'pubDate' && isScalar(item.value)) {
-            const val = String(item.value.value);
-            // 日付形式 (YYYY-MM-DD) にマッチするか確認
-            const isDateFormat = /^\d{4}-\d{2}-\d{2}$/.test(val);
-            
-            // 既にシングルクォートでない、かつ日付形式なら修正
-            if (isDateFormat && item.value.type !== 'QUOTE_SINGLE') {
-              item.value.type = 'QUOTE_SINGLE';
-              hasChanges = true;
-            }
-          }
-        });
-      }
-
-      // 修正が必要な箇所が一つもなければ保存をスキップ
-      if (!hasChanges) {
-        continue;
-      }
-
-      const newYaml = doc.toString({
-        flowCollectionPadding: false,
-        lineWidth: 0,
-      });
-
-      const newContent = `---\n${newYaml.trimEnd()}\n---\n${parsed.content.trimStart()}`;
-
-      await fs.writeFile(filePath, newContent, 'utf-8');
-      console.log(`✅ Fixed: ${path.relative(process.cwd(), filePath)}`);
-    }
-
-    console.log('\n✨ 処理が完了しました。');
-  } catch (error) {
-    console.error('❌ 実行エラー:', error);
+  if (!parsed.matter || parsed.matter.trim() === '') {
+    return { changed: false, content };
   }
+
+  const doc = parseDocument(parsed.matter);
+  if (doc.errors.length > 0) {
+    return { changed: false, content };
+  }
+
+  let hasChanges = false;
+
+  if (doc.contents && 'items' in doc.contents) {
+    doc.contents.items.forEach((item: any) => {
+      const key = item.key?.value;
+
+      /**
+       * 1. 配列を Flow に
+       */
+      if (isSeq(item.value) && !item.value.flow) {
+        item.value.flow = true;
+        hasChanges = true;
+      }
+
+      /**
+       * 2. pubDate を 'YYYY-MM-DD'
+       */
+      if (key === 'pubDate' && isScalar(item.value)) {
+        const val = String(item.value.value);
+        if (/^\d{4}-\d{2}-\d{2}$/.test(val) && item.value.type !== 'QUOTE_SINGLE') {
+          item.value.type = 'QUOTE_SINGLE';
+          hasChanges = true;
+        }
+      }
+
+      /**
+       * 3. title: null → "{{タイトルを入力}}"
+       */
+      if (key === 'title' && isScalar(item.value) && item.value.value === null) {
+        item.value.value = '{{タイトルを入力}}';
+        item.value.type = 'PLAIN';
+        hasChanges = true;
+      }
+
+      /**
+       * 4. description: null → 本文から自動生成
+       */
+if (key === 'description' && isScalar(item.value) && item.value.value === null) {
+  const escaped = escapeHtml(parsed.content);
+
+  // 改行を除去して1行にする
+  const singleLine = escaped
+    .replace(/\r\n|\r|\n/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  const sliced = singleLine.slice(0, 255);
+
+  item.value.value = sliced;
+  item.value.type = 'PLAIN';
+  hasChanges = true;
+}
+    });
+  }
+
+  if (!hasChanges) {
+    return { changed: false, content };
+  }
+
+  const newYaml = doc.toString({
+    flowCollectionPadding: false,
+    lineWidth: 0,
+  });
+
+  const newContent =
+    `---\n${newYaml.trimEnd()}\n---\n\n` +
+    parsed.content.trimStart();
+
+  return {
+    changed: true,
+    content: newContent,
+  };
 }
 
-formatFrontmatter();
+
+function transformWikiLink(content: string): TransformResult {
+  const replaced = content.replace(
+    /\[\[([^\]]+)\]\]/g,
+    (_m, p1) => `[${p1}](${p1})`
+  );
+
+  if (replaced === content) {
+    return { changed: false, content };
+  }
+
+  return {
+    changed: true,
+    content: replaced,
+  };
+}
+
+/**
+ * Markdownリンクのうち
+ * (assets/...) → (images/...) に変換する
+ */
+export function transformAssetsPath(content: string): TransformResult {
+  let changed = false;
+
+  const replaced = content.replace(
+    /\((assets\/[^)]+)\)/g,
+    (_match, path) => {
+      changed = true;
+      return `(/images/${path.slice('assets/'.length)})`;
+    }
+  );
+
+  if (!changed) {
+    return { changed: false, content };
+  }
+
+  return {
+    changed: true,
+    content: replaced,
+  };
+}
+
+const transformers = [
+  transformFrontmatter,
+  transformWikiLink,
+  transformAssetsPath,
+];
+
+async function run() {
+  const files = await getMarkdownFiles(BLOG_DIR);
+
+  for (const filePath of files) {
+    let content = await fs.readFile(filePath, 'utf-8');
+    let changed = false;
+
+    for (const transform of transformers) {
+      const result: TransformResult = transform(content);
+      if (result.changed) {
+        content = result.content;
+        changed = true;
+      }
+    }
+
+    if (!changed) continue;
+
+    await fs.writeFile(filePath, content, 'utf-8');
+    console.log(`✅ Fixed: ${path.relative(process.cwd(), filePath)}`);
+  }
+
+}
+
+run().catch(console.error);
