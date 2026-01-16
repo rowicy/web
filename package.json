@@ -17,7 +17,9 @@
     "format": "prettier --write .",
     "format:check": "prettier . --check",
     "set-nodebrew": "nodebrew use $(cat .nvmrc)",
-    "set-nvm": "nvm use $(cat .nvmrc)"
+    "set-nvm": "nvm use $(cat .nvmrc)",
+    "pull": "tsx scripts/pull-blog.ts",
+    "valid-fm": "tsx scripts/valid-fm.ts"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.6",
@@ -56,10 +58,13 @@
   },
   "devDependencies": {
     "@astrojs/partytown": "^2.1.4",
+    "gray-matter": "^4.0.3",
     "prettier": "^3.2.5",
     "prettier-plugin-astro": "^0.13.0",
     "prettier-plugin-tailwindcss": "^0.6.11",
-    "sass": "^1.77.4"
+    "sass": "^1.77.4",
+    "tsx": "^4.21.0",
+    "yaml": "^2.8.2"
   },
   "pnpm": {
     "overrides": {
