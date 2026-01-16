@@ -55,6 +55,25 @@ async function fetchGitHubContent(repo: string, path: string): Promise<any> {
   return response.json();
 }
 
+function filterSelectableFiles(
+  files: RepoFile[],
+  localFiles: Map<string, Date>
+): RepoFile[] {
+  return files.filter((file) => {
+    const localMtime = localFiles.get(file.name);
+
+    // ローカルに存在しない → 新規
+    if (!localMtime) return true;
+
+    // GitHub 側の最新コミット日時
+    if (!file.created_at) return false;
+    const remoteDate = new Date(file.created_at);
+
+    // GitHub のほうが新しい → 変更あり
+    return remoteDate > localMtime;
+  });
+}
+
 async function downloadFile(url: string): Promise<string> {
   const response = await fetch(url);
   if (!response.ok) {
@@ -111,23 +130,27 @@ async function getMdFiles(repo: string): Promise<RepoFile[]> {
   return filesWithDates;
 }
 
-async function getLocalFiles(): Promise<Set<string>> {
+
+
+async function getLocalFiles(): Promise<Map<string, Date>> {
   const blogDir = 'src/content/blog';
-  const localFiles = new Set<string>();
-  
+  const localFiles = new Map<string, Date>();
+
   if (existsSync(blogDir)) {
     const files = await readdir(blogDir);
-    files.forEach(file => {
+    for (const file of files) {
       if (file.endsWith('.md')) {
-        localFiles.add(file);
+        const filePath = join(blogDir, file);
+        const fileStat = await stat(filePath);
+        localFiles.set(file, fileStat.mtime);
       }
-    });
+    }
   }
-  
+
   return localFiles;
 }
 
-async function interactiveSelect(files: RepoFile[], localFiles: Set<string>): Promise<RepoFile[]> {
+async function interactiveSelect(files: RepoFile[], localFiles: Map<string, Date>): Promise<RepoFile[]> {
   return new Promise((resolve) => {
     const selected = new Set<number>();
     let cursor = 0;
@@ -144,20 +167,44 @@ async function interactiveSelect(files: RepoFile[], localFiles: Set<string>): Pr
 
     const render = () => {
       console.clear();
+      console.log(
+  `\n${colors.green}Green: New${colors.reset}  ` +
+  `${colors.yellow}Yellow: Modified${colors.reset}`
+);
       console.log(`${colors.cyan}Select files to fetch (Space: toggle, Enter: confirm, ↑/↓: navigate)${colors.reset}\n`);
       
       files.forEach((file, i) => {
-        const isSelected = selected.has(i);
-        const isCursor = i === cursor;
-        const isNew = !localFiles.has(file.name);
-        
-        const checkbox = isSelected ? '[✓]' : '[ ]';
-        const arrow = isCursor ? '→ ' : '  ';
-        const nameColor = isNew ? colors.green : '';
-        const nameReset = isNew ? colors.reset : '';
-        
-        console.log(`${arrow}${checkbox} ${nameColor}${file.name}${nameReset}`);
-      });
+  const isSelected = selected.has(i);
+  const isCursor = i === cursor;
+
+  const localMtime = localFiles.get(file.name);
+  const remoteDate = file.created_at
+    ? new Date(file.created_at)
+    : null;
+
+  const isNew = !localMtime;
+  const isModified =
+    localMtime && remoteDate && remoteDate > localMtime;
+
+  const checkbox = isSelected ? '[✓]' : '[ ]';
+  const arrow = isCursor ? '→ ' : '  ';
+
+  let nameColor = '';
+  let nameReset = '';
+
+  if (isNew) {
+    nameColor = colors.green;
+    nameReset = colors.reset;
+  } else if (isModified) {
+    nameColor = colors.yellow;
+    nameReset = colors.reset;
+  }
+
+  console.log(
+    `${arrow}${checkbox} ${nameColor}${file.name}${nameReset}`
+  );
+});
+
       
       console.log(`\n${colors.yellow}Selected: ${selected.size} file(s)${colors.reset}`);
     };
@@ -260,8 +307,13 @@ async function main() {
     // ローカルファイル一覧を取得
     const localFiles = await getLocalFiles();
 
+    const selectableFiles = filterSelectableFiles(
+  files,
+  localFiles
+);
+
     // インタラクティブ選択
-    const selectedFiles = await interactiveSelect(files, localFiles);
+    const selectedFiles = await interactiveSelect(selectableFiles, localFiles);
 
     if (selectedFiles.length === 0) {
       console.log('\nNo files selected.');
