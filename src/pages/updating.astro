@@ -1,0 +1,30 @@
+---
+
+---
+
+<h1>Updating...</h1>
+<p>Please wait a moment.</p>
+
+<div class="spinner"></div>
+
+<script>
+  setTimeout(() => {
+    window.location.href = "blog";
+  }, 10_000);
+</script>
+
+<style>
+  .spinner {
+    margin-top: 2rem;
+    width: 40px;
+    height: 40px;
+    border: 4px solid #cbd5f5;
+    border-top-color: #6366f1;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+</style>

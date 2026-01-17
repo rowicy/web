@@ -1,0 +1,67 @@
+<button id="run" class="update-button">
+  <svg id="icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+    <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path>
+    <polyline points="21 3 21 8 16 8"></polyline>
+  </svg>
+  <span id="text">Update</span>
+</button>
+
+<style>
+  .update-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: #1d2c4d;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .update-button:hover:not(:disabled) {
+    background-color: #374b75;
+  }
+
+  .update-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    background-color: #64748b;
+  }
+
+  .icon {
+    transition: transform 0.3s ease;
+  }
+
+  .is-loading .icon {
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+</style>
+
+<script>
+  const runButton = document.getElementById('run') as HTMLButtonElement | null;
+  const buttonText = document.getElementById('text');
+
+  if (runButton && buttonText) {
+    runButton.addEventListener('click', () => {
+
+      runButton.disabled = true;
+      runButton.classList.add('is-loading');
+      buttonText.textContent = '更新開始...';
+
+      fetch('/api/pull-md', { method: 'POST' })
+        .catch(() => {
+          console.error('API request failed');
+        });
+
+      window.location.href = 'https://riiimparm.github.io/redirect/?redirect=https://t2cqwfps.riiimparm.com/blog&seconds=10';
+    });
+  }
+</script>

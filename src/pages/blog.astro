@@ -8,6 +8,7 @@ import Breadcrumb from '@/components/Breadcrumb.astro';
 import getBlog from '@/lib/getBlog';
 import siteInfo from '@/data/siteInfo';
 import BlogFilter from '@/components/BlogFilter.astro';
+import PullMd from '@/components/PullMd.astro';
 const title = 'Blog';
 const allBlogs = await getBlog();
 
@@ -17,6 +18,7 @@ const description = `${siteInfo.appName} Memberが執筆したBlogの一覧ペ�
 <Layout title={title} description={description}>
   <PageTitle title={title} />
   <Section>
+    <PullMd />
     <BlogFilter />
     <BlogList blogs={allBlogs} client:load />
   </Section>

@@ -16,7 +16,7 @@ const orgMembers = member.map(m => {
   };
 
   if (m.image) {
-    person.image = new URL(m.image, 'https://www.rowicy.com/').toString();
+    person.image = new URL(m.image, 'https://t2cqwfps.riiimparm.com/').toString();
   }
 
   if (m.links && m.links.length > 0) {
@@ -29,16 +29,16 @@ const orgMembers = member.map(m => {
 const schemaSite = {
   '@type': 'WebSite',
   name: 'Rowicy',
-  url: 'https://www.rowicy.com',
+  url: 'https://t2cqwfps.riiimparm.com',
   description: 'We are a creative organization founded by active developers!!!',
   inLanguage: 'ja',
   publisher: {
     '@type': 'Organization',
     name: 'Rowicy',
-    url: 'https://www.rowicy.com',
+    url: 'https://t2cqwfps.riiimparm.com',
     logo: {
       '@type': 'ImageObject',
-      url: 'https://www.rowicy.com/rowicy-icon-bk.svg',
+      url: 'https://t2cqwfps.riiimparm.com/rowicy-icon-bk.svg',
       width: 320,
       height: 320,
     },

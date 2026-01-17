@@ -8,10 +8,15 @@ import rehypeSlug from 'rehype-slug';
 import remarkLinkCard from 'remark-link-card-plus';
 import remarkBreaks from 'remark-breaks';
 import { remarkMermaidInjector } from './src/plugins/remark/remark-mermaid-injector.mjs';
+import node from '@astrojs/node';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://www.rowicy.com',
+  output: 'server',
+  adapter: node({
+    mode: 'standalone',
+  }),
+  site: 'https://t2cqwfps.riiimparm.com',
   prefetch: {
     prefetchAll: true,
   },

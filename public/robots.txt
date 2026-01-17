@@ -1,4 +1,4 @@
 User-agent: *
-Allow: /
+Disallow: /
 
-Sitemap: https://www.rowicy.com/sitemap-index.xml
+Sitemap: https://t2cqwfps.riiimparm.com/sitemap-index.xml
