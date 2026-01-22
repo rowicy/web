@@ -1,4 +1,5 @@
 [tools]
+astro = "latest"
 node = "24.12.0"
 pnpm = "latest"
 prettier = "latest"

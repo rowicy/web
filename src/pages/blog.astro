@@ -9,6 +9,10 @@ import getBlog from '@/lib/getBlog';
 import siteInfo from '@/data/siteInfo';
 import BlogFilter from '@/components/BlogFilter.astro';
 import PullMd from '@/components/PullMd.astro';
+
+export const prerender = false
+
+
 const title = 'Blog';
 const allBlogs = await getBlog();
 

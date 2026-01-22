@@ -8,15 +8,12 @@ import rehypeSlug from 'rehype-slug';
 import remarkLinkCard from 'remark-link-card-plus';
 import remarkBreaks from 'remark-breaks';
 import { remarkMermaidInjector } from './src/plugins/remark/remark-mermaid-injector.mjs';
-import node from '@astrojs/node';
 import { SITE_URL } from './src/data/site';
+import vercel from '@astrojs/vercel/serverless';
 
 // https://astro.build/config
 export default defineConfig({
-  output: 'server',
-  adapter: node({
-    mode: 'standalone',
-  }),
+  adapter: vercel(),    
   site: SITE_URL,
   prefetch: {
     prefetchAll: true,
