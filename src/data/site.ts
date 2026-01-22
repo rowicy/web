@@ -1,1 +1,1 @@
-export const SITE_URL = 'web-riiim400ths-projects.vercel.app'
+export const SITE_URL = 'https://web-riiim400ths-projects.vercel.app'
