@@ -9,6 +9,7 @@ import remarkLinkCard from 'remark-link-card-plus';
 import remarkBreaks from 'remark-breaks';
 import { remarkMermaidInjector } from './src/plugins/remark/remark-mermaid-injector.mjs';
 import node from '@astrojs/node';
+import { SITE_URL } from './src/data/site';
 
 // https://astro.build/config
 export default defineConfig({
@@ -16,7 +17,7 @@ export default defineConfig({
   adapter: node({
     mode: 'standalone',
   }),
-  site: 'https://t2cqwfps.riiimparm.com',
+  site: SITE_URL,
   prefetch: {
     prefetchAll: true,
   },

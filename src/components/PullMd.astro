@@ -46,6 +46,8 @@
 </style>
 
 <script>
+import { SITE_URL } from "@/data/site";
+
   const runButton = document.getElementById('run') as HTMLButtonElement | null;
   const buttonText = document.getElementById('text');
 
@@ -61,7 +63,7 @@
           console.error('API request failed');
         });
 
-      window.location.href = 'https://riiimparm.com/tools/redirect/?redirect=https://t2cqwfps.riiimparm.com/blog&seconds=10';
+      window.location.href = `https://riiimparm.com/tools/redirect/?redirect=${SITE_URL}/blog&seconds=10`;
     });
   }
 </script>

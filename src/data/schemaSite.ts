@@ -1,4 +1,5 @@
 import member from './member';
+import { SITE_URL } from "@/data/site";
 
 interface Person {
   '@type': 'Person';
@@ -16,7 +17,7 @@ const orgMembers = member.map(m => {
   };
 
   if (m.image) {
-    person.image = new URL(m.image, 'https://t2cqwfps.riiimparm.com/').toString();
+    person.image = new URL(m.image, SITE_URL).toString();
   }
 
   if (m.links && m.links.length > 0) {
@@ -29,16 +30,16 @@ const orgMembers = member.map(m => {
 const schemaSite = {
   '@type': 'WebSite',
   name: 'Rowicy',
-  url: 'https://t2cqwfps.riiimparm.com',
+  url: SITE_URL,
   description: 'We are a creative organization founded by active developers!!!',
   inLanguage: 'ja',
   publisher: {
     '@type': 'Organization',
     name: 'Rowicy',
-    url: 'https://t2cqwfps.riiimparm.com',
+    url: SITE_URL,
     logo: {
       '@type': 'ImageObject',
-      url: 'https://t2cqwfps.riiimparm.com/rowicy-icon-bk.svg',
+      url: `${SITE_URL}/rowicy-icon-bk.svg`,
       width: 320,
       height: 320,
     },

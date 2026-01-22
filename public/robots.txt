@@ -1,4 +1,2 @@
 User-agent: *
 Disallow: /
-
-Sitemap: https://t2cqwfps.riiimparm.com/sitemap-index.xml
