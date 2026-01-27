@@ -263,13 +263,17 @@ async function copyAssetsDirectory(
     const assetsContents = await fetchGitHubContent(repo, assetsPath);
 
     if (Array.isArray(assetsContents)) {
-      const destDir = join('public', 'images', 'blog', baseName);
+      const destDirName = baseName.replaceAll('_', '-').toLowerCase();
+      const destDir = join('public', 'images', 'blog', destDirName);
       await mkdir(destDir, { recursive: true });
 
       for (const item of assetsContents) {
         if (item.type === 'file') {
           const content = await downloadFile(item.download_url);
-          const destPath = join(destDir, item.name);
+          const destPath = join(
+            destDir,
+            item.name.replaceAll('_', '-').toLowerCase()
+          );
 
           // バイナリファイルの場合
           const response = await fetch(item.download_url);

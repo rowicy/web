@@ -143,16 +143,23 @@ function transformWikiLink(content: string): TransformResult {
 }
 
 /**
- * Markdownリンクのうち
- * (assets/...) → (images/...) に変換する
+ * Markdownの画像リンクをHTMLのimgタグに変換しつつ、
+ * パスを (assets/...) → (/images/blog/...) に変換する
  */
 export function transformAssetsPath(content: string): TransformResult {
   let changed = false;
 
-  const replaced = content.replace(/\((assets\/[^)]+)\)/g, (_match, path) => {
-    changed = true;
-    return `(/images/${path.slice('assets/'.length)})`;
-  });
+  // 正規表現の解説:
+  // !\[(.*?)\] -> 画像のaltテキストをキャプチャ
+  // \((assets\/[^)]+)\) -> assets/から始まるパスをキャプチャ
+  const replaced = content.replace(
+    /!\[(.*?)\]\((assets\/[^)]+)\)/g,
+    (_match, alt, _path) => {
+      changed = true;
+      const newPath = `/images/blog/${_path.slice('assets/'.length).replaceAll('_', '-').toLowerCase()}`;
+      return `<img src="${newPath}" alt="${alt}" style="height: 50vh; width: auto; max-width: 100%; object-fit: contain;">`;
+    }
+  );
 
   if (!changed) {
     return { changed: false, content };
