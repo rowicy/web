@@ -8,6 +8,11 @@ type TransformResult = {
   content: string;
 };
 
+type Transformer = (
+  content: string,
+  filePath: string
+) => TransformResult | Promise<TransformResult>;
+
 const BLOG_DIR = path.join(process.cwd(), 'src/content/blog');
 
 function escapeHtml(str: string): string {
@@ -45,6 +50,11 @@ function transformFrontmatter(content: string): TransformResult {
   let hasChanges = false;
 
   if (doc.contents && 'items' in doc.contents) {
+    if ('delete' in doc.contents && doc.contents.has('mention')) {
+      doc.contents.delete('mention');
+      hasChanges = true;
+    }
+
     doc.contents.items.forEach((item: any) => {
       const key = item.key?.value;
 
@@ -91,14 +101,19 @@ function transformFrontmatter(content: string): TransformResult {
         isScalar(item.value) &&
         item.value.value === null
       ) {
-        const escaped = escapeHtml(parsed.content);
+        // ① HTMLタグ除去
+        const noHtml = parsed.content.replace(/<[^>]*>/g, '');
 
-        // 改行を除去して1行にする
+        // ② エスケープ
+        const escaped = escapeHtml(noHtml);
+
+        // ③ 改行除去して1行に
         const singleLine = escaped
           .replace(/\r\n|\r|\n/g, ' ')
           .replace(/\s+/g, ' ')
           .trim();
 
+        // ④ 255文字でカット
         const sliced = singleLine.slice(0, 255);
 
         item.value.value = sliced;
@@ -171,10 +186,56 @@ export function transformAssetsPath(content: string): TransformResult {
   };
 }
 
-const transformers = [
+const PUBLIC_IMAGES_DIR = path.join(process.cwd(), 'public/images/blog');
+
+/**
+ * MDファイルで参照されていない画像を public/images/blog/<slug>/ から削除する
+ */
+async function deleteUnlinkedImages(
+  content: string,
+  filePath: string
+): Promise<TransformResult> {
+  const slug = path.basename(filePath, '.md');
+  const imgDir = path.join(PUBLIC_IMAGES_DIR, slug);
+
+  try {
+    await fs.access(imgDir);
+  } catch {
+    return { changed: false, content };
+  }
+
+  const entries = await fs.readdir(imgDir, { withFileTypes: true });
+  const imageFiles = entries.filter(e => e.isFile()).map(e => e.name);
+  if (imageFiles.length === 0) return { changed: false, content };
+
+  // <img src="/images/blog/slug/file"> と ![alt](/images/blog/slug/file) の両方を収集
+  const referenced = new Set<string>();
+  const patterns = [
+    /src="\/images\/blog\/[^/]+\/([^"]+)"/g,
+    /!\[.*?\]\(\/images\/blog\/[^/]+\/([^)]+)\)/g,
+  ];
+  for (const pattern of patterns) {
+    let match;
+    while ((match = pattern.exec(content)) !== null) {
+      referenced.add(match[1]);
+    }
+  }
+
+  for (const file of imageFiles) {
+    if (!referenced.has(file)) {
+      await fs.unlink(path.join(imgDir, file));
+      console.log(`🗑️  Deleted: public/images/blog/${slug}/${file}`);
+    }
+  }
+
+  return { changed: false, content };
+}
+
+const transformers: Transformer[] = [
   transformFrontmatter,
   transformWikiLink,
   transformAssetsPath,
+  deleteUnlinkedImages,
 ];
 
 async function run() {
@@ -185,17 +246,17 @@ async function run() {
     let changed = false;
 
     for (const transform of transformers) {
-      const result: TransformResult = transform(content);
+      const result = await transform(content, filePath);
       if (result.changed) {
         content = result.content;
         changed = true;
       }
     }
 
-    if (!changed) continue;
-
-    await fs.writeFile(filePath, content, 'utf-8');
-    console.log(`✅ Fixed: ${path.relative(process.cwd(), filePath)}`);
+    if (changed) {
+      await fs.writeFile(filePath, content, 'utf-8');
+      console.log(`✅ Fixed: ${path.relative(process.cwd(), filePath)}`);
+    }
   }
 }
 
