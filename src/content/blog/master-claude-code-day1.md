@@ -1,10 +1,9 @@
 ---
 title: 【僕がClaude Codeを従えるまで】1日目 CLAUDE.md
 pubDate: '2026-02-21'
-description: "Claude Codeを使わなければ、やばい 時代に置いていかれるのだ Claude.aiのチャットからコピペするのはもうごめんだ 半年ぐらい遅れをとったが導入してやる 血眼でClade Consoleにクレジット番号を入力する こいつと親友になってやる ## CLAUDE.md ファーストステップはこれでいいだろう CLAUDE.mdはプロジェクトルートに配置して中身にClaude Codeに伝えたいプロジェクト説明を書いておく - プロジェクトの概要（どんなコードベースか） - よく使うコマンド（ビル"
+description: "使いこなすまでの実践ログ、その1日目。ブラウザ拡張機能の開発を通してのCLAUDE.mdのベストプラクティス。"
 author: RiiiM
 tags: [Tech, AI]
-mentions:
 ---
 
 <img src="/images/blog/master-claude-code-day1/b8f45351-9281-4362-9435-354fa1351812.png" alt="" style="height: 50vh; width: auto; max-width: 100%; object-fit: contain;">
