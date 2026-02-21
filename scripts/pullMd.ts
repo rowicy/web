@@ -156,6 +156,8 @@ async function getLocalFiles(): Promise<Map<string, Date>> {
   return localFiles;
 }
 
+const LIST_LIMIT = 10;
+
 async function interactiveSelect(
   files: RepoFile[],
   localFiles: Map<string, Date>
@@ -163,6 +165,7 @@ async function interactiveSelect(
   return new Promise(resolve => {
     const selected = new Set<number>();
     let cursor = 0;
+    let showAll = false;
 
     const rl = readline.createInterface({
       input: process.stdin,
@@ -175,16 +178,19 @@ async function interactiveSelect(
     }
 
     const render = () => {
+      const visibleFiles = showAll ? files : files.slice(0, LIST_LIMIT);
+      const hasMore = !showAll && files.length > LIST_LIMIT;
+
       console.clear();
       console.log(
         `\n${colors.green}Green: New${colors.reset}  ` +
           `${colors.yellow}Yellow: Modified${colors.reset}`
       );
       console.log(
-        `${colors.cyan}Select files to fetch (Space: toggle, Enter: confirm, ↑/↓: navigate)${colors.reset}\n`
+        `${colors.cyan}Select files to fetch (Space: toggle, Enter: confirm, ↑/↓: navigate${files.length > LIST_LIMIT ? ', l: ' + (showAll ? 'collapse' : 'show all') : ''})${colors.reset}\n`
       );
 
-      files.forEach((file, i) => {
+      visibleFiles.forEach((file, i) => {
         const isSelected = selected.has(i);
         const isCursor = i === cursor;
 
@@ -211,6 +217,12 @@ async function interactiveSelect(
         console.log(`${arrow}${checkbox} ${nameColor}${file.name}${nameReset}`);
       });
 
+      if (hasMore) {
+        console.log(
+          `\n${colors.cyan}  ... and ${files.length - LIST_LIMIT} more  (press l to show all)${colors.reset}`
+        );
+      }
+
       console.log(
         `\n${colors.yellow}Selected: ${selected.size} file(s)${colors.reset}`
       );
@@ -219,17 +231,25 @@ async function interactiveSelect(
     render();
 
     process.stdin.on('keypress', (str, key) => {
+      const visibleCount = showAll ? files.length : Math.min(files.length, LIST_LIMIT);
+
       if (key.name === 'up') {
         cursor = Math.max(0, cursor - 1);
         render();
       } else if (key.name === 'down') {
-        cursor = Math.min(files.length - 1, cursor + 1);
+        cursor = Math.min(visibleCount - 1, cursor + 1);
         render();
       } else if (key.name === 'space') {
         if (selected.has(cursor)) {
           selected.delete(cursor);
         } else {
           selected.add(cursor);
+        }
+        render();
+      } else if (key.name === 'l') {
+        showAll = !showAll;
+        if (!showAll && cursor >= LIST_LIMIT) {
+          cursor = LIST_LIMIT - 1;
         }
         render();
       } else if (key.name === 'return') {

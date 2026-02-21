@@ -50,10 +50,6 @@ function transformFrontmatter(content: string): TransformResult {
   let hasChanges = false;
 
   if (doc.contents && 'items' in doc.contents) {
-    if ('delete' in doc.contents && doc.contents.has('mention')) {
-      doc.contents.delete('mention');
-      hasChanges = true;
-    }
 
     doc.contents.items.forEach((item: any) => {
       const key = item.key?.value;
@@ -101,11 +97,21 @@ function transformFrontmatter(content: string): TransformResult {
         isScalar(item.value) &&
         item.value.value === null
       ) {
-        // ① HTMLタグ除去
-        const noHtml = parsed.content.replace(/<[^>]*>/g, '');
+        // ① Markdown記法 / HTMLタグ除去
+        const noMarkdown = parsed.content
+          .replace(/```[\s\S]*?```/g, '')        // コードブロック
+          .replace(/`[^`]*`/g, '')               // インラインコード
+          .replace(/<[^>]*>/g, '')               // HTMLタグ
+          .replace(/!\[.*?\]\(.*?\)/g, '')       // 画像
+          .replace(/\[([^\]]*)\]\(.*?\)/g, '$1') // リンク → テキストのみ
+          .replace(/^#{1,6}\s+/gm, '')           // 見出し記号
+          .replace(/[*_~]{1,3}([^*_~]+)[*_~]{1,3}/g, '$1') // 強調
+          .replace(/^[-*+]\s+/gm, '')            // リスト記号
+          .replace(/^\d+\.\s+/gm, '')            // 番号付きリスト
+          .replace(/"/g, '');                    // ダブルクオート除去
 
         // ② エスケープ
-        const escaped = escapeHtml(noHtml);
+        const escaped = escapeHtml(noMarkdown);
 
         // ③ 改行除去して1行に
         const singleLine = escaped

@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "private": true,
   "engines": {
-    "node": "24.12.0"
+    "node": "24"
   },
   "scripts": {
     "preinstall": "npx only-allow pnpm",
@@ -20,7 +20,8 @@
     "set-nodebrew": "nodebrew use $(cat .nvmrc)",
     "set-nvm": "nvm use $(cat .nvmrc)",
     "pull-md": "tsx scripts/pullMd.ts",
-    "normalize-md": "tsx scripts/normalizeMd.ts"
+    "normalize-md": "tsx scripts/normalizeMd.ts",
+    "pull": "pnpm run pull-md && pnpm run normalize-md"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.6",
@@ -28,6 +29,7 @@
     "@astrojs/rss": "^4.0.14",
     "@astrojs/sitemap": "^3.6.0",
     "@astrojs/tailwind": "^6.0.2",
+    "@astrojs/vercel": "^9.0.4",
     "@fontsource-variable/inter": "^5.0.18",
     "@fontsource-variable/noto-sans-jp": "^5.0.19",
     "@ls-lint/ls-lint": "^2.3.1",
