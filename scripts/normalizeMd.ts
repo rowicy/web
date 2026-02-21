@@ -51,6 +51,11 @@ function transformFrontmatter(content: string): TransformResult {
 
   if (doc.contents && 'items' in doc.contents) {
 
+    if ('delete' in doc.contents && doc.contents.has('mentions')) {
+      doc.contents.delete('mentions');
+      hasChanges = true;
+    }
+
     doc.contents.items.forEach((item: any) => {
       const key = item.key?.value;
 
