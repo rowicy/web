@@ -64,7 +64,7 @@ timeline
 
 ## 第1回攻撃（2026年2月28日）概要
 
-攻撃はGitHub Actionsの設定ミスから始まる
+一連の侵害はGitHub Actionsから始まる
 
 ### pull_request_target
 
