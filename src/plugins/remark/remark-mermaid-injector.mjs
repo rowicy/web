@@ -1,21 +1,31 @@
 import { visit } from 'unist-util-visit';
 
+function escapeHtml(value) {
+  return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
 /**
  * remark プラグイン
  *
  * markdown ASTにてmermaidコードブロックがある場合、クライアントでの描画スクリプト(mermaid.js処理)を末尾に挿入
  *
+ * mermaidブロックはastro-expressive-codeが行ごとにラップして描画するため、
+ * code.textContentから改行付きのソースを取り出せなくなる。
+ * astro-expressive-codeには言語単位の除外オプションが無いため、
+ * ここでrawなHTMLノードに置き換えてexpressive-codeの処理対象から外す。
  */
 export function remarkMermaidInjector() {
   return function (tree) {
     let mermaidFound = false;
 
-    // mermaidコードブロックの存在を確認
-    visit(tree, 'code', node => {
-      if (node.lang === 'mermaid') {
-        mermaidFound = true;
-        return false;
-      }
+    visit(tree, 'code', (node, index, parent) => {
+      if (node.lang !== 'mermaid' || !parent) return;
+
+      mermaidFound = true;
+      parent.children[index] = {
+        type: 'html',
+        value: `<pre data-language="mermaid"><code>${escapeHtml(node.value)}</code></pre>`,
+      };
     });
 
     // mermaidブロックがある場合、末尾にスクリプトを追加

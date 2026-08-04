@@ -8,6 +8,7 @@ import rehypeSlug from 'rehype-slug';
 import remarkLinkCard from 'remark-link-card-plus';
 import remarkBreaks from 'remark-breaks';
 import { remarkMermaidInjector } from './src/plugins/remark/remark-mermaid-injector.mjs';
+import expressiveCode from 'astro-expressive-code';
 
 // https://astro.build/config
 export default defineConfig({
@@ -16,19 +17,27 @@ export default defineConfig({
     prefetchAll: true,
   },
   integrations: [
-    react(),
+    react(), 
+    expressiveCode(
+      {
+        themes: ['material-theme-palenight'],
+        frames: {
+          showCopyToClipboardButton: false,
+        },
+      }
+    ),
     tailwind({
-      applyBaseStyles: false,
-    }),
-    sitemap(),
-    partytown({
-      config: {
-        forward: ['dataLayer.push'],
-      },
-    }),
-  ],
+    applyBaseStyles: false,
+  }), 
+  sitemap(), 
+  partytown({
+    config: {
+      forward: ['dataLayer.push'],
+    },
+  }), 
+
+],
   markdown: {
-    excludeLangs: ['mermaid'],
     rehypePlugins: [rehypeSlug, [rehypeToc, { headings: ['h2', 'h3', 'h4'] }]],
     remarkPlugins: [
       remarkMermaidInjector,
