@@ -20,7 +20,7 @@ export default defineConfig({
     react(), 
     expressiveCode(
       {
-        themes: ['material-theme-palenight'],
+        themes: ['vesper'],
         frames: {
           showCopyToClipboardButton: false,
         },
