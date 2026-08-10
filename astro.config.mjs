@@ -24,6 +24,23 @@ export default defineConfig({
         frames: {
           showCopyToClipboardButton: false,
         },
+        customizeTheme: (theme) => {
+          theme.bg = '#14151a';
+          theme.colors['editor.background'] = '#14151a';
+          theme.settings
+            .filter((s) => (Array.isArray(s.scope) ? s.scope : [s.scope]).some((scope) => scope?.includes('comment')))
+            .forEach((s) => {
+              s.settings.foreground = '#6b7089';
+            });
+        },
+        styleOverrides: {
+          borderWidth: '0px',
+          codeBackground: '#0C1222',
+          frames: {
+            editorBackground: '#262B30',
+            terminalBackground: '#262B30',
+          },
+        },
       }
     ),
     tailwind({
