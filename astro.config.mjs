@@ -17,43 +17,44 @@ export default defineConfig({
     prefetchAll: true,
   },
   integrations: [
-    react(), 
-    expressiveCode(
-      {
-        themes: ['vesper'],
+    react(),
+    expressiveCode({
+      themes: ['vesper'],
+      frames: {
+        showCopyToClipboardButton: false,
+      },
+      customizeTheme: theme => {
+        theme.bg = '#14151a';
+        theme.colors['editor.background'] = '#14151a';
+        theme.settings
+          .filter(s =>
+            (Array.isArray(s.scope) ? s.scope : [s.scope]).some(scope =>
+              scope?.includes('comment')
+            )
+          )
+          .forEach(s => {
+            s.settings.foreground = '#6b7089';
+          });
+      },
+      styleOverrides: {
+        borderWidth: '0px',
+        codeBackground: '#0C1222',
         frames: {
-          showCopyToClipboardButton: false,
+          editorBackground: '#262B30',
+          terminalBackground: '#262B30',
         },
-        customizeTheme: (theme) => {
-          theme.bg = '#14151a';
-          theme.colors['editor.background'] = '#14151a';
-          theme.settings
-            .filter((s) => (Array.isArray(s.scope) ? s.scope : [s.scope]).some((scope) => scope?.includes('comment')))
-            .forEach((s) => {
-              s.settings.foreground = '#6b7089';
-            });
-        },
-        styleOverrides: {
-          borderWidth: '0px',
-          codeBackground: '#0C1222',
-          frames: {
-            editorBackground: '#262B30',
-            terminalBackground: '#262B30',
-          },
-        },
-      }
-    ),
+      },
+    }),
     tailwind({
-    applyBaseStyles: false,
-  }), 
-  sitemap(), 
-  partytown({
-    config: {
-      forward: ['dataLayer.push'],
-    },
-  }), 
-
-],
+      applyBaseStyles: false,
+    }),
+    sitemap(),
+    partytown({
+      config: {
+        forward: ['dataLayer.push'],
+      },
+    }),
+  ],
   markdown: {
     rehypePlugins: [rehypeSlug, [rehypeToc, { headings: ['h2', 'h3', 'h4'] }]],
     remarkPlugins: [
