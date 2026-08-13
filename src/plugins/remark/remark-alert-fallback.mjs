@@ -28,7 +28,9 @@ export function remarkAlertFallback() {
       if (!match) return;
 
       const title = match[1];
-      const rest = firstText.value.replace(calloutRegex, '').replace(/^\n+/, '');
+      const rest = firstText.value
+        .replace(calloutRegex, '')
+        .replace(/^\n+/, '');
       if (rest) {
         // 同じテキストノード内に本文が続く場合(例: "[!X]\n本文" が1つのtextノード)
         firstParagraph.children[0] = { type: 'text', value: rest };
