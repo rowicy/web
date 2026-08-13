@@ -160,7 +160,19 @@ export function remarkMermaidInjector() {
       for (let i = 0; i < blocks.length; i++) {
         const code = blocks[i];
         const pre = code.parentElement;
-        let chart = code.textContent.trim();
+        // astro-expressive-codeは素のHTMLとして埋め込んだ<pre><code>も
+        // 1行ずつ.ec-line divでラップしてしまい、code.textContentだけでは
+        // 行間の改行が失われて1行に潰れ、mermaidのパースに失敗する
+        // (flowchart等インデント依存の構文で顕著)。.ec-lineがあれば
+        // 行ごとのtextContentを改行で結合し、無ければそのまま使う。
+        const lines = code.querySelectorAll(':scope > .ec-line');
+        let chart = (
+          lines.length > 0
+            ? Array.from(lines)
+                .map(line => line.textContent)
+                .join('\\n')
+            : code.textContent
+        ).trim();
 
         try {
           const { svg } = await mermaid.render(
