@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
@@ -10,10 +12,13 @@ import remarkBreaks from 'remark-breaks';
 import { remarkMermaidInjector } from './src/plugins/remark/remark-mermaid-injector.mjs';
 
 const SITE_URL = 'https://www.rowicy.com';
-const LINK_CARD_FALLBACK_IMAGE_URL = new URL(
-  '/images/link-card-fallback.svg',
-  SITE_URL
-).toString();
+// data URIはURL.canParse()を通り、かつdev/build/prodのどの環境・ポートでも
+// そのまま表示できるため、ホスト名に依存する絶対URLより確実(svgは537byteと小さい)。
+const LINK_CARD_FALLBACK_IMAGE_URL = `data:image/svg+xml;base64,${readFileSync(
+  fileURLToPath(
+    new URL('./public/images/link-card-fallback.svg', import.meta.url)
+  )
+).toString('base64')}`;
 
 // https://astro.build/config
 export default defineConfig({
