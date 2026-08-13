@@ -22,7 +22,20 @@ export function remarkD2Injector() {
     if (d2Found) {
       const scriptNode = {
         type: 'html',
-        value: `<script>
+        value: `<style>
+  @media (min-width: 1024px) {
+    .d2-container {
+      max-width: 80vw;
+    }
+    .d2-diagram svg {
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 90vh;
+    }
+  }
+</style>
+<script>
   async function initD2Diagrams() {
     const blocks = document.querySelectorAll(
       'pre code.language-d2'
