@@ -1,0 +1,187 @@
+---
+
+---
+
+<div id="heading-crumb" class="heading-crumb" hidden>
+  <div class="heading-crumb__inner container">
+    <span class="heading-crumb__ancestors"></span>
+  </div>
+</div>
+<script is:inline>
+  // Heading breadcrumb: once the reader scrolls past the article's
+  // table of contents (.toc), show a thin bar directly under the fixed
+  // site header with the current h2 > h3 > h4 path, so you always know
+  // where you are. Plain scroll tracking (not IntersectionObserver):
+  // each heading's absolute doc-top is cached once, then on scroll we
+  // just find the deepest heading of each level whose top has passed
+  // the bar's bottom edge. Simpler and avoids IO's "which way did we
+  // cross" ambiguity for a scrollspy like this.
+  document.addEventListener('DOMContentLoaded', () => {
+    const header = document.querySelector('header');
+    const bar = document.getElementById('heading-crumb');
+    const ancestors = bar
+      ? bar.querySelector('.heading-crumb__ancestors')
+      : null;
+    const toc = document.querySelector('.toc');
+    const article = document.querySelector('.blog-body');
+    if (!bar || !ancestors || !article) return;
+
+    const headings = Array.from(
+      article.querySelectorAll('h2[id], h3[id], h4[id]')
+    ).map(el => ({ el, level: Number(el.tagName[1]), top: 0 }));
+
+    let tocBottom = 0;
+
+    function measure() {
+      bar.style.top = `${header ? header.offsetHeight : 0}px`;
+      tocBottom = toc ? toc.getBoundingClientRect().bottom + window.scrollY : 0;
+      headings.forEach(h => {
+        h.top = h.el.getBoundingClientRect().top + window.scrollY;
+      });
+    }
+
+    function update() {
+      const line =
+        window.scrollY +
+        (header ? header.offsetHeight : 0) +
+        bar.offsetHeight +
+        4;
+
+      const path = { 2: null, 3: null, 4: null };
+      headings.forEach(h => {
+        if (h.top > line) return;
+        if (h.level === 2) {
+          path[2] = h.el.textContent;
+          path[3] = path[4] = null;
+        } else if (h.level === 3) {
+          path[3] = h.el.textContent;
+          path[4] = null;
+        } else {
+          path[4] = h.el.textContent;
+        }
+      });
+
+      const parts = [path[2], path[3], path[4]].filter(Boolean);
+      const shouldShow = window.scrollY >= tocBottom && parts.length > 0;
+      bar.hidden = !shouldShow;
+      if (!shouldShow) return;
+
+      // Ancestors (e.g. h2, h3) live in a separately-clipped span so
+      // they ellipsize first, leaving the current (deepest) heading
+      // room to stay fully readable.
+      const current = document.getElementById('heading-crumb__current');
+      if (current) current.remove();
+      ancestors.textContent = '';
+      const ancestorParts = parts.slice(0, -1);
+      ancestorParts.forEach((text, i) => {
+        if (i > 0) {
+          const sep = document.createElement('span');
+          sep.className = 'heading-crumb__sep';
+          sep.textContent = ' > ';
+          ancestors.appendChild(sep);
+        }
+        const item = document.createElement('span');
+        item.className = 'heading-crumb__item';
+        item.textContent = text;
+        ancestors.appendChild(item);
+      });
+
+      const currentText = parts[parts.length - 1];
+      const currentItem = document.createElement('span');
+      currentItem.id = 'heading-crumb__current';
+      currentItem.className =
+        'heading-crumb__item heading-crumb__item--current';
+      if (ancestorParts.length > 0) {
+        const sep = document.createElement('span');
+        sep.className = 'heading-crumb__sep';
+        sep.textContent = ' > ';
+        currentItem.appendChild(sep);
+      }
+      currentItem.appendChild(document.createTextNode(currentText));
+      ancestors.after(currentItem);
+    }
+
+    measure();
+    update();
+    window.addEventListener('resize', () => {
+      measure();
+      update();
+    });
+
+    // Web fonts swapping in can reflow the article and shift every
+    // heading's cached top, so re-measure once they're actually loaded.
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        measure();
+        update();
+      });
+    }
+
+    // Anything else that changes article height (images loading,
+    // late-rendered embeds, etc.) also invalidates the cached tops.
+    if (window.ResizeObserver) {
+      let resizeTimer = null;
+      new ResizeObserver(() => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          measure();
+          update();
+        }, 100);
+      }).observe(article);
+    }
+
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        update();
+      });
+    });
+  });
+</script>
+<style is:global lang="scss">
+  .heading-crumb {
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 40; // just under the header's z-50, sits flush beneath it
+    font-size: 0.8rem;
+    // Same background as Header (src/components/Header.tsx: bg-primary).
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground) / 0.65);
+
+    .heading-crumb__inner {
+      // Reuses Tailwind's `container` sizing/padding so the bar's left
+      // edge lines up with the header logo, and lays out ancestors vs.
+      // current as flex items so only the ancestors get clipped.
+      display: flex;
+      align-items: center;
+      padding-top: 0.4rem;
+      padding-bottom: 0.4rem;
+      white-space: nowrap;
+    }
+
+    .heading-crumb__ancestors {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    // Never let the current heading be clipped ahead of its ancestors;
+    // only falls back to ellipsis itself if it alone can't fit.
+    .heading-crumb__item--current {
+      flex-shrink: 0;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: hsl(var(--primary-foreground));
+    }
+
+    .heading-crumb__sep {
+      color: hsl(var(--primary-foreground) / 0.5);
+    }
+  }
+</style>
