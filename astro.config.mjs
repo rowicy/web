@@ -9,9 +9,15 @@ import remarkLinkCard from 'remark-link-card-plus';
 import remarkBreaks from 'remark-breaks';
 import { remarkMermaidInjector } from './src/plugins/remark/remark-mermaid-injector.mjs';
 
+const SITE_URL = 'https://www.rowicy.com';
+const LINK_CARD_FALLBACK_IMAGE_URL = new URL(
+  '/images/link-card-fallback.svg',
+  SITE_URL,
+).toString();
+
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://www.rowicy.com',
+  site: SITE_URL,
   prefetch: {
     prefetchAll: true,
   },
@@ -35,7 +41,15 @@ export default defineConfig({
       remarkBreaks,
       [
         remarkLinkCard,
-        { cache: false, shortenUrl: true, thumbnailPosition: 'left' },
+        {
+          cache: false,
+          shortenUrl: true,
+          thumbnailPosition: 'left',
+          ogTransformer: (og) => {
+            if (og.imageUrl && URL.canParse(og.imageUrl)) return og;
+            return { ...og, imageUrl: LINK_CARD_FALLBACK_IMAGE_URL };
+          },
+        },
       ],
     ],
   },
