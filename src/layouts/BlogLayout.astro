@@ -197,7 +197,11 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
       });
     </script>
 
-    <div id="heading-crumb" class="heading-crumb" hidden></div>
+    <div id="heading-crumb" class="heading-crumb" hidden>
+      <div class="heading-crumb__inner container">
+        <span class="heading-crumb__ancestors"></span>
+      </div>
+    </div>
     <script is:inline>
       // Heading breadcrumb: once the reader scrolls past the article's
       // table of contents (.toc), show a thin bar directly under the fixed
@@ -210,9 +214,12 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
       document.addEventListener('DOMContentLoaded', () => {
         const header = document.querySelector('header');
         const bar = document.getElementById('heading-crumb');
+        const ancestors = bar
+          ? bar.querySelector('.heading-crumb__ancestors')
+          : null;
         const toc = document.querySelector('.toc');
         const article = document.querySelector('.blog-body');
-        if (!bar || !article) return;
+        if (!bar || !ancestors || !article) return;
 
         const headings = Array.from(
           article.querySelectorAll('h2[id], h3[id], h4[id]')
@@ -256,21 +263,39 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
           bar.hidden = !shouldShow;
           if (!shouldShow) return;
 
-          bar.textContent = '';
-          parts.forEach((text, i) => {
+          // Ancestors (e.g. h2, h3) live in a separately-clipped span so
+          // they ellipsize first, leaving the current (deepest) heading
+          // room to stay fully readable.
+          const current = document.getElementById('heading-crumb__current');
+          if (current) current.remove();
+          ancestors.textContent = '';
+          const ancestorParts = parts.slice(0, -1);
+          ancestorParts.forEach((text, i) => {
             if (i > 0) {
               const sep = document.createElement('span');
               sep.className = 'heading-crumb__sep';
               sep.textContent = ' > ';
-              bar.appendChild(sep);
+              ancestors.appendChild(sep);
             }
             const item = document.createElement('span');
-            item.className =
-              'heading-crumb__item' +
-              (i === parts.length - 1 ? ' heading-crumb__item--current' : '');
+            item.className = 'heading-crumb__item';
             item.textContent = text;
-            bar.appendChild(item);
+            ancestors.appendChild(item);
           });
+
+          const currentText = parts[parts.length - 1];
+          const currentItem = document.createElement('span');
+          currentItem.id = 'heading-crumb__current';
+          currentItem.className =
+            'heading-crumb__item heading-crumb__item--current';
+          if (ancestorParts.length > 0) {
+            const sep = document.createElement('span');
+            sep.className = 'heading-crumb__sep';
+            sep.textContent = ' > ';
+            currentItem.appendChild(sep);
+          }
+          currentItem.appendChild(document.createTextNode(currentText));
+          ancestors.after(currentItem);
         }
 
         measure();
@@ -279,6 +304,28 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
           measure();
           update();
         });
+
+        // Web fonts swapping in can reflow the article and shift every
+        // heading's cached top, so re-measure once they're actually loaded.
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(() => {
+            measure();
+            update();
+          });
+        }
+
+        // Anything else that changes article height (images loading,
+        // late-rendered embeds, etc.) also invalidates the cached tops.
+        if (window.ResizeObserver) {
+          let resizeTimer = null;
+          new ResizeObserver(() => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+              measure();
+              update();
+            }, 100);
+          }).observe(article);
+        }
 
         let ticking = false;
         window.addEventListener('scroll', () => {
@@ -556,16 +603,36 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
         left: 0;
         right: 0;
         z-index: 40; // just under the header's z-50, sits flush beneath it
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        padding: 0.4rem 1rem;
         font-size: 0.8rem;
         // Same background as Header (src/components/Header.tsx: bg-primary).
         background-color: hsl(var(--primary));
         color: hsl(var(--primary-foreground) / 0.65);
 
+        .heading-crumb__inner {
+          // Reuses Tailwind's `container` sizing/padding so the bar's left
+          // edge lines up with the header logo, and lays out ancestors vs.
+          // current as flex items so only the ancestors get clipped.
+          display: flex;
+          align-items: center;
+          padding-top: 0.4rem;
+          padding-bottom: 0.4rem;
+          white-space: nowrap;
+        }
+
+        .heading-crumb__ancestors {
+          min-width: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        // Never let the current heading be clipped ahead of its ancestors;
+        // only falls back to ellipsis itself if it alone can't fit.
         .heading-crumb__item--current {
+          flex-shrink: 0;
+          min-width: 0;
+          max-width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
           color: hsl(var(--primary-foreground));
         }
 
