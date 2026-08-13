@@ -48,25 +48,35 @@ export function remarkMermaidInjector() {
         fontFamily: "Inter Variable, Noto Sans JP Variable, sans-serif",
         themeVariables: {
           fontFamily: "Inter Variable, Noto Sans JP Variable, sans-serif",
-          primaryColor: "hsl(210 40% 96.1%)",
-          primaryTextColor: "hsl(222.2 84% 4.9%)",
-          primaryBorderColor: "hsl(222.2 47.4% 11.2%)",
-          secondaryColor: "hsl(210 40% 96.1%)",
-          tertiaryColor: "hsl(0 0% 100%)",
-          lineColor: "hsl(215.4 16.3% 46.9%)",
-          textColor: "hsl(222.2 84% 4.9%)",
-          mainBkg: "hsl(210 40% 96.1%)",
-          nodeBorder: "hsl(222.2 47.4% 11.2%)",
-          clusterBkg: "hsl(210 40% 96.1%)",
-          clusterBorder: "hsl(214.3 31.8% 91.4%)",
-          edgeLabelBackground: "hsl(0 0% 100%)",
-          actorBkg: "hsl(210 40% 96.1%)",
-          actorBorder: "hsl(222.2 47.4% 11.2%)",
-          actorTextColor: "hsl(222.2 84% 4.9%)",
-          signalColor: "hsl(222.2 47.4% 11.2%)",
-          signalTextColor: "hsl(222.2 84% 4.9%)",
-          labelBoxBkgColor: "hsl(210 40% 96.1%)",
-          labelBoxBorderColor: "hsl(222.2 47.4% 11.2%)",
+          darkMode: true,
+          background: "#0f172a",
+          primaryColor: "#1e293b",
+          primaryTextColor: "#e2e8f0",
+          primaryBorderColor: "#38bdf8",
+          secondaryColor: "#1e293b",
+          tertiaryColor: "#0f172a",
+          lineColor: "#22d3ee",
+          textColor: "#e2e8f0",
+          mainBkg: "#1e293b",
+          nodeBorder: "#38bdf8",
+          clusterBkg: "#1e293b",
+          clusterBorder: "#22d3ee",
+          edgeLabelBackground: "#0f172a",
+          actorBkg: "#1e293b",
+          actorBorder: "#38bdf8",
+          actorTextColor: "#e2e8f0",
+          actorLineColor: "#22d3ee",
+          signalColor: "#22d3ee",
+          signalTextColor: "#e2e8f0",
+          labelBoxBkgColor: "#1e293b",
+          labelBoxBorderColor: "#38bdf8",
+          labelTextColor: "#e2e8f0",
+          loopTextColor: "#e2e8f0",
+          noteBkgColor: "#1e293b",
+          noteBorderColor: "#38bdf8",
+          noteTextColor: "#e2e8f0",
+          activationBkgColor: "#1e293b",
+          activationBorderColor: "#22d3ee",
         },
         flowchart: {
           curve: "basis",
@@ -86,11 +96,25 @@ export function remarkMermaidInjector() {
           );
           
           const container = document.createElement("div");
-          container.className = \`mermaid-container my-8\`;
+          container.className = "mermaid-container";
+          container.style.margin = "2rem 0";
 
           const wrapper = document.createElement("div");
-          wrapper.className = \`mermaid-diagram rounded-lg min-h-[100px] bg-transparent\`;
-          
+          wrapper.className = "mermaid-diagram";
+          // Tailwind can't scan classes generated inside this .mjs client
+          // script (content globs don't include .mjs), so styling here is
+          // inline to avoid silent purge instead of relying on utility
+          // classes that only exist in this string.
+          wrapper.style.cssText = [
+            "background-color: #0f172a",
+            "border-radius: 0.75rem",
+            "min-height: 100px",
+            "display: flex",
+            "justify-content: center",
+            "overflow-x: auto",
+            "padding: 1.5rem",
+          ].join("; ");
+
           wrapper.innerHTML = svg;
           container.appendChild(wrapper);
           pre.parentNode.replaceChild(container, pre);
