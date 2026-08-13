@@ -7,6 +7,7 @@ import rehypeToc from 'rehype-toc';
 import rehypeSlug from 'rehype-slug';
 import remarkLinkCard from 'remark-link-card-plus';
 import remarkBreaks from 'remark-breaks';
+import { remarkAlert } from 'remark-github-blockquote-alert';
 import { remarkMermaidInjector } from './src/plugins/remark/remark-mermaid-injector.mjs';
 
 // https://astro.build/config
@@ -33,6 +34,7 @@ export default defineConfig({
     remarkPlugins: [
       remarkMermaidInjector,
       remarkBreaks,
+      remarkAlert,
       [
         remarkLinkCard,
         { cache: false, shortenUrl: true, thumbnailPosition: 'left' },
