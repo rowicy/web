@@ -194,6 +194,49 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
             h.style.cursor = 'pointer';
             attachCopyEvent(h);
           });
+
+        // Scrollspy: highlight the toc link for the section currently in view.
+        const headings = Array.from(
+          document.querySelectorAll(
+            '.blog-body h2[id], .blog-body h3[id], .blog-body h4[id]'
+          )
+        );
+        const tocLinks = document.querySelectorAll('.blog-body .toc a[href^="#"]');
+        if (headings.length && tocLinks.length) {
+          const inView = new Set();
+
+          function setActiveLink() {
+            // The active section is the last (i.e. lowest) heading that has
+            // scrolled past the top band and not yet scrolled past the
+            // bottom of the "reading zone" below.
+            let currentId = null;
+            for (const h of headings) {
+              if (inView.has(h.id)) currentId = h.id;
+            }
+            if (currentId === null) return;
+            tocLinks.forEach(link => {
+              link.classList.toggle(
+                'is-active',
+                link.getAttribute('href') === `#${currentId}`
+              );
+            });
+          }
+
+          const observer = new IntersectionObserver(
+            entries => {
+              entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                  inView.add(entry.target.id);
+                } else {
+                  inView.delete(entry.target.id);
+                }
+              });
+              setActiveLink();
+            },
+            { rootMargin: '-76px 0px -75% 0px', threshold: 0 }
+          );
+          headings.forEach(h => observer.observe(h));
+        }
       });
     </script>
     <style is:global lang="scss">
@@ -205,18 +248,59 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
       .blog-body {
         margin-bottom: $space;
 
+        // Desktop: lay the toc out as a sticky sidebar next to the article
+        // body. All other direct children stay in column 1; .toc spans the
+        // full row range in column 2.
+        @media (min-width: 1024px) {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) 260px;
+          column-gap: 3rem;
+          align-items: start;
+
+          > *:not(.toc) {
+            grid-column: 1;
+          }
+        }
+
         .toc {
           padding-top: $space-sp;
           padding-bottom: $space-sp;
           margin-top: $space-sp;
           margin-bottom: $space-sp;
           border: 2px solid #efefef;
+          border-radius: var(--radius);
 
           @media (min-width: 768px) {
             padding-top: $space;
             padding-bottom: $space;
             margin-top: $space;
             margin-bottom: $space;
+          }
+
+          @media (min-width: 1024px) {
+            grid-column: 2;
+            grid-row: 1 / -1;
+            position: sticky;
+            top: 76px;
+            align-self: start;
+            max-height: calc(100vh - 96px);
+            overflow-y: auto;
+            margin-top: 0;
+          }
+
+          a {
+            display: inline-block;
+            border-left: 2px solid transparent;
+            padding-left: 0.4rem;
+            transition:
+              color 0.15s ease,
+              border-color 0.15s ease;
+
+            &.is-active {
+              color: hsl(var(--primary));
+              border-left-color: hsl(var(--primary));
+              font-weight: 600;
+            }
           }
 
           ol {
