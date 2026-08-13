@@ -462,6 +462,15 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
               color: hsl(var(--destructive));
             }
           }
+
+          // note/tip/important/warning/caution 以外の未知の種別向けの無彩色フォールバック
+          &.markdown-alert-default {
+            border-left-color: hsl(var(--border));
+
+            .markdown-alert-title {
+              color: hsl(var(--foreground));
+            }
+          }
         }
       }
 

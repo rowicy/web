@@ -9,6 +9,7 @@ import remarkLinkCard from 'remark-link-card-plus';
 import remarkBreaks from 'remark-breaks';
 import { remarkAlert } from 'remark-github-blockquote-alert';
 import { remarkMermaidInjector } from './src/plugins/remark/remark-mermaid-injector.mjs';
+import { remarkAlertFallback } from './src/plugins/remark/remark-alert-fallback.mjs';
 
 // https://astro.build/config
 export default defineConfig({
@@ -35,6 +36,7 @@ export default defineConfig({
       remarkMermaidInjector,
       remarkBreaks,
       remarkAlert,
+      remarkAlertFallback,
       [
         remarkLinkCard,
         { cache: false, shortenUrl: true, thumbnailPosition: 'left' },
