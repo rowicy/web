@@ -391,85 +391,9 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
           > :last-child {
             margin-bottom: 0;
           }
-        }
 
-        .markdown-alert {
-          margin: calc($space-sp * 0.8) 0;
-          padding: calc($space-sp * 0.8) calc($space-sp);
-          border-left: 4px solid hsl(var(--border));
-          border-radius: var(--radius);
-          background-color: hsl(var(--muted));
-          color: hsl(var(--foreground));
-
-          @media (min-width: 768px) {
-            padding: calc($space * 0.8) calc($space);
-          }
-
-          > :last-child {
-            margin-bottom: 0;
-          }
-
-          .markdown-alert-title {
-            display: flex;
-            align-items: center;
-            gap: 0.4em;
-            margin-bottom: 0.4em;
+          .callout-label {
             font-weight: 700;
-            font-size: 0.95em;
-
-            .octicon {
-              flex-shrink: 0;
-              fill: currentColor;
-            }
-          }
-
-          &.markdown-alert-note {
-            border-left-color: #0969da;
-
-            .markdown-alert-title {
-              color: #0969da;
-            }
-          }
-
-          &.markdown-alert-tip {
-            border-left-color: #1a7f37;
-
-            .markdown-alert-title {
-              color: #1a7f37;
-            }
-          }
-
-          &.markdown-alert-important {
-            border-left-color: #8250df;
-
-            .markdown-alert-title {
-              color: #8250df;
-            }
-          }
-
-          &.markdown-alert-warning {
-            border-left-color: #9a6700;
-
-            .markdown-alert-title {
-              color: #9a6700;
-            }
-          }
-
-          &.markdown-alert-caution {
-            border-left-color: hsl(var(--destructive));
-
-            .markdown-alert-title {
-              color: hsl(var(--destructive));
-            }
-          }
-
-          // note/tip/important/warning/caution 以外の未知の種別向けの無彩色フォールバック
-          &.markdown-alert-default {
-            border-left-color: hsl(var(--border));
-
-            .markdown-alert-title {
-              color: hsl(var(--foreground));
-            }
           }
         }
       }

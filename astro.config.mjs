@@ -7,9 +7,8 @@ import rehypeToc from 'rehype-toc';
 import rehypeSlug from 'rehype-slug';
 import remarkLinkCard from 'remark-link-card-plus';
 import remarkBreaks from 'remark-breaks';
-import { remarkAlert } from 'remark-github-blockquote-alert';
 import { remarkMermaidInjector } from './src/plugins/remark/remark-mermaid-injector.mjs';
-import { remarkAlertFallback } from './src/plugins/remark/remark-alert-fallback.mjs';
+import { remarkCallout } from './src/plugins/remark/remark-callout.mjs';
 
 // https://astro.build/config
 export default defineConfig({
@@ -35,8 +34,7 @@ export default defineConfig({
     remarkPlugins: [
       remarkMermaidInjector,
       remarkBreaks,
-      remarkAlert,
-      remarkAlertFallback,
+      remarkCallout,
       [
         remarkLinkCard,
         { cache: false, shortenUrl: true, thumbnailPosition: 'left' },

@@ -5,19 +5,13 @@ const calloutRegex = /^\[!([^\]]+)\]/;
 /**
  * remark プラグイン
  *
- * `remarkAlert`(remark-github-blockquote-alert)が対応する
- * note/tip/important/warning/caution 以外の `> [!XXX]` 記法を、
- * 無彩色のデフォルトコールアウト(markdown-alert-default)として変換する。
- * 必ず remarkAlert の後に実行すること。
+ * `> [!任意の文字列]` から始まる blockquote を、既存の blockquote スタイルの
+ * まま「ラベル部分だけ少し強調する」コールアウトに変換する。
+ * 種別による色分けは行わない(全種別で見た目は同じ)。
  */
-export function remarkAlertFallback() {
+export function remarkCallout() {
   return function (tree) {
     visit(tree, 'blockquote', node => {
-      // remarkAlert で既に変換済み(note/tip/...)のものはスキップ
-      if (node.data?.hProperties?.className?.includes('markdown-alert')) {
-        return;
-      }
-
       const firstParagraph = node.children.find(
         child => child.type === 'paragraph'
       );
@@ -27,7 +21,7 @@ export function remarkAlertFallback() {
       const match = firstText.value.match(calloutRegex);
       if (!match) return;
 
-      const title = match[1];
+      const label = match[1];
       const rest = firstText.value
         .replace(calloutRegex, '')
         .replace(/^\n+/, '');
@@ -35,7 +29,7 @@ export function remarkAlertFallback() {
         // 同じテキストノード内に本文が続く場合(例: "[!X]\n本文" が1つのtextノード)
         firstParagraph.children[0] = { type: 'text', value: rest };
       } else {
-        // タイトル行のみのtextノードを除去(直後のbreakノードも除去)
+        // ラベル行のみのtextノードを除去(直後のbreakノードも除去)
         firstParagraph.children.shift();
         if (firstParagraph.children[0]?.type === 'break') {
           firstParagraph.children.shift();
@@ -43,20 +37,13 @@ export function remarkAlertFallback() {
       }
 
       node.data = {
-        hName: 'div',
-        hProperties: {
-          className: ['markdown-alert', 'markdown-alert-default'],
-          dir: 'auto',
-        },
+        hProperties: { className: ['callout'] },
       };
       node.children.unshift({
         type: 'paragraph',
-        children: [{ type: 'text', value: title }],
+        children: [{ type: 'text', value: label }],
         data: {
-          hProperties: {
-            className: 'markdown-alert-title',
-            dir: 'auto',
-          },
+          hProperties: { className: 'callout-label' },
         },
       });
     });
