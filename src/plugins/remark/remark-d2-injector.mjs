@@ -127,10 +127,17 @@ export function remarkD2Injector() {
     stroke: #1e293b !important;
   }
   /* connection(矢印)はノード枠と同じB1クラスを共有しているため、
-     mermaidのlineColorに合わせて水色アクセントで上書きする */
-  .d2-diagram svg .connection.fill-B1,
-  .d2-diagram svg .connection.stroke-B1 {
+     mermaidのlineColorに合わせて水色アクセントで上書きする。
+     矢印線本体(stroke-B1、fill="none"のpath)と矢印先端マーカー
+     (fill-B1、塗りつぶしのpolygon)は役割が異なるので、fill/strokeは
+     それぞれの役割にのみ適用する。両方をまとめて同一要素に当てると、
+     線本体のfillがnoneから上書きされてしまい、閉じていないpathが
+     ブラウザによって暗黙的に閉じられて塗りつぶされ、太いリボン状に
+     見えてしまう(特にエッジが扇状に大きく湾曲する図で顕著)。 */
+  .d2-diagram svg .connection.fill-B1 {
     fill: #22d3ee !important;
+  }
+  .d2-diagram svg .connection.stroke-B1 {
     stroke: #22d3ee !important;
   }
 </style>
