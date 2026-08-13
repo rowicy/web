@@ -8,6 +8,7 @@ import rehypeSlug from 'rehype-slug';
 import remarkLinkCard from 'remark-link-card-plus';
 import remarkBreaks from 'remark-breaks';
 import { remarkMermaidInjector } from './src/plugins/remark/remark-mermaid-injector.mjs';
+import { remarkD2Injector } from './src/plugins/remark/remark-d2-injector.mjs';
 
 // https://astro.build/config
 export default defineConfig({
@@ -28,10 +29,18 @@ export default defineConfig({
     }),
   ],
   markdown: {
-    excludeLangs: ['mermaid'],
+    excludeLangs: ['mermaid', 'd2'],
+    syntaxHighlight: {
+      type: 'shiki',
+      // Shiki doesn't have a "d2" grammar, so without this it silently
+      // falls back to "plaintext" and the client-side renderer below
+      // can't find the code block anymore.
+      excludeLangs: ['d2'],
+    },
     rehypePlugins: [rehypeSlug, [rehypeToc, { headings: ['h2', 'h3', 'h4'] }]],
     remarkPlugins: [
       remarkMermaidInjector,
+      remarkD2Injector,
       remarkBreaks,
       [
         remarkLinkCard,
