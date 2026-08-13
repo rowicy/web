@@ -22,7 +22,23 @@ export function remarkMermaidInjector() {
     if (mermaidFound) {
       const scriptNode = {
         type: 'html',
-        value: `<script>
+        value: `<style>
+  /* 縦がビューポートをはみ出す場合はアスペクト比を保ってスケールダウン。
+     幅・高さ両方をautoにしつつmax-width/max-heightを指定することで、
+     imgのobject-fit:contain相当の挙動をbrowserに任せる。画面幅を問わず適用。 */
+  .mermaid-diagram svg {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 90vh;
+  }
+  @media (min-width: 1024px) {
+    .mermaid-container {
+      max-width: 80vw;
+    }
+  }
+</style>
+<script>
   async function initMermaidDiagrams() {
     const blocks = document.querySelectorAll(
       'pre[data-language="mermaid"] code'
