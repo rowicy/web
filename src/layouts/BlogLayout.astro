@@ -197,127 +197,98 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
       });
     </script>
 
+    <div id="heading-crumb" class="heading-crumb" hidden></div>
     <script is:inline>
-      // Sticky Scroll (VSCode-like): as the article scrolls, h2/h3/h4
-      // headings stack under the header in nested order (h2, then its
-      // current h3, then its current h4) instead of scrolling away.
-      //
-      // How: the flat h2/h3/h4 siblings rendered by rehype-slug/rehype-toc
-      // are re-nested client-side into <div class="stack-section"> wrappers
-      // (one per heading, containing that heading + everything until the
-      // next same-or-higher-level heading). Each wrapper's heading gets
-      // `position: sticky` with a fixed `top` per level (HEADER + stacked
-      // ancestor heights), so nested sticky naturally "releases" a heading
-      // once you scroll past its section - no JS bookkeeping needed for
-      // that part.
-      //
-      // On top of that, a scroll-linked custom property (--stack-progress)
-      // shrinks each heading from its normal in-article size down to its
-      // stacked size over ~4rem of scroll, right before it locks in place.
+      // Heading breadcrumb: once the reader scrolls past the article's
+      // table of contents (.toc), show a thin bar directly under the fixed
+      // site header with the current h2 > h3 > h4 path, so you always know
+      // where you are. Plain scroll tracking (not IntersectionObserver):
+      // each heading's absolute doc-top is cached once, then on scroll we
+      // just find the deepest heading of each level whose top has passed
+      // the bar's bottom edge. Simpler and avoids IO's "which way did we
+      // cross" ambiguity for a scrollspy like this.
       document.addEventListener('DOMContentLoaded', () => {
-        const HEADER_H = 60; // px, matches html { scroll-padding-top }
-        const STACK_H = { 2: 44, 3: 40, 4: 36 }; // px, stacked row height per level
-        const SHRINK_PX = 64; // ~4rem scroll distance for the shrink transition
-
-        function nestHeadings(root) {
-          const children = Array.from(root.children);
-          const top = [];
-          const stack = []; // { level, contentEl }
-
-          const currentParent = () =>
-            stack.length ? stack[stack.length - 1].contentEl : null;
-
-          children.forEach(node => {
-            const level = /^H[2-4]$/.test(node.tagName)
-              ? Number(node.tagName[1])
-              : null;
-
-            if (level === null) {
-              const parent = currentParent();
-              if (parent) parent.appendChild(node);
-              else top.push(node);
-              return;
-            }
-
-            while (stack.length && stack[stack.length - 1].level >= level) {
-              stack.pop();
-            }
-
-            const section = document.createElement('div');
-            section.className = 'stack-section';
-
-            const headingWrap = document.createElement('div');
-            headingWrap.className = `stack-heading stack-heading--${level}`;
-            headingWrap.style.top = `${
-              HEADER_H +
-              Object.entries(STACK_H)
-                .filter(([lvl]) => Number(lvl) < level)
-                .reduce((sum, [, h]) => sum + h, 0)
-            }px`;
-            headingWrap.appendChild(node);
-
-            const content = document.createElement('div');
-            content.className = 'stack-content';
-
-            section.appendChild(headingWrap);
-            section.appendChild(content);
-
-            const parent = currentParent();
-            if (parent) parent.appendChild(section);
-            else top.push(section);
-
-            stack.push({ level, contentEl: content });
-          });
-
-          top.forEach(node => root.appendChild(node));
-        }
-
+        const header = document.querySelector('header');
+        const bar = document.getElementById('heading-crumb');
+        const toc = document.querySelector('.toc');
         const article = document.querySelector('.blog-body');
-        if (!article) return;
-        nestHeadings(article);
+        if (!bar || !article) return;
 
         const headings = Array.from(
           article.querySelectorAll('h2[id], h3[id], h4[id]')
-        );
-        if (!headings.length) return;
+        ).map(el => ({ el, level: Number(el.tagName[1]), top: 0 }));
 
-        // Cache each heading's natural (un-stuck) document top once, so the
-        // shrink progress can be derived purely from scrollY.
-        const meta = headings.map(h => {
-          const level = Number(h.tagName[1]);
-          const topOffset = parseFloat(h.parentElement.style.top) || HEADER_H;
-          return { el: h, level, topOffset, docTop: 0 };
-        });
+        let tocBottom = 0;
 
         function measure() {
-          meta.forEach(m => {
-            m.docTop = m.el.getBoundingClientRect().top + window.scrollY;
+          bar.style.top = `${header ? header.offsetHeight : 0}px`;
+          tocBottom = toc
+            ? toc.getBoundingClientRect().bottom + window.scrollY
+            : 0;
+          headings.forEach(h => {
+            h.top = h.el.getBoundingClientRect().top + window.scrollY;
           });
         }
+
+        function update() {
+          const line =
+            window.scrollY +
+            (header ? header.offsetHeight : 0) +
+            bar.offsetHeight +
+            4;
+
+          const path = { 2: null, 3: null, 4: null };
+          headings.forEach(h => {
+            if (h.top > line) return;
+            if (h.level === 2) {
+              path[2] = h.el.textContent;
+              path[3] = path[4] = null;
+            } else if (h.level === 3) {
+              path[3] = h.el.textContent;
+              path[4] = null;
+            } else {
+              path[4] = h.el.textContent;
+            }
+          });
+
+          const parts = [path[2], path[3], path[4]].filter(Boolean);
+          const shouldShow = window.scrollY >= tocBottom && parts.length > 0;
+          bar.hidden = !shouldShow;
+          if (!shouldShow) return;
+
+          bar.textContent = '';
+          parts.forEach((text, i) => {
+            if (i > 0) {
+              const sep = document.createElement('span');
+              sep.className = 'heading-crumb__sep';
+              sep.textContent = ' > ';
+              bar.appendChild(sep);
+            }
+            const item = document.createElement('span');
+            item.className =
+              'heading-crumb__item' +
+              (i === parts.length - 1 ? ' heading-crumb__item--current' : '');
+            item.textContent = text;
+            bar.appendChild(item);
+          });
+        }
+
         measure();
-        window.addEventListener('resize', measure);
+        update();
+        window.addEventListener('resize', () => {
+          measure();
+          update();
+        });
 
         let ticking = false;
-        function update() {
-          ticking = false;
-          const scrollY = window.scrollY;
-          meta.forEach(m => {
-            const stuckAt = m.docTop - m.topOffset;
-            const progress = Math.min(
-              1,
-              Math.max(0, (scrollY - (stuckAt - SHRINK_PX)) / SHRINK_PX)
-            );
-            m.el.style.setProperty('--stack-progress', String(progress));
-            m.el.parentElement.classList.toggle('is-stacked', progress >= 1);
-          });
-        }
         window.addEventListener('scroll', () => {
-          if (!ticking) {
-            ticking = true;
-            requestAnimationFrame(update);
-          }
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(() => {
+            ticking = false;
+            update();
+          });
         });
-        update();
       });
     </script>
     <style is:global lang="scss">
@@ -380,73 +351,26 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
         }
 
         h2 {
-          --stack-size: 1.05rem;
-          font-size: calc(
-            $font-size-sp - ($font-size-sp - var(--stack-size)) *
-              var(--stack-progress, 0)
-          );
+          font-size: $font-size-sp;
 
           @media (min-width: 768px) {
-            font-size: calc(
-              $font-size - ($font-size - var(--stack-size)) *
-                var(--stack-progress, 0)
-            );
+            font-size: $font-size;
           }
         }
 
         h3 {
-          --stack-size: 0.95rem;
-          font-size: calc(
-            $font-size-sp * 0.9 - ($font-size-sp * 0.9 - var(--stack-size)) *
-              var(--stack-progress, 0)
-          );
+          font-size: calc($font-size-sp * 0.9);
 
           @media (min-width: 768px) {
-            font-size: calc(
-              $font-size * 0.9 - ($font-size * 0.9 - var(--stack-size)) *
-                var(--stack-progress, 0)
-            );
+            font-size: calc($font-size * 0.9);
           }
         }
 
         h4 {
-          --stack-size: 0.875rem;
-          font-size: calc(
-            $font-size-sp * 0.8 - ($font-size-sp * 0.8 - var(--stack-size)) *
-              var(--stack-progress, 0)
-          );
+          font-size: calc($font-size-sp * 0.8);
 
           @media (min-width: 768px) {
-            font-size: calc(
-              $font-size * 0.8 - ($font-size * 0.8 - var(--stack-size)) *
-                var(--stack-progress, 0)
-            );
-          }
-        }
-
-        // Sticky Scroll: wrappers created client-side (see script below) so
-        // h2/h3/h4 stack under the header in nested order while scrolling.
-        .stack-heading {
-          position: sticky;
-          z-index: 20;
-          background-color: hsl(var(--background));
-
-          // Once fully shrunk (locked into the stack), clip to one line so a
-          // long heading can't grow the stacked row and overlap the next one.
-          &.is-stacked h2,
-          &.is-stacked h3,
-          &.is-stacked h4 {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          }
-        }
-
-        .stack-content > :first-child {
-          margin-top: calc($space-sp / 2);
-
-          @media (min-width: 768px) {
-            margin-top: calc($space / 2);
+            font-size: calc($font-size * 0.8);
           }
         }
 
@@ -625,6 +549,29 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
         text-align: center;
         pointer-events: none;
         transition: opacity 0.3s;
+      }
+
+      .heading-crumb {
+        position: fixed;
+        left: 0;
+        right: 0;
+        z-index: 40; // just under the header's z-50, sits flush beneath it
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        padding: 0.4rem 1rem;
+        font-size: 0.8rem;
+        // Same background as Header (src/components/Header.tsx: bg-primary).
+        background-color: hsl(var(--primary));
+        color: hsl(var(--primary-foreground) / 0.65);
+
+        .heading-crumb__item--current {
+          color: hsl(var(--primary-foreground));
+        }
+
+        .heading-crumb__sep {
+          color: hsl(var(--primary-foreground) / 0.5);
+        }
       }
     </style>
   </body>
