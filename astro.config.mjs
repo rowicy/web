@@ -12,7 +12,7 @@ import { remarkMermaidInjector } from './src/plugins/remark/remark-mermaid-injec
 const SITE_URL = 'https://www.rowicy.com';
 const LINK_CARD_FALLBACK_IMAGE_URL = new URL(
   '/images/link-card-fallback.svg',
-  SITE_URL,
+  SITE_URL
 ).toString();
 
 // https://astro.build/config
@@ -45,7 +45,7 @@ export default defineConfig({
           cache: false,
           shortenUrl: true,
           thumbnailPosition: 'left',
-          ogTransformer: (og) => {
+          ogTransformer: og => {
             if (og.imageUrl && URL.canParse(og.imageUrl)) return og;
             return { ...og, imageUrl: LINK_CARD_FALLBACK_IMAGE_URL };
           },
