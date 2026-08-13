@@ -44,6 +44,34 @@ export function remarkMermaidInjector() {
 
       mermaid.initialize({
         startOnLoad: false,
+        theme: "base",
+        fontFamily: "Inter Variable, Noto Sans JP Variable, sans-serif",
+        themeVariables: {
+          fontFamily: "Inter Variable, Noto Sans JP Variable, sans-serif",
+          primaryColor: "hsl(210 40% 96.1%)",
+          primaryTextColor: "hsl(222.2 84% 4.9%)",
+          primaryBorderColor: "hsl(222.2 47.4% 11.2%)",
+          secondaryColor: "hsl(210 40% 96.1%)",
+          tertiaryColor: "hsl(0 0% 100%)",
+          lineColor: "hsl(215.4 16.3% 46.9%)",
+          textColor: "hsl(222.2 84% 4.9%)",
+          mainBkg: "hsl(210 40% 96.1%)",
+          nodeBorder: "hsl(222.2 47.4% 11.2%)",
+          clusterBkg: "hsl(210 40% 96.1%)",
+          clusterBorder: "hsl(214.3 31.8% 91.4%)",
+          edgeLabelBackground: "hsl(0 0% 100%)",
+          actorBkg: "hsl(210 40% 96.1%)",
+          actorBorder: "hsl(222.2 47.4% 11.2%)",
+          actorTextColor: "hsl(222.2 84% 4.9%)",
+          signalColor: "hsl(222.2 47.4% 11.2%)",
+          signalTextColor: "hsl(222.2 84% 4.9%)",
+          labelBoxBkgColor: "hsl(210 40% 96.1%)",
+          labelBoxBorderColor: "hsl(222.2 47.4% 11.2%)",
+        },
+        flowchart: {
+          curve: "basis",
+          padding: 12,
+        },
       });
 
       for (let i = 0; i < blocks.length; i++) {
