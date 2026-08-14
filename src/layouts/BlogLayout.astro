@@ -316,7 +316,7 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
           }
         }
 
-        :not(h2, h3, h4, h5, h6) + :not(h2, h3, h4, h5, h6) {
+        > :not(h2, h3, h4, h5, h6) + :not(h2, h3, h4, h5, h6) {
           margin-top: calc($space-sp * 0.8);
 
           @media (min-width: 768px) {

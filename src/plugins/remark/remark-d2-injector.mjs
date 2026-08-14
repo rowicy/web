@@ -1,21 +1,35 @@
 import { visit } from 'unist-util-visit';
 
+function escapeHtml(value) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
 /**
  * remark プラグイン
  *
  * markdown ASTにてD2コードブロックがある場合、クライアントでの描画スクリプト(@terrastruct/d2処理)を末尾に挿入
  *
+ * D2ブロックはastro-expressive-codeが行ごとにラップして描画するため、
+ * code.textContentから改行付きのソースを取り出せなくなる。
+ * astro-expressive-codeには言語単位の除外オプションが無いため、
+ * ここでrawなHTMLノードに置き換えてexpressive-codeの処理対象から外す
+ * (mermaidと同じ対策、remark-mermaid-injector.mjs参照)。
  */
 export function remarkD2Injector() {
   return function (tree) {
     let d2Found = false;
 
-    // D2コードブロックの存在を確認
-    visit(tree, 'code', node => {
-      if (node.lang === 'd2') {
-        d2Found = true;
-        return false;
-      }
+    visit(tree, 'code', (node, index, parent) => {
+      if (node.lang !== 'd2' || !parent) return;
+
+      d2Found = true;
+      parent.children[index] = {
+        type: 'html',
+        value: `<pre data-language="d2"><code>${escapeHtml(node.value)}</code></pre>`,
+      };
     });
 
     // D2ブロックがある場合、末尾にスクリプトを追加
@@ -144,7 +158,7 @@ export function remarkD2Injector() {
 <script>
   async function initD2Diagrams() {
     const blocks = document.querySelectorAll(
-      'pre code.language-d2'
+      'pre[data-language="d2"] code'
     );
 
     if (blocks.length === 0) return;
@@ -158,7 +172,19 @@ export function remarkD2Injector() {
       for (let i = 0; i < blocks.length; i++) {
         const code = blocks[i];
         const pre = code.parentElement;
-        let script = code.textContent.trim();
+        // astro-expressive-codeは素のHTMLとして埋め込んだ<pre><code>も
+        // 1行ずつ.ec-line divでラップしてしまい、code.textContentだけでは
+        // 行間の改行が失われて1行に潰れ、D2のパースに失敗する
+        // (インデント依存の記法で顕著)。.ec-lineがあれば行ごとの
+        // textContentを改行で結合し、無ければそのまま使う。
+        const lines = code.querySelectorAll(':scope > .ec-line');
+        let script = (
+          lines.length > 0
+            ? Array.from(lines)
+                .map(line => line.textContent)
+                .join('\\n')
+            : code.textContent
+        ).trim();
 
         try {
           const { diagram, renderOptions } = await d2.compile(script);
