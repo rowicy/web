@@ -77,7 +77,7 @@
         if (i > 0) {
           const sep = document.createElement('span');
           sep.className = 'heading-crumb-bar__sep';
-          sep.textContent = ' > ';
+          sep.textContent = '>';
           ancestors.appendChild(sep);
         }
         const item = document.createElement('span');
@@ -94,7 +94,7 @@
       if (ancestorParts.length > 0) {
         const sep = document.createElement('span');
         sep.className = 'heading-crumb-bar__sep';
-        sep.textContent = ' > ';
+        sep.textContent = '>';
         currentItem.appendChild(sep);
       }
       currentItem.appendChild(document.createTextNode(currentText));
@@ -181,6 +181,10 @@
     }
 
     .heading-crumb-bar__sep {
+      // 前後の余白はテキスト中の空白文字ではなくmarginで作る。
+      // sepはflexアイテム(currentItem)の先頭子要素になる場合があり、
+      // 空白文字だとCSSの空白つぶしでflexアイテム先頭側だけ消えてしまうため。
+      margin: 0 0.3em;
       color: hsl(var(--primary-foreground) / 0.5);
     }
   }
