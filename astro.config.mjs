@@ -10,6 +10,7 @@ import rehypeSlug from 'rehype-slug';
 import remarkLinkCard from 'remark-link-card-plus';
 import remarkBreaks from 'remark-breaks';
 import { remarkMermaidInjector } from './src/plugins/remark/remark-mermaid-injector.mjs';
+import { remarkCallout } from './src/plugins/remark/remark-callout.mjs';
 import expressiveCode from 'astro-expressive-code';
 import { unified } from '@astrojs/markdown-remark';
 
@@ -73,6 +74,7 @@ export default defineConfig({
       remarkPlugins: [
         remarkMermaidInjector,
         remarkBreaks,
+        remarkCallout,
         [
           remarkLinkCard,
           {
@@ -85,7 +87,9 @@ export default defineConfig({
             },
           },
         ],
+
       ],
+
     }),
   },
 });
