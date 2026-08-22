@@ -2,9 +2,9 @@
 
 ---
 
-<div id="heading-crumb" class="heading-crumb" hidden>
-  <div class="heading-crumb__inner container">
-    <span class="heading-crumb__ancestors"></span>
+<div id="heading-crumb-bar" class="heading-crumb-bar" hidden>
+  <div class="heading-crumb-bar__inner container">
+    <span class="heading-crumb-bar__ancestors"></span>
   </div>
 </div>
 <script is:inline>
@@ -18,9 +18,9 @@
   // cross" ambiguity for a scrollspy like this.
   document.addEventListener('DOMContentLoaded', () => {
     const header = document.querySelector('header');
-    const bar = document.getElementById('heading-crumb');
+    const bar = document.getElementById('heading-crumb-bar');
     const ancestors = bar
-      ? bar.querySelector('.heading-crumb__ancestors')
+      ? bar.querySelector('.heading-crumb-bar__ancestors')
       : null;
     const toc = document.querySelector('.toc');
     const article = document.querySelector('.blog-body');
@@ -69,31 +69,31 @@
       // Ancestors (e.g. h2, h3) live in a separately-clipped span so
       // they ellipsize first, leaving the current (deepest) heading
       // room to stay fully readable.
-      const current = document.getElementById('heading-crumb__current');
+      const current = document.getElementById('heading-crumb-bar__current');
       if (current) current.remove();
       ancestors.textContent = '';
       const ancestorParts = parts.slice(0, -1);
       ancestorParts.forEach((text, i) => {
         if (i > 0) {
           const sep = document.createElement('span');
-          sep.className = 'heading-crumb__sep';
+          sep.className = 'heading-crumb-bar__sep';
           sep.textContent = ' > ';
           ancestors.appendChild(sep);
         }
         const item = document.createElement('span');
-        item.className = 'heading-crumb__item';
+        item.className = 'heading-crumb-bar__item';
         item.textContent = text;
         ancestors.appendChild(item);
       });
 
       const currentText = parts[parts.length - 1];
       const currentItem = document.createElement('span');
-      currentItem.id = 'heading-crumb__current';
+      currentItem.id = 'heading-crumb-bar__current';
       currentItem.className =
-        'heading-crumb__item heading-crumb__item--current';
+        'heading-crumb-bar__item heading-crumb-bar__item--current';
       if (ancestorParts.length > 0) {
         const sep = document.createElement('span');
-        sep.className = 'heading-crumb__sep';
+        sep.className = 'heading-crumb-bar__sep';
         sep.textContent = ' > ';
         currentItem.appendChild(sep);
       }
@@ -142,7 +142,7 @@
   });
 </script>
 <style is:global lang="scss">
-  .heading-crumb {
+  .heading-crumb-bar {
     position: fixed;
     left: 0;
     right: 0;
@@ -152,7 +152,7 @@
     background-color: hsl(var(--primary));
     color: hsl(var(--primary-foreground) / 0.65);
 
-    .heading-crumb__inner {
+    .heading-crumb-bar__inner {
       // Reuses Tailwind's `container` sizing/padding so the bar's left
       // edge lines up with the header logo, and lays out ancestors vs.
       // current as flex items so only the ancestors get clipped.
@@ -163,7 +163,7 @@
       white-space: nowrap;
     }
 
-    .heading-crumb__ancestors {
+    .heading-crumb-bar__ancestors {
       min-width: 0;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -171,7 +171,7 @@
 
     // Never let the current heading be clipped ahead of its ancestors;
     // only falls back to ellipsis itself if it alone can't fit.
-    .heading-crumb__item--current {
+    .heading-crumb-bar__item--current {
       flex-shrink: 0;
       min-width: 0;
       max-width: 100%;
@@ -180,7 +180,7 @@
       color: hsl(var(--primary-foreground));
     }
 
-    .heading-crumb__sep {
+    .heading-crumb-bar__sep {
       color: hsl(var(--primary-foreground) / 0.5);
     }
   }
