@@ -59,7 +59,7 @@ const BlogList = ({ blogs }: Props) => {
 
       <div className="flex w-full flex-col gap-3">
         {currentBlogs.map(blog => (
-          <BlogCard key={blog.slug} blog={blog} />
+          <BlogCard key={blog.id} blog={blog} />
         ))}
       </div>
 
