@@ -11,6 +11,7 @@ import remarkLinkCard from 'remark-link-card-plus';
 import remarkBreaks from 'remark-breaks';
 import { remarkMermaidInjector } from './src/plugins/remark/remark-mermaid-injector.mjs';
 import expressiveCode from 'astro-expressive-code';
+import { unified } from '@astrojs/markdown-remark';
 
 const SITE_URL = 'https://www.rowicy.com';
 // data URIはURL.canParse()を通り、かつdev/build/prodのどの環境・ポートでも
@@ -67,22 +68,24 @@ export default defineConfig({
     }),
   ],
   markdown: {
-    rehypePlugins: [rehypeSlug, [rehypeToc, { headings: ['h2', 'h3', 'h4'] }]],
-    remarkPlugins: [
-      remarkMermaidInjector,
-      remarkBreaks,
-      [
-        remarkLinkCard,
-        {
-          cache: false,
-          shortenUrl: true,
-          thumbnailPosition: 'left',
-          ogTransformer: og => {
-            if (og.imageUrl && URL.canParse(og.imageUrl)) return og;
-            return { ...og, imageUrl: LINK_CARD_FALLBACK_IMAGE_URL };
+    processor: unified({
+      rehypePlugins: [rehypeSlug, [rehypeToc, { headings: ['h2', 'h3', 'h4'] }]],
+      remarkPlugins: [
+        remarkMermaidInjector,
+        remarkBreaks,
+        [
+          remarkLinkCard,
+          {
+            cache: false,
+            shortenUrl: true,
+            thumbnailPosition: 'left',
+            ogTransformer: og => {
+              if (og.imageUrl && URL.canParse(og.imageUrl)) return og;
+              return { ...og, imageUrl: LINK_CARD_FALLBACK_IMAGE_URL };
+            },
           },
-        },
+        ],
       ],
-    ],
+    }),
   },
 });

@@ -14,7 +14,7 @@ type Props = {
 const BlogCard = ({ blog, color }: Props) => {
   const author = member.find(m => m.name === blog.data.author);
   const isExternal = !!blog.data.externalUrl;
-  const href = isExternal ? blog.data.externalUrl : `/blog/${blog.slug}`;
+  const href = isExternal ? blog.data.externalUrl : `/blog/${blog.id}`;
   const linkProps = isExternal
     ? { target: '_blank', rel: 'noopener noreferrer' }
     : {};

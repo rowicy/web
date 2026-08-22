@@ -1,4 +1,4 @@
-import { type RSSOptions } from '@astrojs/rss';
+import type { RSSOptions } from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 import siteInfo from '@/data/siteInfo';
 
@@ -20,9 +20,9 @@ function extractImageUrl(body: string) {
 
   for (const url of allUrls) {
     const isRelative = url.startsWith('/');
-    let fullUrl = url;
+    const fullUrl = url;
     const ext = fullUrl.split('?')[0].split('.').pop()?.toLowerCase();
-    let type;
+    let type: string | null = null;
 
     switch (ext) {
       case 'jpg':
@@ -73,7 +73,7 @@ async function getFeed(
       blogs = blogs.filter(blog => blog.data.author === filter.author);
     }
     if (filter.tag) {
-      blogs = blogs.filter(blog => blog.data.tags?.includes(filter.tag!));
+      blogs = blogs.filter(blog => blog.data.tags?.includes(filter.tag ?? ''));
     }
   }
   blogs = blogs
@@ -97,17 +97,15 @@ async function getFeed(
       title: blog.data.title,
       pubDate: new Date(blog.data.pubDate),
       description: blog.data.description,
-      link: blog.data.externalUrl
-        ? blog.data.externalUrl
-        : `/blog/${blog.slug}/`,
+      link: blog.data.externalUrl ? blog.data.externalUrl : `/blog/${blog.id}/`,
       categories: blog.data.tags,
-      enclosure: extractImageUrl(blog.body)?.[0] || {
-        url: `/og/${blog.slug}.png`,
+      enclosure: extractImageUrl(blog.body ?? '')?.[0] || {
+        url: `/og/${blog.id}.png`,
         type: 'image/png',
         length: 0,
       },
     })),
-    customData: `<language>ja-jp</language>`,
+    customData: '<language>ja-jp</language>',
   };
   return rssOptions;
 }
