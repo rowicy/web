@@ -12,11 +12,8 @@ function escapeHtml(value) {
  *
  * markdown ASTにてD2コードブロックがある場合、クライアントでの描画スクリプト(@terrastruct/d2処理)を末尾に挿入
  *
- * D2ブロックはastro-expressive-codeが行ごとにラップして描画するため、
- * code.textContentから改行付きのソースを取り出せなくなる。
  * astro-expressive-codeには言語単位の除外オプションが無いため、
- * ここでrawなHTMLノードに置き換えてexpressive-codeの処理対象から外す
- * (mermaidと同じ対策、remark-mermaid-injector.mjs参照)。
+ * D2ノードは生HTMLに置き換えて処理対象から外す(remark-mermaid-injector.mjsと同じ対策)。
  */
 export function remarkD2Injector() {
   return function (tree) {
@@ -32,14 +29,11 @@ export function remarkD2Injector() {
       };
     });
 
-    // D2ブロックがある場合、末尾にスクリプトを追加
     if (d2Found) {
       const scriptNode = {
         type: 'html',
         value: `<style>
-  /* 縦がビューポートをはみ出す場合はアスペクト比を保ってスケールダウン。
-     幅・高さ両方をautoにしつつmax-width/max-heightを指定することで、
-     imgのobject-fit:contain相当の挙動をbrowserに任せる。画面幅を問わず適用。 */
+  /* 縦長ではみ出す場合にアスペクト比を保ってスケールダウン(imgのobject-fit:contain相当)。 */
   .d2-diagram svg {
     width: auto;
     height: auto;
@@ -52,15 +46,9 @@ export function remarkD2Injector() {
     }
   }
 
-  /*
-   * D2のテーマシステムはthemeIDによらず共通の意味的クラス(N1-N7: 中間色,
-   * B1-B6: プライマリ色相, AA/AB1-5: アクセント色相)をSVGに付与するため、
-   * 組み込みthemeIDで近似させるのではなく、mermaidダークテーマ
-   * (feature/mermaid-theme)と同じ配色値をこのクラスに直接上書きする。
-   * ponytail: 一般的なshape/connection/labelのクラスのみ対応。
-   * SQLテーブルやシーケンス図など特殊な図では未対応の配色クラスが
-   * 出てくる可能性がある(その場合はここに追記)。
-   */
+  /* D2はthemeIDによらず共通の意味的クラス(N1-N7/B1-B6/AA・AB1-5)をSVGに
+     付与するため、組み込みthemeIDに頼らずmermaidと同じ配色値を直接指定する。
+     未対応の図種(SQLテーブル等)向けクラスが出てきたら追記する。 */
   .d2-diagram svg .fill-N1,
   .d2-diagram svg .fill-N2,
   .d2-diagram svg .fill-N3,
@@ -140,14 +128,9 @@ export function remarkD2Injector() {
   .d2-diagram svg .stroke-AB5 {
     stroke: #1e293b !important;
   }
-  /* connection(矢印)はノード枠と同じB1クラスを共有しているため、
-     mermaidのlineColorに合わせて水色アクセントで上書きする。
-     矢印線本体(stroke-B1、fill="none"のpath)と矢印先端マーカー
-     (fill-B1、塗りつぶしのpolygon)は役割が異なるので、fill/strokeは
-     それぞれの役割にのみ適用する。両方をまとめて同一要素に当てると、
-     線本体のfillがnoneから上書きされてしまい、閉じていないpathが
-     ブラウザによって暗黙的に閉じられて塗りつぶされ、太いリボン状に
-     見えてしまう(特にエッジが扇状に大きく湾曲する図で顕著)。 */
+  /* fill-B1(矢印先端マーカー)とstroke-B1(矢印線、fill="none")を同一
+     セレクタでまとめてfill/strokeを両方上書きすると、線のfill="none"が
+     上書きされ開いたpathが塗りつぶされて太いリボン状になるため分離する。 */
   .d2-diagram svg .connection.fill-B1 {
     fill: #22d3ee !important;
   }
@@ -172,11 +155,9 @@ export function remarkD2Injector() {
       for (let i = 0; i < blocks.length; i++) {
         const code = blocks[i];
         const pre = code.parentElement;
-        // astro-expressive-codeは素のHTMLとして埋め込んだ<pre><code>も
-        // 1行ずつ.ec-line divでラップしてしまい、code.textContentだけでは
-        // 行間の改行が失われて1行に潰れ、D2のパースに失敗する
-        // (インデント依存の記法で顕著)。.ec-lineがあれば行ごとの
-        // textContentを改行で結合し、無ければそのまま使う。
+        // astro-expressive-codeが1行ずつ.ec-line divでラップするため、
+        // textContentだけでは改行が失われ1行に潰れてパースに失敗する。
+        // .ec-lineがあれば行ごとに改行で結合し直す。
         const lines = code.querySelectorAll(':scope > .ec-line');
         let script = (
           lines.length > 0
@@ -196,10 +177,8 @@ export function remarkD2Injector() {
 
           const wrapper = document.createElement("div");
           wrapper.className = "d2-diagram";
-          // Tailwind can't scan classes generated inside this .mjs client
-          // script (content globs don't include .mjs), so styling here is
-          // inline to avoid silent purge instead of relying on utility
-          // classes that only exist in this string.
+          // .mjs内の文字列はTailwindのcontentスキャン対象外でpurgeされるため、
+          // ユーティリティクラスに頼らずインラインstyleで指定する。
           wrapper.style.cssText = [
             "background-color: #0f172a",
             "border-radius: 0.75rem",
