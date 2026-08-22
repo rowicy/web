@@ -70,7 +70,10 @@ export default defineConfig({
   ],
   markdown: {
     processor: unified({
-      rehypePlugins: [rehypeSlug, [rehypeToc, { headings: ['h2', 'h3', 'h4'] }]],
+      rehypePlugins: [
+        rehypeSlug,
+        [rehypeToc, { headings: ['h2', 'h3', 'h4'] }],
+      ],
       remarkPlugins: [
         remarkMermaidInjector,
         remarkBreaks,
@@ -87,9 +90,7 @@ export default defineConfig({
             },
           },
         ],
-
       ],
-
     }),
   },
 });
