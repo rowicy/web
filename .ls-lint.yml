@@ -27,7 +27,9 @@ ignore:
   - .astro
   - .git
   - .vscode
+  - dist
   - node_modules
-  - src/pages/**/*/\[slug\].astro
+  - src/pages/**/*/\[id\].astro
   - src/pages/**/*/\[name\].astro
   - src/pages/**/*/\[tag\].astro
+  - src/content/blog/_template

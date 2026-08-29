@@ -25,7 +25,7 @@ const { blog } = Astro.props;
 const author = member.find(m => m.name === blog.data.author);
 const title = `${blog.data.title} | ${siteInfo.appName}`;
 const description = blog.data.description || siteInfo.description;
-const image = new URL(`/og/${blog.slug}.png`, Astro.url.origin).toString();
+const image = new URL(`/og/${blog.id}.png`, Astro.url.origin).toString();
 const authorX = author?.links?.find(l => l.name === 'X')?.id;
 ---
 
@@ -390,6 +390,10 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
 
           > :last-child {
             margin-bottom: 0;
+          }
+
+          .callout-label {
+            font-weight: 700;
           }
         }
       }
