@@ -60,7 +60,7 @@ export function remarkD2Injector() {
             : '';
           parent.children[index] = {
             type: 'html',
-            value: `<div class="d2-container"><div class="d2-diagram"><img src="/images/blog/${slug}/${filename}"${sizeAttrs} alt="" /></div></div>`,
+            value: `<div class="diagram-container"><div class="diagram-frame"><img src="/images/blog/${slug}/${filename}"${sizeAttrs} alt="" /></div></div>`,
           };
           i++;
         }
@@ -82,30 +82,6 @@ export function remarkD2Injector() {
           .filter(f => f.startsWith('d2-') && !currentFiles.has(f))
           .map(f => rm(path.join(outDir, f), { force: true }))
       );
-
-      tree.children.push({
-        type: 'html',
-        value: `<style>
-  .d2-container {
-    margin: 2rem 0;
-  }
-  @media (min-width: 1024px) {
-    .d2-container {
-      max-width: 60vw;
-    }
-  }
-  .d2-diagram {
-    display: flex;
-    justify-content: center;
-  }
-  .d2-diagram img {
-    width: auto;
-    height: auto;
-    max-width: 100%;
-    max-height: 80vh;
-  }
-</style>`,
-      });
     } catch (error) {
       console.error('[remark-d2-injector] FAILED:', error);
       throw error;

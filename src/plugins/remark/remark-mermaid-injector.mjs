@@ -1,101 +1,82 @@
 import { visit } from 'unist-util-visit';
+import { mkdir, readdir, rm, writeFile } from 'node:fs/promises';
+import path from 'node:path';
+import puppeteer from 'puppeteer';
+import { renderMermaid } from '@mermaid-js/mermaid-cli';
 
-function escapeHtml(value) {
-  return value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+function extractSize(svg) {
+  const match = svg.match(
+    /<svg[^>]*viewBox="[\d.-]+ [\d.-]+ ([\d.]+) ([\d.]+)"/
+  );
+  return match ? { width: match[1], height: match[2] } : null;
 }
 
 /**
  * remark プラグイン
  *
- * markdown ASTにてmermaidコードブロックがある場合、クライアントでの描画スクリプト(mermaid.js処理)を末尾に挿入
- *
- * mermaidブロックはastro-expressive-codeが行ごとにラップして描画するため、
- * code.textContentから改行付きのソースを取り出せなくなる。
- * astro-expressive-codeには言語単位の除外オプションが無いため、
- * ここでrawなHTMLノードに置き換えてexpressive-codeの処理対象から外す。
+ * markdown AST中のmermaidコードブロックをビルド時にNode(puppeteer)上でSVGへ
+ * レンダリングし、public/images/blog/<slug>/ に保存して<img>で埋め込む。
  */
 export function remarkMermaidInjector() {
-  return function (tree) {
-    let mermaidFound = false;
-
-    visit(tree, 'code', (node, index, parent) => {
-      if (node.lang !== 'mermaid' || !parent) return;
-
-      mermaidFound = true;
-      parent.children[index] = {
-        type: 'html',
-        value: `<pre data-language="mermaid"><code>${escapeHtml(node.value)}</code></pre>`,
-      };
-    });
-
-    // mermaidブロックがある場合、末尾にスクリプトを追加
-    if (mermaidFound) {
-      const scriptNode = {
-        type: 'html',
-        value: `<script>
-  async function initMermaidDiagrams() {
-    const blocks = document.querySelectorAll(
-      'pre[data-language="mermaid"] code'
-    );
-
-    if (blocks.length === 0) return;
-
+  return async function (tree, file) {
     try {
-      if (!window.mermaid) {
-        const script = document.createElement("script");
-        script.src =
-          "https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js";
-        await new Promise((resolve, reject) => {
-          script.onload = resolve;
-          script.onerror = reject;
-          document.head.appendChild(script);
-        });
-      }
-
-      mermaid.initialize({
-        startOnLoad: false,
+      const targets = [];
+      visit(tree, 'code', (node, index, parent) => {
+        if (node.lang !== 'mermaid' || !parent) return;
+        targets.push({ node, index, parent });
       });
+      if (targets.length === 0) return;
 
-      for (let i = 0; i < blocks.length; i++) {
-        const code = blocks[i];
-        const pre = code.parentElement;
-        let chart = code.textContent.trim();
+      const slug =
+        file.stem || path.basename(file.path, path.extname(file.path));
+      const outDir = path.join(process.cwd(), 'public', 'images', 'blog', slug);
+      // devはprefetchAll等で同じ記事が並行に複数回処理されうるため、
+      // 事前にディレクトリを消してから作り直すと、片方が削除した直後
+      // (まだ書き直していない間)にもう片方がその画像を読みに行き404に
+      // なる競合が起きる。削除はせず上書きし、不要になった古いファイル
+      // だけ処理の最後に削除する。
+      await mkdir(outDir, { recursive: true });
 
-        try {
-          const { svg } = await mermaid.render(
-            \`mermaid-\${i}\`,
-            chart
-          );
-          
-          const container = document.createElement("div");
-          container.className = \`mermaid-container my-8\`;
+      const browser = await puppeteer.launch();
 
-          const wrapper = document.createElement("div");
-          wrapper.className = \`mermaid-diagram rounded-lg min-h-[100px] bg-transparent\`;
-          
-          wrapper.innerHTML = svg;
-          container.appendChild(wrapper);
-          pre.parentNode.replaceChild(container, pre);
-        } catch (error) {
-          console.warn(
-            \`Mermaid diagram \${i + 1} failed, keeping as code block\`,
-            error
-          );
+      try {
+        let i = 0;
+        for (const { node, index, parent } of targets) {
+          const { data } = await renderMermaid(browser, node.value, 'svg', {
+            mermaidConfig: { theme: 'default' },
+          });
+          const svg = Buffer.from(data).toString('utf8');
+          const size = extractSize(svg);
+
+          const filename = `mermaid-${i}.svg`;
+          await writeFile(path.join(outDir, filename), svg, 'utf8');
+
+          const sizeAttrs = size
+            ? ` width="${size.width}" height="${size.height}"`
+            : '';
+          parent.children[index] = {
+            type: 'html',
+            value: `<div class="diagram-container"><div class="diagram-frame"><img src="/images/blog/${slug}/${filename}"${sizeAttrs} alt="" /></div></div>`,
+          };
+          i++;
         }
+      } finally {
+        await browser.close();
       }
-    } catch (error) {
-      console.warn("Mermaid library failed to load, keeping code blocks", error);
-    }
-  }
-  
-  document.addEventListener("DOMContentLoaded", initMermaidDiagrams);
-</script>`,
-      };
 
-      tree.children.push(scriptNode);
+      // 記事編集でmermaidブロックが減った場合の古いsvgだけ、全件書き終わった
+      // 後にまとめて削除する(書き込み前に一括削除すると、並行リクエスト
+      // 中の一瞬だけ画像が存在せず404になりうるため)。
+      const currentFiles = new Set(targets.map((_, i) => `mermaid-${i}.svg`));
+      const existingFiles = await readdir(outDir);
+      await Promise.all(
+        existingFiles
+          .filter(f => f.startsWith('mermaid-') && !currentFiles.has(f))
+          .map(f => rm(path.join(outDir, f), { force: true }))
+      );
+    } catch (error) {
+      console.error('[remark-mermaid-injector] FAILED:', error);
+      throw error;
     }
   };
 }
