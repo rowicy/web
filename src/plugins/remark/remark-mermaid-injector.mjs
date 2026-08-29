@@ -6,8 +6,9 @@ import puppeteer from 'puppeteer';
 import { renderMermaid } from '@mermaid-js/mermaid-cli';
 
 const require = createRequire(import.meta.url);
-const SVG2ROUGHJS_PATH =
-  require.resolve('svg2roughjs/dist/svg2roughjs.umd.min.js');
+const SVG2ROUGHJS_PATH = require.resolve(
+  'svg2roughjs/dist/svg2roughjs.umd.min.js'
+);
 
 function extractSize(svg) {
   const viewBoxMatch = svg.match(
