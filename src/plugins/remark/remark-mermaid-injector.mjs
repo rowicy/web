@@ -1,14 +1,55 @@
 import { visit } from 'unist-util-visit';
 import { mkdir, readdir, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { createRequire } from 'node:module';
 import puppeteer from 'puppeteer';
 import { renderMermaid } from '@mermaid-js/mermaid-cli';
 
+const require = createRequire(import.meta.url);
+const SVG2ROUGHJS_PATH = require.resolve(
+  'svg2roughjs/dist/svg2roughjs.umd.min.js'
+);
+
 function extractSize(svg) {
-  const match = svg.match(
+  const viewBoxMatch = svg.match(
     /<svg[^>]*viewBox="[\d.-]+ [\d.-]+ ([\d.]+) ([\d.]+)"/
   );
-  return match ? { width: match[1], height: match[2] } : null;
+  if (viewBoxMatch) {
+    return { width: viewBoxMatch[1], height: viewBoxMatch[2] };
+  }
+  const tag = svg.match(/<svg[^>]*>/)?.[0];
+  const width = tag?.match(/\swidth="([\d.]+)"/)?.[1];
+  const height = tag?.match(/\sheight="([\d.]+)"/)?.[1];
+  return width && height ? { width, height } : null;
+}
+
+// mermaidのlook:'handDrawn'は一部の図種(flowchart等)にしか効かないため、
+// レンダリング後のSVGをsvg2roughjs(rough.js)で後処理し、図種によらず
+// 一様に手描き風へ変換する。
+async function sketchify(browser, svgMarkup) {
+  const page = await browser.newPage();
+  try {
+    // display:none(hidden属性)だとgetBBox()が正しい値を返せず、テキストが
+    // 意味不明な線描画にフォールバックしてしまうため、画面外配置で隠す。
+    await page.setContent(
+      '<div id="src" style="position:absolute;left:-9999px;top:-9999px"></div><div id="out"></div>'
+    );
+    await page.addScriptTag({ path: SVG2ROUGHJS_PATH });
+    return await page.evaluate(async markup => {
+      document.getElementById('src').innerHTML = markup;
+      const svgEl = document.querySelector('#src svg');
+      const converter = new svg2roughjs.Svg2Roughjs('#out');
+      converter.seed = 1;
+      // デフォルトの'Comic Sans MS, cursive'は日本語グリフを持たず、
+      // 幅計測がずれて文字が重なり読めなくなるため、元のSVGのフォントを使う。
+      converter.fontFamily = null;
+      converter.svg = svgEl;
+      const result = await converter.sketch();
+      return result.outerHTML;
+    }, svgMarkup);
+  } finally {
+    await page.close();
+  }
 }
 
 /**
@@ -43,9 +84,19 @@ export function remarkMermaidInjector() {
         let i = 0;
         for (const { node, index, parent } of targets) {
           const { data } = await renderMermaid(browser, node.value, 'svg', {
-            mermaidConfig: { theme: 'default' },
+            // htmlLabelsをfalseにしないとラベルがforeignObject(HTML)で
+            // 描画され、svg2roughjsが正しく手描き風に変換できないため、
+            // ネイティブSVGの<text>を使うよう強制する。
+            mermaidConfig: {
+              theme: 'default',
+              htmlLabels: false,
+              flowchart: { htmlLabels: false },
+            },
           });
-          const svg = Buffer.from(data).toString('utf8');
+          const svg = await sketchify(
+            browser,
+            Buffer.from(data).toString('utf8')
+          );
           const size = extractSize(svg);
 
           const filename = `mermaid-${i}.svg`;
