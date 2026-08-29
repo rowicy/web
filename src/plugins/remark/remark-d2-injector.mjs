@@ -2,40 +2,6 @@ import { visit } from 'unist-util-visit';
 import { mkdir, readdir, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-// D2はthemeIDによらず共通の意味的クラス(N1-N7/B1-B6/AA・AB1-5)をSVGに
-// 付与するため、組み込みthemeIDに頼らずmermaidと同じ配色値を直接指定する。
-// SVGファイル自体に埋め込むため、ページ側のCSSに依存せず<img>経由でも効く。
-// fill-B1(矢印先端マーカー)とstroke-B1(矢印線、fill="none")を同一セレクタで
-// まとめてfill/strokeを両方上書きすると、線のfill="none"が上書きされ開いた
-// pathが塗りつぶされて太いリボン状になるため分離している。
-const D2_SVG_STYLE = `
-  .fill-N1, .fill-N2, .fill-N3, .fill-N4, .fill-N5 { fill: #e2e8f0 !important; }
-  .fill-N6, .fill-N7 { fill: #0f172a !important; }
-  .fill-B1, .fill-B2, .fill-B3, .fill-B4 { fill: #38bdf8 !important; }
-  .fill-B5, .fill-B6 { fill: #1e293b !important; }
-  .fill-AA1, .fill-AA2, .fill-AA3 { fill: #22d3ee !important; }
-  .fill-AA4, .fill-AA5 { fill: #1e293b !important; }
-  .fill-AB1, .fill-AB2, .fill-AB3 { fill: #22d3ee !important; }
-  .fill-AB4, .fill-AB5 { fill: #1e293b !important; }
-  .stroke-N1, .stroke-N2, .stroke-N3, .stroke-N4, .stroke-N5 { stroke: #e2e8f0 !important; }
-  .stroke-N6, .stroke-N7 { stroke: #0f172a !important; }
-  .stroke-B1, .stroke-B2, .stroke-B3, .stroke-B4 { stroke: #38bdf8 !important; }
-  .stroke-B5, .stroke-B6 { stroke: #1e293b !important; }
-  .stroke-AA1, .stroke-AA2, .stroke-AA3 { stroke: #22d3ee !important; }
-  .stroke-AA4, .stroke-AA5 { stroke: #1e293b !important; }
-  .stroke-AB1, .stroke-AB2, .stroke-AB3 { stroke: #22d3ee !important; }
-  .stroke-AB4, .stroke-AB5 { stroke: #1e293b !important; }
-  .connection.fill-B1 { fill: #22d3ee !important; }
-  .connection.stroke-B1 { stroke: #22d3ee !important; }
-`;
-
-function injectSvgStyle(svg) {
-  return svg.replace(
-    /<svg[^>]*>/,
-    match => `${match}<style>${D2_SVG_STYLE}</style>`
-  );
-}
-
 function extractSize(svg) {
   const match = svg.match(
     /<svg[^>]*viewBox="[\d.-]+ [\d.-]+ ([\d.]+) ([\d.]+)"/
@@ -79,9 +45,11 @@ export function remarkD2Injector() {
         // 混線する)ため、Promise.allではなく1件ずつ逐次処理する。
         let i = 0;
         for (const { node, index, parent } of targets) {
-          const { diagram, renderOptions } = await d2.compile(node.value);
-          const rawSvg = await d2.render(diagram, renderOptions);
-          const svg = injectSvgStyle(rawSvg);
+          const { diagram, renderOptions } = await d2.compile(node.value, {
+            themeID: 0,
+            sketch: true,
+          });
+          const svg = await d2.render(diagram, renderOptions);
           const size = extractSize(svg);
 
           const filename = `d2-${i}.svg`;
@@ -123,21 +91,18 @@ export function remarkD2Injector() {
   }
   @media (min-width: 1024px) {
     .d2-container {
-      max-width: 80vw;
+      max-width: 60vw;
     }
   }
   .d2-diagram {
-    background-color: #0f172a;
-    border-radius: 0.75rem;
     display: flex;
     justify-content: center;
-    padding: 1.5rem;
   }
   .d2-diagram img {
     width: auto;
     height: auto;
     max-width: 100%;
-    max-height: 90vh;
+    max-height: 80vh;
   }
 </style>`,
       });
