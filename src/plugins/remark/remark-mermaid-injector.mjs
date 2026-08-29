@@ -23,14 +23,12 @@ function extractSize(svg) {
   return width && height ? { width, height } : null;
 }
 
-// mermaidのlook:'handDrawn'は一部の図種(flowchart等)にしか効かないため、
-// レンダリング後のSVGをsvg2roughjs(rough.js)で後処理し、図種によらず
-// 一様に手描き風へ変換する。
+// mermaid本体のlook:'handDrawn'は図種によって非対応のため、
+// レンダリング後のSVGをsvg2roughjsで後処理し全図種で手描き風にする
 async function sketchify(browser, svgMarkup) {
   const page = await browser.newPage();
   try {
-    // display:none(hidden属性)だとgetBBox()が正しい値を返せず、テキストが
-    // 意味不明な線描画にフォールバックしてしまうため、画面外配置で隠す。
+    // display:noneだとgetBBox()が壊れるため画面外配置で隠す
     await page.setContent(
       '<div id="src" style="position:absolute;left:-9999px;top:-9999px"></div><div id="out"></div>'
     );
@@ -40,8 +38,7 @@ async function sketchify(browser, svgMarkup) {
       const svgEl = document.querySelector('#src svg');
       const converter = new svg2roughjs.Svg2Roughjs('#out');
       converter.seed = 1;
-      // デフォルトの'Comic Sans MS, cursive'は日本語グリフを持たず、
-      // 幅計測がずれて文字が重なり読めなくなるため、元のSVGのフォントを使う。
+      // デフォルトフォントは日本語グリフがなく文字化けするため元のSVGのフォントを使う
       converter.fontFamily = null;
       converter.svg = svgEl;
       const result = await converter.sketch();
@@ -52,12 +49,6 @@ async function sketchify(browser, svgMarkup) {
   }
 }
 
-/**
- * remark プラグイン
- *
- * markdown AST中のmermaidコードブロックをビルド時にNode(puppeteer)上でSVGへ
- * レンダリングし、public/images/blog/<slug>/ に保存して<img>で埋め込む。
- */
 export function remarkMermaidInjector() {
   return async function (tree, file) {
     try {
@@ -71,11 +62,7 @@ export function remarkMermaidInjector() {
       const slug =
         file.stem || path.basename(file.path, path.extname(file.path));
       const outDir = path.join(process.cwd(), 'public', 'images', 'blog', slug);
-      // devはprefetchAll等で同じ記事が並行に複数回処理されうるため、
-      // 事前にディレクトリを消してから作り直すと、片方が削除した直後
-      // (まだ書き直していない間)にもう片方がその画像を読みに行き404に
-      // なる競合が起きる。削除はせず上書きし、不要になった古いファイル
-      // だけ処理の最後に削除する。
+      // 事前削除すると並行リクエスト(dev prefetch等)が404を踏むため上書きのみ行う
       await mkdir(outDir, { recursive: true });
 
       const browser = await puppeteer.launch();
@@ -84,11 +71,9 @@ export function remarkMermaidInjector() {
         let i = 0;
         for (const { node, index, parent } of targets) {
           const { data } = await renderMermaid(browser, node.value, 'svg', {
-            // htmlLabelsをfalseにしないとラベルがforeignObject(HTML)で
-            // 描画され、svg2roughjsが正しく手描き風に変換できないため、
-            // ネイティブSVGの<text>を使うよう強制する。
-            // D2のNeutral defaultテーマ(fill-B4/stroke-B1/fill-N1相当)の
-            // 配色に完全に合わせている。
+            // htmlLabels:falseがないとラベルがforeignObject(HTML)になり
+            // svg2roughjsが正しく手描き風に変換できない。
+            // themeVariablesはD2のNeutral defaultテーマの実際の色に合わせている。
             mermaidConfig: {
               theme: 'base',
               themeVariables: {
@@ -169,9 +154,7 @@ export function remarkMermaidInjector() {
         await browser.close();
       }
 
-      // 記事編集でmermaidブロックが減った場合の古いsvgだけ、全件書き終わった
-      // 後にまとめて削除する(書き込み前に一括削除すると、並行リクエスト
-      // 中の一瞬だけ画像が存在せず404になりうるため)。
+      // 孤児ファイルの削除は全件書き終わった後に行う(先に消すと404を踏む)
       const currentFiles = new Set(targets.map((_, i) => `mermaid-${i}.svg`));
       const existingFiles = await readdir(outDir);
       await Promise.all(
