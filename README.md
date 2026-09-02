@@ -47,6 +47,42 @@ pnpm preview
 pnpm format
 ```
 
+## 記事内MD記法
+
+### 基本
+
+標準的な Markdown 記法（見出し、リスト、リンク等）に対応しています。
+
+### コールアウト
+
+`> [!xxx]`でコールアウト記法を使用できます。
+
+### コードブロック
+
+コードブロックの言語指定以降に以下属性を付与することで、多様なマーカーや装飾を追加できます。
+
+| 属性                      | 用途               | 例                         |
+| ----------------------- | ---------------- | ------------------------- |
+| 先頭行のファイル名コメント           | ファイルパス/タイトルを自動推測 | ```ts の1行目に // src/a.ts   |
+| title="..."             | ファイルパス/タイトル表示    | ```ts title="src/a.ts"    |
+| {2-4}                   | マーカーライン（行ハイライト）  | ```ts {2-4}               |
+| ins={n} / del={n}       | 行単位の追加/削除マーカー    | ```ts ins={2} del={3}     |
+| "word" / /regex/        | ワードマーカー          | ```ts "greet" /Hi.*!/     |
+| ins="word" / del="word" | 単語単位の追加/削除マーカー   | ```ts ins="foo" del="bar" |
+| wrap                    | 長い行の折り返し         | ```ts wrap                |
+| frame="terminal"        | ターミナル風フレーム       | ```bash frame="terminal"  |
+| showLineNumbers         | 行番号表示            | ```ts showLineNumbers     |
+| collapse={1-3}          | 指定行の折りたたみ        | ```ts collapse={1-3}      |
+| ```diff                 | diff構文（+/-表示）    | ```diff title="x.ts"      |
+
+さらに詳しく [Text & Line Markers](https://expressive-code.com/key-features/text-markers/)
+
+
+### ダイアグラム（Mermaid）
+
+コードブロックの言語指定に `mermaid` を記述することで、フローチャートやシーケンス図などをレンダリングできます。
+
+
 ## ブログ記事投稿
 
 1. ブログ記事執筆用ブランチを作成する
