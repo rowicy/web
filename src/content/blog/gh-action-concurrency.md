@@ -16,9 +16,11 @@ pnpmのバージョンを固定し、pnpm installを`--frozen-lockfile`するの
 付加的に、concurrencyを追加した
 
 ```yaml
+# .github/workflows/test.yml
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+...
 ```
 
 concurrencyとはなんだろか
@@ -128,7 +130,7 @@ concurrency:
 
 GitHub ActionsではWorkflowにJobが含まれる
 
-```
+```txt "Workflow" "<job_name>"
 Workflow
 └── jobs
     └── <job_name>
@@ -169,7 +171,8 @@ jobs:
 
 GitLab CIにも同様のキャンセル機能があるが少し制御が異なる
 
-```yaml
+```yaml "interruptible: true" "on_new_commit: interruptible"
+# .gitlab-ci.yml
 workflow:
   auto_cancel:
     on_new_commit: interruptible #キャンセル判断をワークフローで指定
