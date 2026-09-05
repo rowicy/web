@@ -3,7 +3,7 @@ title: 【Vul】CodeBuildの設定ミスによるフィルタバイパス
 pubDate: '2026-01-16'
 description: AWS CodeBuildにおける設定ミスにより、AWS提供のGitHubリポジトリがサプライチェーン攻撃のリスクにあった件
 author: RiiiM
-tags: [Tech, Vul]
+tags: [Tech, Security]
 ---
 
 今回はこちらの記事から
