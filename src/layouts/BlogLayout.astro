@@ -16,6 +16,7 @@ import { SEO } from 'astro-seo';
 import Share from '@/components/Share.astro';
 import Social from '@/components/Social.astro';
 import JsonLdBlog from '@/components/JsonLdBlog.astro';
+import HeadingBreadcrumbBar from '@/components/HeadingBreadcrumbBar.astro';
 
 interface Props {
   blog: CollectionEntry<'blog'>;
@@ -196,6 +197,8 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
           });
       });
     </script>
+
+    <HeadingBreadcrumbBar />
     <style is:global lang="scss">
       $space: 2rem;
       $space-sp: 1.6rem;
