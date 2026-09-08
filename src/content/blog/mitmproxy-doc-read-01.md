@@ -3,7 +3,7 @@ title: 【ドキュメントを追え! mitmproxy編】 第1話 いかにして�
 pubDate: '2025-05-20'
 description: mitmproxyのドキュメントを読んで自分で調べた補足をまとめました
 author: RiiiM
-tags: [Tech, proxy, Document, mitmproxy]
+tags: [Tech, Document]
 ---
 
 ![thumbnail](/images/blog/mitmproxy-doc-read-01/e0e639e4-611f-d1cf-d448-9ca64d23c13c.png)
