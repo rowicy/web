@@ -3,7 +3,7 @@ title: Trivyリポジトリ侵害(第1回)とGitHub Actionsのシークレット
 pubDate: '2026-03-29'
 description: 2026年2月のTrivy第1回侵害を振り返り、pull_request_targetの危険性、GitHub Actionsのシークレット展開レイヤー、GitLab CI/CDとの設計差を解説する
 author: RiiiM
-tags: [Tech, Security, SupplyChain, Trivy, Vul, CI/CD, GitHubActions]
+tags: [Tech, Security, CI/CD]
 ---
 
 ## はじめに
