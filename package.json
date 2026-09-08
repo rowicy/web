@@ -38,6 +38,7 @@
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-tooltip": "^1.2.8",
+    "@terrastruct/d2": "^0.1.33",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.0",
     "astro": "^7.2.4",
@@ -62,10 +63,13 @@
   },
   "devDependencies": {
     "@astrojs/partytown": "^2.1.7",
+    "@mermaid-js/mermaid-cli": "^11.16.0",
     "prettier": "^3.2.5",
     "prettier-plugin-astro": "^0.13.0",
     "prettier-plugin-tailwindcss": "^0.6.11",
+    "puppeteer": "^25.9.0",
     "sass": "^1.77.4",
+    "svg2roughjs": "^3.2.3",
     "unist-util-visit": "^5.0.0"
   },
   "pnpm": {
