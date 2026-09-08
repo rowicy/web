@@ -441,6 +441,24 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
       .remark-link-card-plus__image {
         @apply my-0 h-full w-full object-cover;
       }
+      .diagram-container {
+        margin: 2rem 0;
+      }
+      @media (min-width: 1024px) {
+        .diagram-container {
+          max-width: 60vw;
+        }
+      }
+      .diagram-frame {
+        display: flex;
+        justify-content: center;
+      }
+      .diagram-frame img {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 80vh;
+      }
       .copy-toast {
         display: none;
         position: fixed;

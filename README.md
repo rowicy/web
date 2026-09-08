@@ -78,9 +78,9 @@ pnpm format
 さらに詳しく [Text & Line Markers](https://expressive-code.com/key-features/text-markers/)
 
 
-### ダイアグラム（Mermaid）
+### ダイアグラム
 
-コードブロックの言語指定に `mermaid` を記述することで、フローチャートやシーケンス図などをレンダリングできます。
+コードブロックの言語指定に `mermaid`,`d2` を記述することで、フローチャートやシーケンス図などをレンダリングできます。
 
 
 ## ブログ記事投稿
