@@ -454,13 +454,21 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
       }
       .diagram-frame {
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
       }
-      .diagram-frame img {
+      /* D2はimg、mermaidはクライアント描画したSVGが直接入る */
+      .diagram-frame img,
+      .diagram-frame svg {
         width: auto;
         height: auto;
         max-width: 100%;
         max-height: 80vh;
+      }
+      /* mermaidの読み込み中・描画失敗時に残る元のコードブロック */
+      .diagram-frame pre[data-mermaid] {
+        flex: 1;
+        min-width: 0;
+        overflow-x: auto;
       }
       .copy-toast {
         display: none;
