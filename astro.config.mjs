@@ -13,6 +13,7 @@ import { remarkMermaidInjector } from './src/plugins/remark/remark-mermaid-injec
 import { remarkD2Injector } from './src/plugins/remark/remark-d2-injector.mjs';
 import { remarkCallout } from './src/plugins/remark/remark-callout.mjs';
 import expressiveCode from 'astro-expressive-code';
+import { shellSession } from './src/plugins/expressive-code/shell-session.mjs';
 import { unified } from '@astrojs/markdown-remark';
 
 const SITE_URL = 'https://www.rowicy.com';
@@ -34,6 +35,7 @@ export default defineConfig({
     react(),
     expressiveCode({
       themes: ['vesper'],
+      plugins: [shellSession()],
       frames: {
         showCopyToClipboardButton: false,
       },
