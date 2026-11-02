@@ -470,6 +470,13 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
         min-width: 0;
         overflow-x: auto;
       }
+      /* 本文の写真のみ。図(.diagram-frame)は上の80vh指定のまま */
+      @media (min-width: 768px) {
+        .blog-body p img {
+          max-height: 50vh;
+          width: auto;
+        }
+      }
       .copy-toast {
         display: none;
         position: fixed;
