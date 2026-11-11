@@ -350,6 +350,23 @@ const authorX = author?.links?.find(l => l.name === 'X')?.id;
           }
         }
 
+        /*
+          preflight が ol のマーカーと padding を消す。
+          目次は .toc ol の方が詳細度が高く、list-style: none とカウンタのまま残る。
+        */
+        ol {
+          padding-left: 1rem;
+          list-style: decimal;
+          list-style-position: outside;
+
+          li {
+            + li,
+            > ol {
+              margin-top: 0.5rem;
+            }
+          }
+        }
+
         *:not(pre) > code {
           padding: 0.1em 0.3em;
           background-color: #e5e5e5;
