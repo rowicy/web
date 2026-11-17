@@ -2,6 +2,14 @@ import type { Product } from '@/types/Product';
 
 const product: Product[] = [
   {
+    name: 'Charoro',
+    image: '/images/product/charoro.png',
+    description:
+      'ペット専門の出張撮影サービス「Charoro」のWebサイトを開発しました。愛するペットとの何気ない日常を大切な思い出として残せるよう、サービスの魅力や撮影プラン、撮影事例を分かりやすく紹介しています。',
+    href: 'https://www.charoro.com/',
+    participants: ['Naoki'],
+  },
+  {
     name: 'CHARIMACHI',
     image: '/images/product/charimachi.png',
     description:
