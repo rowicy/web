@@ -5,7 +5,7 @@ const product: Product[] = [
     name: 'Charoro',
     image: '/images/product/charoro.png',
     description:
-      'ペット専門の出張撮影サービス「Charoro」のWebサイトを開発しました。愛するペットとの何気ない日常を大切な思い出として残せるよう、サービスの魅力や撮影プラン、撮影事例を分かりやすく紹介しています。',
+      'メンバーのNaokiが運営しているペット専門の出張撮影サービス「Charoro」のWebサイトを開発しました。ペット撮影の魅力を伝え、愛するペットとの何気ない日常を写真に残す体験を、もっと身近に感じてほしいという想いが込められています。',
     href: 'https://www.charoro.com/',
     participants: ['Naoki'],
   },
